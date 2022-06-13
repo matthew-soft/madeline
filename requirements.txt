@@ -1,3 +1,9 @@
+algoliasearch
+cloudscraper
 naff
-python-dotenv
 orjson
+python-dotenv
+requests-toolbelt
+samp-client
+sentry-sdk
+wget
