@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   madeline:
-    image: ghcr.io/madeline-bot/madeline:master
+    image: ghcr.io/madeline-bot/madeline-v2:master
     volumes:
       - ./logs:/app/logs
     networks:
