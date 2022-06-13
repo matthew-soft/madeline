@@ -16,5 +16,12 @@ jobs:
         run: |
           pip install pre-commit
       - name: Run Pre-commit
+        id: pre-commit
+        continue-on-error: true
         run: |
           pre-commit run --all-files
+      - name: Upload changes to Github (if exist)
+        if: steps.pre-commit.outputs.changes_detected == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+          with:
+            commit_message: "chore: pre-commit fixes"
