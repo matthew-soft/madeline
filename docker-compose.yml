@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  madeline:
+    image: ghcr.io/madeline-bot/madeline:master
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - madeline-network
+    restart:
+      on-failure
+
+networks:
+  madeline-network:
