@@ -3,6 +3,7 @@
 
 exclude: ".json"
 repos:
+
 -   repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
@@ -14,7 +15,6 @@ repos:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: requirements-txt-fixer
-    -   id: check-toml
     -   id: check-yaml
     -   id: check-added-large-files
     -   id: check-merge-conflict
