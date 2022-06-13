@@ -1,5 +1,12 @@
-from naff import (Activity, ActivityType, Extension, IntervalTrigger, Status,
-                  Task, listen)
+from naff import (
+    Activity,
+    ActivityType,
+    Extension,
+    IntervalTrigger,
+    Status,
+    Task,
+    listen,
+)
 from naff.api.events import ChannelCreate
 
 from core.base import CustomClient
