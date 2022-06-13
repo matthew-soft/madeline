@@ -1,14 +1,12 @@
 import os
 
 from dotenv import load_dotenv
-from naff import Intents
+from naff import Activity, ActivityType, Intents, Status
 from naff.ext.debug_extension import DebugExtension
 
-from core.logging import init_logging
 from core.base import CustomClient
 from core.extensions_loader import load_extensions
-
-
+from core.logging import init_logging
 
 if __name__ == "__main__":
     # load the environmental vars from the .env file
@@ -21,7 +19,12 @@ if __name__ == "__main__":
     bot = CustomClient(
         intents=Intents.DEFAULT,  # intents are what events we want to receive from discord, `DEFAULT` is usually fine
         auto_defer=True,  # automatically deferring interactions
-        activity="Anaffer bot",  # the status message of the bot
+        status=Status.IDLE,
+        activity=Activity(
+            name=f"(loading) servers | /help", type=ActivityType.COMPETING
+        ),  # the status message of the bot
+        sync_interactions=True,  # sync application commands with discord
+        delete_unused_application_cmds=True,  # Delete commands that arent listed here
     )
 
     # load the debug extension if that is wanted
