@@ -1,6 +1,9 @@
 algoliasearch
+dnspython
 naff
 orjson
+pymongo
+python-dateutil
 python-dotenv
 requests-toolbelt
 samp-client
