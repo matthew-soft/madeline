@@ -1,10 +1,7 @@
 import datetime
 
-# import cloudscraper
 import requests
 from naff import Embed, Extension, OptionTypes, slash_command, slash_option
-
-# scraper = cloudscraper.create_scraper()
 
 
 class wiki(Extension):
@@ -17,7 +14,6 @@ class wiki(Extension):
     )
     async def wiki(self, ctx, *, query):
         openmp_url = "https://open.mp/"
-        # r = scraper.get(f"https://api.open.mp/docs/search?q={query}").json()
         r = requests.get(f"https://api.open.mp/docs/search?q={query}").json()
         try:
             if r["hits"]:

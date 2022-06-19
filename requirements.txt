@@ -1,5 +1,4 @@
 algoliasearch
-# cloudscraper
 naff
 orjson
 python-dotenv
