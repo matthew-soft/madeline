@@ -6,9 +6,20 @@ from datetime import datetime, timezone
 
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
-from naff import (ActionRow, AutocompleteContext, Button, ButtonStyles, Client,
-                  Embed, Extension, InteractionContext, OptionTypes, check,
-                  slash_command, spread_to_rows)
+from naff import (
+    ActionRow,
+    AutocompleteContext,
+    Button,
+    ButtonStyles,
+    Client,
+    Embed,
+    Extension,
+    InteractionContext,
+    OptionTypes,
+    check,
+    slash_command,
+    spread_to_rows,
+)
 from pymongo import MongoClient
 
 from utilities.catbox import CatBox as catbox
@@ -20,10 +31,12 @@ cluster = MongoClient(os.getenv("MONGODB_URL"))
 
 tags = cluster["madeline"]["tags"]
 
+
 def geturl(string):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-    url = re.findall(regex,string)
+    url = re.findall(regex, string)
     return [x[0] for x in url]
+
 
 def find_member(ctx, userid):
     members = [m for m in ctx.guild.members if m.id == userid]
@@ -32,10 +45,11 @@ def find_member(ctx, userid):
             return m
     return None
 
+
 class Tags(Extension):
     def __init__(self, bot: Client):
         self.bot = bot
-    
+
     @slash_command(
         name="tag",
         sub_cmd_name="use",
@@ -47,9 +61,9 @@ class Tags(Extension):
         opt_type=OptionTypes.STRING,
         required=True,
     )
-    async def t(self, ctx:InteractionContext, tagname:str):
+    async def t(self, ctx: InteractionContext, tagname: str):
         regx = {"$regex": f"^{tagname}$", "$options": "i"}
-        tppk = tags.find_one({"names":regx, "guild_id":ctx.guild_id})
+        tppk = tags.find_one({"names": regx, "guild_id": ctx.guild_id})
         if tppk is None:
             embed = Embed(
                 description=f"<:cross:839158779815657512> `{tagname}` is not a tag",
@@ -68,9 +82,10 @@ class Tags(Extension):
                 await ctx.send(f"{cont}")
             uses = tppk["no_of_times_used"]
             tags.update_one(
-                {"names":regx, "guild_id":ctx.guild_id},
+                {"names": regx, "guild_id": ctx.guild_id},
                 {"$set": {"no_of_times_used": uses + 1}},
             )
+
 
 def setup(bot):
     Tags(bot)
