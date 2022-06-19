@@ -16,14 +16,16 @@ from naff import (
     Extension,
     InteractionContext,
     OptionTypes,
+    Permissions,
     check,
     slash_command,
+    slash_option,
     spread_to_rows,
 )
 from pymongo import MongoClient
 
 from utilities.catbox import CatBox as catbox
-from utilities.customchecks import *
+from utilities.checks import *
 
 load_dotenv()
 
