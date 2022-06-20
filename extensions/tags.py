@@ -67,7 +67,7 @@ class Tags(Extension):
     async def tags_use(self, ctx: InteractionContext, name: str):
 
         await ctx.defer()
-        
+
         regx = {"$regex": f"^{name}$", "$options": "i"}
         tppk = tags.find_one({"names": regx, "guild_id": ctx.guild_id})
         if tppk is None:
