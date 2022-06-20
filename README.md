@@ -1,7 +1,11 @@
-# Madeline
+# Madeline : The Discord Bot | Revamped
 
+| Build Production CI | pre-commit checks |
+| :---: | :---: |
+|  [![Build Production](https://github.com/madeline-bot/madeline-v2/actions/workflows/build.yml/badge.svg)](https://github.com/madeline-bot/madeline-v2/actions/workflows/build.yml)|  [![precommit-action](https://github.com/madeline-bot/madeline-v2/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/madeline-bot/madeline-v2/actions/workflows/pre-commit.yml)  |
+-------------------------------------------------
+A Multifunctional SA-MP Discord Bot written in [NAFF](https://github.com/NAFTeam/NAFF) (python).
 
-A discord bot made with [NAFF](https://github.com/Discord-Snake-Pit/NAFF).
 Visit [the official guide](https://naff.readthedocs.io/Guides/01%20Getting%20Started/) to get started.
 
 # Running the Application
