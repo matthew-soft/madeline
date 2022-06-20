@@ -1,8 +1,11 @@
 import datetime
 
+import cloudscraper
 import requests
 from naff import Embed, Extension, OptionTypes, slash_command, slash_option
 from naff.ext.paginators import Paginator
+
+scraper = cloudscraper.create_scraper()
 
 
 class wiki(Extension):
@@ -14,7 +17,8 @@ class wiki(Extension):
         opt_type=OptionTypes.STRING,
     )
     async def wiki(self, ctx, *, query: str):
-        data = requests.get(
+        await ctx.defer()
+        data = scraper.get(
             "https://api.open.mp/docs/search", params=dict(q=query)
         ).json()
 
