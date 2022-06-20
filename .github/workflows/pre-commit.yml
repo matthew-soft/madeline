@@ -1,5 +1,5 @@
 name: precommit-action
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   linter_name:
     name: runner / Pre-commit actions
