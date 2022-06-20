@@ -65,7 +65,9 @@ class Tags(Extension):
         required=True,
     )
     async def tags_use(self, ctx: InteractionContext, name: str):
+
         await ctx.defer()
+        
         regx = {"$regex": f"^{name}$", "$options": "i"}
         tppk = tags.find_one({"names": regx, "guild_id": ctx.guild_id})
         if tppk is None:
@@ -360,6 +362,8 @@ class Tags(Extension):
             await ctx.send(embed=embed, ephemeral=True)
             return
 
+        await ctx.defer()
+
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         tag_to_edit = tags.find_one(
             {"guild_id": ctx.guild_id, "names": name_regx, "author_id": ctx.author.id}
@@ -611,6 +615,8 @@ class Tags(Extension):
             await ctx.send(embed=embed, ephemeral=True)
             return
 
+        await ctx.defer()
+
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         tag_to_delete = tags.find_one(
             {"guild_id": ctx.guild_id, "names": name_regx, "author_id": ctx.author.id}
@@ -683,6 +689,8 @@ class Tags(Extension):
             await ctx.send(embed=embed, ephemeral=True)
             return
 
+        await ctx.defer()
+
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         tag_to_delete = tags.find_one({"guild_id": ctx.guild_id, "names": name_regx})
         if tag_to_delete is None:
@@ -727,6 +735,8 @@ class Tags(Extension):
             )
             await ctx.send(embed=embed, ephemeral=True)
             return
+
+        await ctx.defer()
 
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         tag_to_view = tags.find_one({"guild_id": ctx.guild_id, "names": name_regx})
@@ -787,6 +797,9 @@ class Tags(Extension):
         sub_cmd_description="allow's me to see all tags for this server",
     )
     async def tag_list(self, ctx: InteractionContext):
+
+        await ctx.defer()
+
         from naff.ext.paginators import Paginator
 
         def chunks(l, n):
