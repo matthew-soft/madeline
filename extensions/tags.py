@@ -1,8 +1,9 @@
 import asyncio
+import datetime
 import math
 import os
 import re
-from datetime import datetime, timezone
+from datetime import timezone
 
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
@@ -53,22 +54,23 @@ class Tags(Extension):
         self.bot = bot
 
     @slash_command(
-        name="tag",
+        name="tags",
         sub_cmd_name="use",
         sub_cmd_description="allow's me to recall tags",
     )
     @slash_option(
-        name="tagname",
+        name="name",
         description="Type a name of a tag",
         opt_type=OptionTypes.STRING,
         required=True,
     )
-    async def t(self, ctx: InteractionContext, tagname: str):
-        regx = {"$regex": f"^{tagname}$", "$options": "i"}
+    async def tags_use(self, ctx: InteractionContext, name: str):
+        await ctx.defer()
+        regx = {"$regex": f"^{name}$", "$options": "i"}
         tppk = tags.find_one({"names": regx, "guild_id": ctx.guild_id})
         if tppk is None:
             embed = Embed(
-                description=f"<:cross:839158779815657512> `{tagname}` is not a tag",
+                description=f"<:cross:839158779815657512> `{name}` is not a tag",
                 color=0xDD2222,
             )
             await ctx.send(embed=embed, ephemeral=True)
@@ -87,6 +89,756 @@ class Tags(Extension):
                 {"names": regx, "guild_id": ctx.guild_id},
                 {"$set": {"no_of_times_used": uses + 1}},
             )
+
+    @slash_command(
+        name="tags",
+        sub_cmd_name="create",
+        sub_cmd_description="allow's me to store tags",
+    )
+    @slash_option(
+        name="name",
+        description="Type a name of a tag",
+        opt_type=OptionTypes.STRING,
+        required=True,
+    )
+    @slash_option(
+        name="content",
+        description="write the content",
+        opt_type=OptionTypes.STRING,
+        required=False,
+    )
+    @slash_option(
+        name="attachment",
+        description="upload a file",
+        opt_type=OptionTypes.ATTACHMENT,
+        required=False,
+    )
+    async def tag_create(
+        self,
+        ctx: InteractionContext,
+        name: str = None,
+        content: str = None,
+        attachment: OptionTypes.ATTACHMENT = None,
+    ):
+        if name is None:
+            embed = Embed(
+                description=f":x: You must include tag's name", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+        elif (content is None) and (attachment is None):
+            embed = Embed(
+                description=f":x: You must include tag's content", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+        elif (name is None) and (content is None):
+            embed = Embed(
+                description=f":x: You must include tag's name and content",
+                color=0xDD2222,
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+
+        await ctx.defer()
+
+        name_regx = {"$regex": f"^{name}$", "$options": "i"}
+        check = tags.find_one({"guild_id": ctx.guild_id, "names": name_regx})
+        if check is None:
+            if attachment is not None:
+                for at in ["exe", "scr", "cpl", "doc", "jar"]:
+                    if at in attachment.content_type:
+                        return await ctx.send(
+                            f"`{at}` attachment file type is not allowed to be uploaded to our host site"
+                        )
+                if content is None:
+                    if (
+                        (attachment.content_type == "image/png")
+                        or (attachment.content_type == "image/jpg")
+                        or (attachment.content_type == "image/jpeg")
+                        or (attachment.content_type == "image/gif")
+                    ):
+                        image_url = catbox.url_upload(attachment.url)
+                        newtag = {
+                            "guild_id": ctx.guild_id,
+                            "author_id": ctx.author.id,
+                            "owner_id": ctx.author.id,
+                            "names": name,
+                            "content": content,
+                            "attachment_url": image_url,
+                            "creation_date": datetime.datetime.utcnow(),
+                            "no_of_times_used": 0,
+                        }
+                        tags.insert_one(newtag)
+                        embed = Embed(
+                            description=f"__**Tag created!**__ \n\n**Tag's name:** {name}",
+                            color=0x0C73D3,
+                        )
+                        embed.set_image(url=image_url)
+                        return await ctx.send(embed=embed)
+                    else:
+                        newtag = {
+                            "guild_id": ctx.guild_id,
+                            "author_id": ctx.author.id,
+                            "owner_id": ctx.author.id,
+                            "names": name,
+                            "content": content,
+                            "attachment_url": image_url,
+                            "creation_date": datetime.datetime.utcnow(),
+                            "no_of_times_used": 0,
+                        }
+                        tags.insert_one(newtag)
+                        embed = Embed(
+                            description=f"__**Tag created!**__ \n\n**Tag's name:** {name}\n**Attachment:** {catbox.url_upload(attachment.url)}",
+                            color=0x0C73D3,
+                        )
+                        return await ctx.send(embed=embed)
+                else:
+                    if (
+                        (attachment.content_type == "image/png")
+                        or (attachment.content_type == "image/jpg")
+                        or (attachment.content_type == "image/jpeg")
+                        or (attachment.content_type == "image/gif")
+                    ):
+                        image_url = catbox.url_upload(attachment.url)
+                        newtag = {
+                            "guild_id": ctx.guild_id,
+                            "author_id": ctx.author.id,
+                            "owner_id": ctx.author.id,
+                            "names": name,
+                            "content": content,
+                            "attachment_url": image_url,
+                            "creation_date": datetime.datetime.utcnow(),
+                            "no_of_times_used": 0,
+                        }
+                        tags.insert_one(newtag)
+                        embed = Embed(
+                            description=f"__**Tag created!**__ \n\n**Tag's name:** {name}\n**Content:** {content}",
+                            color=0x0C73D3,
+                        )
+                        embed.set_image(url=image_url)
+                        return await ctx.send(embed=embed)
+                    else:
+                        newtag = {
+                            "guild_id": ctx.guild_id,
+                            "author_id": ctx.author.id,
+                            "owner_id": ctx.author.id,
+                            "names": name,
+                            "content": content,
+                            "attachment_url": image_url,
+                            "creation_date": datetime.datetime.utcnow(),
+                            "no_of_times_used": 0,
+                        }
+                        tags.insert_one(newtag)
+                        embed = Embed(
+                            description=f"__**Tag created!**__ \n\n**Tag's name:** {name}\n**Content:** {content}\n**Attachment:** {catbox.url_upload(attachment.url)}",
+                            color=0x0C73D3,
+                        )
+                        return await ctx.send(embed=embed)
+            else:
+                if content is not None:
+                    url = geturl(content)
+                    for url in url:
+                        url = url
+                    if url:
+                        for at in [".exe", ".scr", ".cpl", ".doc", ".jar"]:
+                            if url.endswith(at):
+                                return await ctx.send(
+                                    f"`{at}` url file type is not allowed to be stored in my database"
+                                )
+                        if (
+                            url.endswith(".png")
+                            or url.endswith(".apng")
+                            or url.endswith(".jpg")
+                            or url.endswith(".jpeg")
+                            or url.endswith(".gif")
+                        ):
+                            newtag = {
+                                "guild_id": ctx.guild_id,
+                                "author_id": ctx.author.id,
+                                "owner_id": ctx.author.id,
+                                "names": name,
+                                "content": content,
+                                "attachment_url": image_url,
+                                "creation_date": datetime.datetime.utcnow(),
+                                "no_of_times_used": 0,
+                            }
+                            tags.insert_one(newtag)
+                            embed = Embed(
+                                description=f"__**Tag created!**__ \n\n**Tag's name:** {name} \n**Tag's content:**{content}",
+                                color=0x0C73D3,
+                            )
+                            embed.set_image(url=url)
+                            return await ctx.send(embed=embed)
+                        else:
+                            newtag = {
+                                "guild_id": ctx.guild_id,
+                                "author_id": ctx.author.id,
+                                "owner_id": ctx.author.id,
+                                "names": name,
+                                "content": content,
+                                "attachment_url": image_url,
+                                "creation_date": datetime.datetime.utcnow(),
+                                "no_of_times_used": 0,
+                            }
+                            tags.insert_one(newtag)
+                            embed = Embed(
+                                description=f"__**Tag created!**__ \n\n**Tag's name:** {name} \n**Tag's content:** \n{content}",
+                                color=0x0C73D3,
+                            )
+                            return await ctx.send(embed=embed)
+                    else:
+                        newtag = {
+                            "guild_id": ctx.guild_id,
+                            "author_id": ctx.author.id,
+                            "owner_id": ctx.author.id,
+                            "names": name,
+                            "content": content,
+                            "attachment_url": None,
+                            "creation_date": datetime.datetime.utcnow(),
+                            "no_of_times_used": 0,
+                        }
+                        tags.insert_one(newtag)
+                        embed = Embed(
+                            description=f"__**Tag created!**__ \n\n**Tag's name:** {name} \n**Tag's content:** \n{content}",
+                            color=0x0C73D3,
+                        )
+                        return await ctx.send(embed=embed)
+        else:
+            embed = Embed(
+                description=f":x: The tag `{name}` already exists", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+
+    @slash_command(
+        name="tags",
+        sub_cmd_name="edit",
+        sub_cmd_description="allow's me to edit tags that you own",
+    )
+    @slash_option(
+        name="name",
+        description="Type a name of a tag",
+        opt_type=OptionTypes.STRING,
+        required=True,
+    )
+    @slash_option(
+        name="content",
+        description="write the content",
+        opt_type=OptionTypes.STRING,
+        required=False,
+    )
+    @slash_option(
+        name="attachment",
+        description="upload a file",
+        opt_type=OptionTypes.ATTACHMENT,
+        required=False,
+    )
+    async def tag_edit(
+        self,
+        ctx: InteractionContext,
+        name: str = None,
+        content: str = None,
+        attachment: OptionTypes.ATTACHMENT = None,
+    ):
+        if name is None:
+            embed = Embed(
+                description=f":x: You must include tag's name", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+        elif (content is None) and (attachment is None):
+            embed = Embed(
+                description=f":x: You must include tag's content", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+        elif (name is None) and (content is None):
+            embed = Embed(
+                description=f":x: You must include tag's name and content",
+                color=0xDD2222,
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+
+        name_regx = {"$regex": f"^{name}$", "$options": "i"}
+        tag_to_edit = tags.find_one(
+            {"guild_id": ctx.guild_id, "names": name_regx, "author_id": ctx.author.id}
+        )
+        if tag_to_edit is None:
+            tag_to_edit = tags.find_one(
+                {
+                    "guild_id": ctx.guild_id,
+                    "names": name_regx,
+                    "owner_id": ctx.author.id,
+                }
+            )
+            if tag_to_edit is None:
+                embed = Embed(
+                    description=f":x: You don't own a tag called  `{name}`",
+                    color=0xDD2222,
+                )
+                await ctx.send(embed=embed, ephemeral=True)
+                return
+
+        if attachment is not None:
+            for at in ["exe", "scr", "cpl", "doc", "jar"]:
+                if at in attachment.content_type:
+                    return await ctx.send(
+                        f"`{at}` attachment file type is not allowed to be uploaded to our host site"
+                    )
+            if content is None:
+                if (
+                    (attachment.content_type == "image/png")
+                    or (attachment.content_type == "image/jpg")
+                    or (attachment.content_type == "image/jpeg")
+                    or (attachment.content_type == "image/gif")
+                ):
+                    image_url = catbox.url_upload(attachment.url)
+                    try:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "author_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": image_url, "content": content}},
+                        )
+                    except:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "owner_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": image_url, "content": content}},
+                        )
+                    embed = Embed(
+                        description=f"__**Tag edited!**__ \n\n**Tag's name:** {name}",
+                        color=0x0C73D3,
+                    )
+                    embed.set_image(url=image_url)
+                    return await ctx.send(embed=embed)
+                else:
+                    image_url = catbox.url_upload(attachment.url)
+                    try:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "author_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": image_url, "content": content}},
+                        )
+                    except:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "owner_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": image_url, "content": content}},
+                        )
+                    embed = Embed(
+                        description=f"__**Tag edited!**__ \n\n**Tag's name:** {name}\n**Attachment:** {catbox.url_upload(attachment.url)}",
+                        color=0x0C73D3,
+                    )
+                    return await ctx.send(embed=embed)
+            else:
+                if (
+                    (attachment.content_type == "image/png")
+                    or (attachment.content_type == "image/jpg")
+                    or (attachment.content_type == "image/jpeg")
+                    or (attachment.content_type == "image/gif")
+                ):
+                    image_url = catbox.url_upload(attachment.url)
+                    try:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "author_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": image_url, "content": content}},
+                        )
+                    except:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "owner_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": image_url, "content": content}},
+                        )
+                    embed = Embed(
+                        description=f"__**Tag edited!**__ \n\n**Tag's name:** {name}\n**Content:** {content}",
+                        color=0x0C73D3,
+                    )
+                    embed.set_image(url=image_url)
+                    return await ctx.send(embed=embed)
+                else:
+                    image_url = catbox.url_upload(attachment.url)
+                    try:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "author_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": image_url, "content": content}},
+                        )
+                    except:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "owner_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": image_url, "content": content}},
+                        )
+                    embed = Embed(
+                        description=f"__**Tag created!**__ \n\n**Tag's name:** {name}\n**Content:** {content}\n**Attachment:** {catbox.url_upload(attachment.url)}",
+                        color=0x0C73D3,
+                    )
+                    return await ctx.send(embed=embed)
+        else:
+            if content is not None:
+                url = geturl(content)
+                for url in url:
+                    url = url
+                if url:
+                    for at in [".exe", ".scr", ".cpl", ".doc", ".jar"]:
+                        if url.endswith(at):
+                            return await ctx.send(
+                                f"`{at}` url file type is not allowed to be stored in my database"
+                            )
+                    if (
+                        url.endswith(".png")
+                        or url.endswith(".apng")
+                        or url.endswith(".jpg")
+                        or url.endswith(".jpeg")
+                        or url.endswith(".gif")
+                    ):
+
+                        try:
+                            tags.update_one(
+                                {
+                                    "guild_id": ctx.guild_id,
+                                    "names": name_regx,
+                                    "author_id": ctx.author.id,
+                                },
+                                {"$set": {"attachment_url": None, "content": content}},
+                            )
+                        except:
+                            tags.update_one(
+                                {
+                                    "guild_id": ctx.guild_id,
+                                    "names": name_regx,
+                                    "owner_id": ctx.author.id,
+                                },
+                                {"$set": {"attachment_url": None, "content": content}},
+                            )
+                        embed = Embed(
+                            description=f"__**Tag created!**__ \n\n**Tag's name:** {name} \n**Tag's content:**{content}",
+                            color=0x0C73D3,
+                        )
+                        embed.set_image(url=url)
+                        return await ctx.send(embed=embed)
+                    else:
+                        try:
+                            tags.update_one(
+                                {
+                                    "guild_id": ctx.guild_id,
+                                    "names": name_regx,
+                                    "author_id": ctx.author.id,
+                                },
+                                {"$set": {"attachment_url": None, "content": content}},
+                            )
+                        except:
+                            tags.update_one(
+                                {
+                                    "guild_id": ctx.guild_id,
+                                    "names": name_regx,
+                                    "owner_id": ctx.author.id,
+                                },
+                                {"$set": {"attachment_url": None, "content": content}},
+                            )
+                        embed = Embed(
+                            description=f"__**Tag created!**__ \n\n**Tag's name:** {name} \n**Tag's content:** \n{content}",
+                            color=0x0C73D3,
+                        )
+                        return await ctx.send(embed=embed)
+                else:
+                    try:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "author_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": None, "content": content}},
+                        )
+                    except:
+                        tags.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                                "names": name_regx,
+                                "owner_id": ctx.author.id,
+                            },
+                            {"$set": {"attachment_url": None, "content": content}},
+                        )
+                    embed = Embed(
+                        description=f"__**Tag created!**__ \n\n**Tag's name:** {name} \n**Tag's content:** \n{content}",
+                        color=0x0C73D3,
+                    )
+                    return await ctx.send(embed=embed)
+
+    @slash_command(
+        name="tags",
+        sub_cmd_name="delete",
+        sub_cmd_description="allow's me to delete tags that you own",
+    )
+    @slash_option(
+        name="name",
+        description="Type a name of a tag",
+        opt_type=OptionTypes.STRING,
+        required=True,
+    )
+    async def tag_delete(self, ctx: InteractionContext, name: str = None):
+        if name is None:
+            embed = Embed(
+                description=f":x: You must include tag's name", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+
+        name_regx = {"$regex": f"^{name}$", "$options": "i"}
+        tag_to_delete = tags.find_one(
+            {"guild_id": ctx.guild_id, "names": name_regx, "author_id": ctx.author.id}
+        )
+
+        if tag_to_delete is None:
+            tag_to_delete = tags.find_one(
+                {
+                    "guild_id": ctx.guild_id,
+                    "names": name_regx,
+                    "owner_id": ctx.author.id,
+                }
+            )
+            if tag_to_delete is None:
+                embed = Embed(
+                    description=f":x: You don't own a tag called  `{name}`",
+                    color=0xDD2222,
+                )
+                await ctx.send(embed=embed, ephemeral=True)
+                return
+
+        cont = tag_to_delete["content"]
+        att = tag_to_delete["attachment_url"]
+        if cont is None:
+            if att is not None:
+                content = content + f"{att}"
+        elif cont is not None:
+            content = content + f"{cont}"
+            if att is not None:
+                content = content + f"\n{att}"
+        embed = Embed(
+            description=f"__**Tag deleted!**__ \n\n**Tag's name:** {name} \n**Tag's content:** {cont}",
+            color=0x0C73D3,
+        )
+        await ctx.send(embed=embed)
+        try:
+            tags.delete_one(
+                {
+                    "guild_id": ctx.guild_id,
+                    "names": name_regx,
+                    "author_id": ctx.author.id,
+                }
+            )
+        except:
+            tags.delete_one(
+                {
+                    "guild_id": ctx.guild_id,
+                    "names": name_regx,
+                    "owner_id": ctx.author.id,
+                }
+            )
+
+    @slash_command(
+        name="tags",
+        sub_cmd_name="admin-delete",
+        sub_cmd_description="[ADMINISTRATORS ONLY] allow's me to delete any tag",
+    )
+    @slash_option(
+        name="name",
+        description="Type a name of a tag",
+        opt_type=OptionTypes.STRING,
+        required=True,
+    )
+    @check(member_permissions(Permissions.MANAGE_MESSAGES))
+    async def tag_admin_delete(self, ctx: InteractionContext, name: str = None):
+        if name is None:
+            embed = Embed(
+                description=f":x: You must include tag's name", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+
+        name_regx = {"$regex": f"^{name}$", "$options": "i"}
+        tag_to_delete = tags.find_one({"guild_id": ctx.guild_id, "names": name_regx})
+        if tag_to_delete is None:
+            embed = Embed(
+                description=f":x: There's not a tag with the name `{name}`",
+                color=0xDD2222,
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+
+        cont = tag_to_delete["content"]
+        att = tag_to_delete["attachment_url"]
+        if cont is None:
+            if att is not None:
+                content = content + f"{att}"
+        elif cont is not None:
+            content = content + f"{cont}"
+            if att is not None:
+                content = content + f"\n{att}"
+        embed = Embed(
+            description=f"__**Tag deleted!**__ \n\n**Tag's name:** {name} \n**Tag's content:** {content}",
+            color=0x0C73D3,
+        )
+        await ctx.send(embed=embed)
+        tags.delete_one({"guild_id": ctx.guild_id, "names": name_regx})
+
+    @slash_command(
+        name="tags",
+        sub_cmd_name="info",
+        sub_cmd_description="allow's me to see information about a tag",
+    )
+    @slash_option(
+        name="name",
+        description="Type a name of a tag",
+        opt_type=OptionTypes.STRING,
+        required=True,
+    )
+    async def tag_info(self, ctx: InteractionContext, name: str = None):
+        if name is None:
+            embed = Embed(
+                description=f":x: You must include tag's name", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+
+        name_regx = {"$regex": f"^{name}$", "$options": "i"}
+        tag_to_view = tags.find_one({"guild_id": ctx.guild_id, "names": name_regx})
+        if tag_to_view is None:
+            embed = Embed(
+                description=f":x: I couldn't find a tag called `{name}`", color=0xDD2222
+            )
+            await ctx.send(embed=embed, ephemeral=True)
+            return
+
+        owner = tag_to_view["owner_id"]
+
+        if owner is not None:
+            tag_owner = await self.bot.fetch_user(owner)
+
+        else:
+            tag_owner = "UNKNOWN"
+
+        current_owner = "Current owner"
+        last_owner = tag_owner
+
+        in_guild = find_member(ctx, owner)
+        if in_guild is None:
+            current_owner = "Currently Orphaned"
+            last_owner = f"Last owner: {tag_owner}"
+
+        total_uses = tag_to_view["no_of_times_used"]
+        uses = total_uses
+        if total_uses is None:
+            uses = "UNKNOWN"
+
+        creation_date = tag_to_view["creation_date"]
+        if creation_date is None:
+            date = "UNKNOWN"
+        else:
+            date = f"<t:{math.ceil(creation_date.replace(tzinfo=timezone.utc).timestamp())}:R>"
+
+        att = tag_to_view["attachment_url"]
+        cont = tag_to_view["content"]
+        if att is not None:
+            if cont is not None:
+                content = f"{cont}\n{att}"
+            else:
+                content = f"{att}"
+        else:
+            content = f"{cont}"
+
+        embed = Embed(title=f"Info about [{name}] tag", color=0x0C73D3)
+        embed.add_field(name=current_owner, value=last_owner)
+        embed.add_field(name="Total uses", value=uses)
+        embed.add_field(name="Created", value=date)
+        embed.add_field(name="Content", value=content)
+        await ctx.send(embed=embed)
+
+    @slash_command(
+        name="tags",
+        sub_cmd_name="list",
+        sub_cmd_description="allow's me to see all tags for this server",
+    )
+    async def tag_list(self, ctx: InteractionContext):
+        from naff.ext.paginators import Paginator
+
+        def chunks(l, n):
+            n = max(1, n)
+            return (l[i : i + n] for i in range(0, len(l), n))
+
+        def mlis(lst, s, e):
+            nc = list(chunks(lst, 20))
+            mc = ""
+            for testlist in nc[s:e]:
+                for m in testlist:
+                    mc = mc + m
+            return mc
+
+        def newpage(title, names):
+            embed = Embed(title=title, color=0x0C73D3)
+            embed.add_field(name="Tag Names", value=names, inline=True)
+            return embed
+
+        tag_names = tags.find({"guild_id": ctx.guild_id})
+        names = []
+        for t in tag_names:
+            namanya = t["names"]
+            names.append(f"{namanya}\n")
+        if names == []:
+            embed = Embed(
+                description=f"There are no tags for {ctx.guild.name}.", color=0x0C73D3
+            )
+            await ctx.send(embed=embed)
+            return
+
+        s = -1
+        e = 0
+        embedcount = 1
+        nc = list(chunks(names, 20))
+
+        embeds = []
+        while embedcount <= len(nc):
+            s = s + 1
+            e = e + 1
+            embeds.append(
+                newpage(f"List of tags for {ctx.guild.name}", mlis(names, s, e))
+            )
+            embedcount = embedcount + 1
+
+        paginator = Paginator(
+            client=self.bot,
+            pages=embeds,
+            timeout_interval=30,
+            show_select_menu=False,
+        )
+        await paginator.send(ctx)
 
 
 def setup(bot):
