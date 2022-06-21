@@ -122,6 +122,9 @@ class Tags(Extension):
         content: str = None,
         attachment: OptionTypes.ATTACHMENT = None,
     ):
+
+        await ctx.defer()
+
         if name is None:
             embed = Embed(
                 description=f":x: You must include tag's name", color=0xDD2222
@@ -141,8 +144,6 @@ class Tags(Extension):
             )
             await ctx.send(embed=embed, ephemeral=True)
             return
-
-        await ctx.defer()
 
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         check = tags.find_one({"guild_id": ctx.guild_id, "names": name_regx})
@@ -342,6 +343,9 @@ class Tags(Extension):
         content: str = None,
         attachment: OptionTypes.ATTACHMENT = None,
     ):
+
+        await ctx.defer()
+
         if name is None:
             embed = Embed(
                 description=f":x: You must include tag's name", color=0xDD2222
@@ -361,8 +365,6 @@ class Tags(Extension):
             )
             await ctx.send(embed=embed, ephemeral=True)
             return
-
-        await ctx.defer()
 
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         tag_to_edit = tags.find_one(
@@ -608,14 +610,15 @@ class Tags(Extension):
         required=True,
     )
     async def tag_delete(self, ctx: InteractionContext, name: str = None):
+
+        await ctx.defer()
+
         if name is None:
             embed = Embed(
                 description=f":x: You must include tag's name", color=0xDD2222
             )
             await ctx.send(embed=embed, ephemeral=True)
             return
-
-        await ctx.defer()
 
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         tag_to_delete = tags.find_one(
@@ -643,7 +646,7 @@ class Tags(Extension):
         if (cont is None) and (att is not None):
             content = f"{att}"
         elif cont is not None:
-            content =f"{cont}"
+            content = f"{cont}"
             if att is not None:
                 content = f"{cont}" + f"\n{att}"
         embed = Embed(
@@ -681,14 +684,15 @@ class Tags(Extension):
     )
     @check(member_permissions(Permissions.MANAGE_MESSAGES))
     async def tag_admin_delete(self, ctx: InteractionContext, name: str = None):
+
+        await ctx.defer()
+
         if name is None:
             embed = Embed(
                 description=f":x: You must include tag's name", color=0xDD2222
             )
             await ctx.send(embed=embed, ephemeral=True)
             return
-
-        await ctx.defer()
 
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         tag_to_delete = tags.find_one({"guild_id": ctx.guild_id, "names": name_regx})
@@ -705,7 +709,7 @@ class Tags(Extension):
         if (cont is None) and (att is not None):
             content = f"{att}"
         elif cont is not None:
-            content =f"{cont}"
+            content = f"{cont}"
             if att is not None:
                 content = f"{cont}" + f"\n{att}"
         embed = Embed(
@@ -727,14 +731,15 @@ class Tags(Extension):
         required=True,
     )
     async def tag_info(self, ctx: InteractionContext, name: str = None):
+
+        await ctx.defer()
+
         if name is None:
             embed = Embed(
                 description=f":x: You must include tag's name", color=0xDD2222
             )
             await ctx.send(embed=embed, ephemeral=True)
             return
-
-        await ctx.defer()
 
         name_regx = {"$regex": f"^{name}$", "$options": "i"}
         tag_to_view = tags.find_one({"guild_id": ctx.guild_id, "names": name_regx})
