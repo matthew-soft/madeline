@@ -640,13 +640,12 @@ class Tags(Extension):
 
         cont = tag_to_delete["content"]
         att = tag_to_delete["attachment_url"]
-        if cont is None:
-            if att is not None:
-                content = content + f"{att}"
+        if (cont is None) and (att is not None):
+            content = f"{att}"
         elif cont is not None:
-            content = content + f"{cont}"
+            content =f"{cont}"
             if att is not None:
-                content = content + f"\n{att}"
+                content = f"{cont}" + f"\n{att}"
         embed = Embed(
             description=f"__**Tag deleted!**__ \n\n**Tag's name:** {name} \n**Tag's content:** {cont}",
             color=0x0C73D3,
@@ -703,13 +702,12 @@ class Tags(Extension):
 
         cont = tag_to_delete["content"]
         att = tag_to_delete["attachment_url"]
-        if cont is None:
-            if att is not None:
-                content = content + f"{att}"
+        if (cont is None) and (att is not None):
+            content = f"{att}"
         elif cont is not None:
-            content = content + f"{cont}"
+            content =f"{cont}"
             if att is not None:
-                content = content + f"\n{att}"
+                content = f"{cont}" + f"\n{att}"
         embed = Embed(
             description=f"__**Tag deleted!**__ \n\n**Tag's name:** {name} \n**Tag's content:** {content}",
             color=0x0C73D3,
