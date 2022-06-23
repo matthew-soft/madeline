@@ -42,17 +42,22 @@ class help(Extension):
             embed.set_thumbnail(url=self.bot.user.avatar.url)
             embed.add_field(
                 name="__Tool Commands__",
-                value="`ddocs`, `konesyntees`, `urban`, `ping`, `say`, `Avatar`, `Guild Avatar`",
+                value="`uptime`, `ddocs`, `lmgtfy`, `guild-avatar`, `avatar`, `user-info`, `server-info`, `urban`, `ping`, `konesyntees`",
+                inline=False,
+            )
+            embed.add_field(
+                name="__Context Menu Commands__",
+                value="`Avatar`, `Guild Avatar`, `User Info`",
                 inline=False,
             )
             embed.add_field(
                 name="__SA-MP Related Commands__",
-                value="`samp`, `wiki`, `dynamic`, `gmname`, `mpname`, `rpname`",
+                value="`samp-query`, `samp-wiki`, `dynamic`, `gmname`, `mpname`, `rpname`",
                 inline=False,
             )
             embed.add_field(
-                name="__Other Commands__",
-                value="`feedback`, `support`",
+                name="__Tags Commands__",
+                value="`tag get`, `tag create`, `tag edit`, `tag delete`, `tags`",
                 inline=False,
             )
             embed.set_footer(
