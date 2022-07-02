@@ -30,13 +30,14 @@ class samp(Extension):
         required=False,
     )
     async def samp(self, ctx, type: int, ip: str, port: Optional[int] = 7777):
-        with SampClient(address=ip, port=port) as kung:
-            info = kung.get_server_info()
-            players = kung.get_server_clients_detailed()
-            numpang = kung.get_server_clients()
         # need to defer it, otherwise, it fails
         await ctx.defer()
         try:
+            with SampClient(address=ip, port=port) as kung:
+                info = kung.get_server_info()
+                players = kung.get_server_clients_detailed()
+                numpang = kung.get_server_clients()
+
             general = Embed(title=info.hostname, color=0x0083F5)  # Create embed
             general.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
             general.add_field(
@@ -145,12 +146,13 @@ class samp(Extension):
                 timeout_interval=30,
                 show_select_menu=False,
             )
-            await paginators.send(ctx)
+            return await paginators.send(ctx)
         except:
             embed = Embed(
                 description=f"<:cross:839158779815657512> Couldn't connect to the server",
                 color=0xFF0000,
             )
+            return await ctx.send(embed=embed)
 
 
 def setup(bot):
