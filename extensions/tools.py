@@ -28,44 +28,6 @@ load_dotenv()
 class tools(Extension):
     def __init__(self, bot):
         self.bot = bot
-        self.bot_start_time = datetime.datetime.utcnow()
-
-    async def uptime(self, ctx):
-        uptime = datetime.datetime.utcnow() - self.bot_start_time
-
-        day = uptime.days
-        day = str(day)
-
-        uptime = str(uptime)
-        uptime = uptime.split(":")
-
-        hours = uptime[0]
-
-        hours = hours.replace(" days,", "Days")
-        hours = hours.replace(" day,", "Day")
-
-        minitues = uptime[1]
-
-        seconds = uptime[2]
-        seconds = seconds.split(".")
-        seconds = seconds[0]
-
-        embed = Embed(
-            title="🕐 Uptime",
-            description="The bot has been online for %s hours %s minutes %s seconds."
-            % (hours, minitues, seconds),
-            color=0x0C73D3,
-            timestamp=self.bot_start_time,
-        )
-        embed.set_footer(text="Bot start time")
-        await ctx.send(embed=embed)
-
-    @slash_command(
-        name="uptime", description="Shows you for how long has the bot been online"
-    )
-    async def slash_uptime(self, ctx):
-        await self.uptime(ctx)
-
 
     @context_menu("Guild Avatar", CommandTypes.USER)
     async def context_guild_avatar(self, ctx):
