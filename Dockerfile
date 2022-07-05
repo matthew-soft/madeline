@@ -1,5 +1,7 @@
 FROM python:latest
 
+RUN sudo apt-get update && sudo apt-get install -y tesseract-ocr
+
 # we want stdout
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
