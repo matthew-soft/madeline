@@ -4,6 +4,7 @@ dnspython
 naff
 orjson
 pymongo
+pytesseract
 python-dateutil
 python-dotenv
 requests-toolbelt
