@@ -8,11 +8,15 @@ from collections import Counter
 
 import psutil
 from naff import (
+    Activity,
+    ActivityType,
     Embed,
     Extension,
     InteractionContext,
+    IntervalTrigger,
     OptionTypes,
     Status,
+    Task,
     listen,
     slash_command,
     slash_option,
@@ -117,6 +121,22 @@ class stats(Extension):
         guild = event.guild
         e = Embed(color=0x53DDA4, title="Left Guild")
         await self.send_guild_stats(e, guild)
+
+    @Task.create(IntervalTrigger(seconds=30))
+    async def presence_changes(self):
+        await self.bot.change_presence(
+            status=Status.AFK,
+            activity=Activity(
+                name=f"{len(self.bot.guilds)} servers | /help",
+                type=ActivityType.COMPETING,
+            ),
+        )
+
+    @listen()
+    async def on_startup(self):
+        """Gets triggered on startup"""
+
+        self.presence_changes.start()
 
 
 def setup(bot: CustomClient):
