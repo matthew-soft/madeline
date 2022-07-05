@@ -12,9 +12,12 @@ from naff import (
     Extension,
     InteractionContext,
     OptionTypes,
+    Status,
+    listen,
     slash_command,
     slash_option,
 )
+from naff.api.events.discord import GuildJoin, GuildLeft
 
 from core.base import CustomClient
 
@@ -83,6 +86,37 @@ class stats(Extension):
             text="Made with 💖 with NAFF", icon_url="http://i.imgur.com/5BFecvA.png"
         )
         await ctx.send(embed=embed)
+
+    async def send_guild_stats(self, e, guild):
+        owner = await self.bot.fetch_user(guild._owner_id)
+        e.add_field(name="Name", value=guild.name)
+        e.add_field(name="ID", value=guild.id)
+        e.add_field(name="Owner", value=f"{owner.mention} (ID: {owner.id})")
+
+        total = guild.member_count
+        e.add_field(name="Members", value=str(total))
+
+        if guild.icon:
+            e.set_thumbnail(url=guild.icon.url)
+
+        if guild.me:
+            e.timestamp = guild.me.joined_at
+
+        ch = self.bot.get_channel(993972357414785076)
+        await ch.send(embed=e)
+
+    @listen()
+    async def on_guild_join(self, event: GuildJoin):
+        if self.bot.is_ready:
+            guild = event.guild
+            e = Embed(color=0x53DDA4, title="New Guild")
+            await self.send_guild_stats(e, guild)
+
+    @listen()
+    async def on_guild_left(self, event: GuildLeft):
+        guild = event.guild
+        e = Embed(color=0x53DDA4, title="Left Guild")
+        await self.send_guild_stats(e, guild)
 
 
 def setup(bot: CustomClient):
