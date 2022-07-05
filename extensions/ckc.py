@@ -377,11 +377,10 @@ class CoolKidsClub(Extension):
             json_object["wind"]["speed"],
         )
         user = ctx.author
-        usercolor = 0x00FF00
         em = Embed(
             title="Weather in {0}, {1}".format(city, country),
             description="",
-            colour=usercolor,
+            color=0x00FF00,
         )
         em.set_author(
             name=user.display_name,
