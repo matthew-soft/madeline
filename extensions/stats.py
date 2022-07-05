@@ -22,6 +22,9 @@ from core.base import CustomClient
 class stats(Extension):
     bot: CustomClient
 
+    def __init__(self, bot):
+        self.process = psutil.Process()
+
     def get_bot_uptime(self, *, brief=False):
         now = datetime.datetime.utcnow()
         delta = now - self.bot.start_time
