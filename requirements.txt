@@ -3,6 +3,7 @@ cloudscraper
 dnspython
 naff
 orjson
+pillow
 pymongo
 pytesseract
 python-dateutil
