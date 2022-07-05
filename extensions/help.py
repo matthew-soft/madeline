@@ -76,7 +76,7 @@ class help(Extension):
                         style=ButtonStyles.URL,
                         label="Invite me to your server",
                         emoji="🤖",
-                        url="https://madeline.my.id/invite",
+                        url="https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands",
                     ),
                     Button(
                         style=ButtonStyles.URL,
