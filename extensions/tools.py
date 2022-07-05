@@ -16,9 +16,7 @@ from naff import (
     GuildText,
     GuildVoice,
     OptionTypes,
-    PrefixedContext,
     context_menu,
-    prefixed_command,
     slash_command,
     slash_option,
 )
@@ -68,9 +66,6 @@ class tools(Extension):
     async def slash_uptime(self, ctx):
         await self.uptime(ctx)
 
-    @prefixed_command(name="uptime")
-    async def pref_uptime(self, ctx: PrefixedContext):
-        await self.uptime(ctx)
 
     @context_menu("Guild Avatar", CommandTypes.USER)
     async def context_guild_avatar(self, ctx):
@@ -106,10 +101,6 @@ class tools(Extension):
     async def slash_guild_avatar(self, ctx, member: naff.Member = None):
         await self.guild_avatar(ctx, member)
 
-    @prefixed_command(name="guild-avatar", aliases=["guildavatar", "gavatar", "gav"])
-    async def pref_guild_avatar(self, ctx: PrefixedContext):
-        await self.guild_avatar(ctx, member)
-
     @context_menu("Avatar", CommandTypes.USER)
     async def context_avatar(self, ctx):
         user = self.bot.get_user(ctx.target.id)
@@ -128,10 +119,6 @@ class tools(Extension):
         opt_type=OptionTypes.USER,
     )
     async def slash_avatar(self, ctx, member: naff.Member = None):
-        await self.avatar(ctx, member)
-
-    @prefixed_command(name="avatar", aliases=["av"])
-    async def pref_avatar(self, ctx: PrefixedContext):
         await self.avatar(ctx, member)
 
     async def userinfo(self, ctx, member: naff.Member = None):
@@ -185,10 +172,6 @@ class tools(Extension):
         opt_type=OptionTypes.USER,
     )
     async def slash_userinfo(self, ctx, member: naff.Member = None):
-        await self.userinfo(ctx, member)
-
-    @prefixed_command(name="userinfo", aliases=["ui"])
-    async def pref_userinfo(self, ctx: PrefixedContext):
         await self.userinfo(ctx, member)
 
     @context_menu("User Info", CommandTypes.USER)
@@ -265,10 +248,6 @@ class tools(Extension):
     async def slash_server_info(self, ctx):
         await self.server_info(ctx)
 
-    @prefixed_command(name="serverinfo", aliases=["si"])
-    async def pref_server_info(self, ctx: PrefixedContext):
-        await self.server_info(ctx)
-
     async def urban(self, ctx, word: str):
         try:
             url = "https://api.urbandictionary.com/v0/define"
@@ -335,10 +314,6 @@ class tools(Extension):
     async def slash_urban(self, ctx, word: str):
         await self.urban(ctx, word)
 
-    @prefixed_command(name="urban")
-    async def pref_urban(self, ctx: PrefixedContext, word: str):
-        await self.urban(ctx, word)
-
     async def lmgtfy(self, ctx, search_terms: str):
         search_terms = urllib.parse.quote_plus(search_terms)
         await ctx.send("https://lmgtfy.app/?q={}".format(search_terms))
@@ -348,10 +323,6 @@ class tools(Extension):
         "search_terms", "Term to search for", OptionTypes.STRING, required=True
     )
     async def slash_lmgtfy(self, ctx, search_terms: str):
-        await self.lmgtfy(ctx, search_terms)
-
-    @prefixed_command(name="lmgtfy")
-    async def pref_lmgtfy(self, ctx: PrefixedContext, search_terms: str):
         await self.lmgtfy(ctx, search_terms)
 
     async def ping(self, ctx):
@@ -368,10 +339,6 @@ class tools(Extension):
 
     @slash_command("ping", description="Check the bot's latency")
     async def slash_ping(self, ctx):
-        await self.ping(ctx)
-
-    @prefixed_command(name="ping")
-    async def pref_ping(self, ctx: PrefixedContext):
         await self.ping(ctx)
 
     @slash_command(
