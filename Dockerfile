@@ -1,6 +1,6 @@
 FROM python:latest
 
-RUN sudo apt-get update && sudo apt-get install -y tesseract-ocr
+RUN apt-get update && apt-get install -y tesseract-ocr
 
 # we want stdout
 ENV PYTHONDONTWRITEBYTECODE=1
