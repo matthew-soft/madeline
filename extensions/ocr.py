@@ -54,7 +54,7 @@ class ocr(Extension):
             # create the embed
             embed = Embed(color=0x848585)
             embed.set_author(
-                name=f"{ctx.author}",
+                name=f"{str(ctx.author)}",
                 icon_url=ctx.author.avatar.url,
                 url=f"https://discord.com/users/{ctx.author.id}",
             )
