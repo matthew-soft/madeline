@@ -31,27 +31,31 @@ class stats(Extension):
 
         if not brief:
             if days:
-                fmt = '{d} days, {h} hours, {m} minutes, and {s} seconds'
+                fmt = "{d} days, {h} hours, {m} minutes, and {s} seconds"
             else:
-                fmt = '{h} hours, {m} minutes, and {s} seconds'
+                fmt = "{h} hours, {m} minutes, and {s} seconds"
         else:
-            fmt = '{h}h {m}m {s}s'
+            fmt = "{h}h {m}m {s}s"
             if days:
-                fmt = '{d}d ' + fmt
+                fmt = "{d}d " + fmt
 
         return fmt.format(d=days, h=hours, m=minutes, s=seconds)
-        
+
     @slash_command(name="uptime", description="Get the bot uptime")
     async def uptime(self, ctx: InteractionContext):
         """Tells you how long the bot has been up for."""
-        em = discord.Embed(title="Local time", description=str(
-            datetime.datetime.utcnow())[:-7], colour=0x14e818)
-        em.set_author(name=self.bot.user.name,
-                      icon_url=self.bot.user.avatar_url)
-        em.add_field(name="Current uptime",
-                     value=self.get_bot_uptime(brief=True), inline=True)
-        em.add_field(name="Start time", value=str(
-            self.bot.uptime)[:-7], inline=True)
+        em = Embed(
+            title="Local time",
+            description=str(datetime.datetime.utcnow())[:-7],
+            color=0x14E818,
+        )
+        em.set_author(name=self.bot.user.username, icon_url=self.bot.user.avatar.url)
+        em.add_field(
+            name="Current uptime", value=self.get_bot_uptime(brief=True), inline=True
+        )
+        em.add_field(
+            name="Start time", value=str(self.bot.start_time)[:-7], inline=True
+        )
         await ctx.send(embed=em)
 
 
