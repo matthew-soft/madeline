@@ -82,7 +82,7 @@ class help(Extension):
                         style=ButtonStyles.URL,
                         label="Support Server",
                         emoji="❓",
-                        url="https://madeline.my.id/support",
+                        url="https://discord.gg/mxkvjpknTN",
                     ),
                 )
             ]
