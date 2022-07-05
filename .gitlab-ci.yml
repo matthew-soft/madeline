@@ -1,0 +1,33 @@
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
+
+# This is a sample GitLab CI/CD configuration file that should run without any modifications.
+# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
+# it uses echo commands to simulate the pipeline execution.
+#
+# A pipeline is composed of independent jobs that run scripts, grouped into stages.
+# Stages run in sequential order, but jobs within stages run in parallel.
+#
+# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
+
+stages: # List of stages for jobs, and their order of execution
+  - lint
+  - build
+
+lint: # This job runs in the lint stage.
+  stage: lint # It only starts when the job in the lint stage completes successfully.
+  script:
+    - pre-commit run --all-files
+
+build: # This job runs in the build stage.
+  stage: build # It only starts when the job in the build stage completes successfully.
+  image: docker
+  services:
+    - docker:dind
+  script:
+    - echo $PRE_COMMIT_ACCESS_TOKEN | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build -t $CI_REGISTRY_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE
