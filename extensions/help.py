@@ -52,7 +52,7 @@ class help(Extension):
             )
             embed.add_field(
                 name="__SA-MP Related Commands__",
-                value="`samp-query`, `samp-wiki`, `dynamic`, `gmname`, `mpname`, `rpname`",
+                value="`samp-query`, `samp-wiki`",
                 inline=False,
             )
             embed.add_field(
