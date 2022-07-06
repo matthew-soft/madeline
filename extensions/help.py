@@ -42,12 +42,12 @@ class help(Extension):
             embed.set_thumbnail(url=self.bot.user.avatar.url)
             embed.add_field(
                 name="__Tool Commands__",
-                value="`uptime`, `ddocs`, `lmgtfy`, `guild-avatar`, `avatar`, `user-info`, `server-info`, `urban`, `ping`, `konesyntees`",
+                value="`ddocs`, `guild-avatar`, `avatar`, `user-info`, `server-info`, `urban`, `konesyntees`",
                 inline=False,
             )
             embed.add_field(
-                name="__Context Menu Commands__",
-                value="`Avatar`, `Guild Avatar`, `User Info`",
+                name="__Cool Kids Club™️ Commands__",
+                value="`aesthetics`, `fraktur`, `bold-fraktur`, `fancy`, `bold-fancy`, `double`, `small-caps`, `8ball`, `weather`, `coinflip`, `dice`, `lmgtfy`",
                 inline=False,
             )
             embed.add_field(
@@ -58,6 +58,16 @@ class help(Extension):
             embed.add_field(
                 name="__Tags Commands__",
                 value="`tag get`, `tag create`, `tag edit`, `tag delete`, `tags`",
+                inline=False,
+            )
+            embed.add_field(
+                name="__Context Menu Commands__",
+                value="`Avatar`, `Guild Avatar`, `User Info`",
+                inline=False,
+            )
+            embed.add_field(
+                name="__Bot Status Commands__",
+                value="`uptime`, `about`, `help`, `ping`",
                 inline=False,
             )
             embed.set_footer(
