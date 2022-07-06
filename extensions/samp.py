@@ -1,7 +1,7 @@
 import datetime
-import cloudscraper
 from typing import Optional
 
+import cloudscraper
 from naff import (
     Embed,
     Extension,
@@ -14,6 +14,7 @@ from naff.ext.paginators import Paginator
 from samp_client.client import SampClient
 
 scraper = cloudscraper.create_scraper()
+
 
 class samp(Extension):
     @slash_command("samp-wiki", description="Returns an article from open.mp wiki.")
@@ -78,7 +79,7 @@ class samp(Extension):
             )
             embed.timestamp = datetime.datetime.utcnow()
             return await ctx.send(embed=embed)  # Send the embed
-            
+
     @slash_command(
         "samp-query", description="Show SA-MP server info and basic player information"
     )
