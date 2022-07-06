@@ -7,14 +7,8 @@ import urllib.parse
 
 import aiohttp
 from dotenv import load_dotenv
-from naff import (
-    Embed,
-    Extension,
-    InteractionContext,
-    OptionTypes,
-    slash_command,
-    slash_option,
-)
+from naff import (Embed, Extension, InteractionContext, OptionTypes,
+                  slash_command, slash_option)
 
 from core.base import CustomClient
 

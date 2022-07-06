@@ -8,18 +8,9 @@ import naff
 import requests
 import wget
 from dotenv import load_dotenv
-from naff import (
-    CommandTypes,
-    Embed,
-    Extension,
-    GuildCategory,
-    GuildText,
-    GuildVoice,
-    OptionTypes,
-    context_menu,
-    slash_command,
-    slash_option,
-)
+from naff import (CommandTypes, Embed, Extension, GuildCategory, GuildText,
+                  GuildVoice, OptionTypes, context_menu, slash_command,
+                  slash_option)
 from naff.ext.paginators import Paginator
 
 load_dotenv()

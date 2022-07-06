@@ -7,20 +7,9 @@ import traceback
 from collections import Counter
 
 import psutil
-from naff import (
-    Activity,
-    ActivityType,
-    Embed,
-    Extension,
-    InteractionContext,
-    IntervalTrigger,
-    OptionTypes,
-    Status,
-    Task,
-    listen,
-    slash_command,
-    slash_option,
-)
+from naff import (Activity, ActivityType, Embed, Extension, InteractionContext,
+                  IntervalTrigger, OptionTypes, Status, Task, listen,
+                  slash_command, slash_option)
 from naff.api.events.discord import GuildJoin, GuildLeft
 
 from core.base import CustomClient
