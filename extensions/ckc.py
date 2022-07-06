@@ -52,7 +52,7 @@ def beaufort_scale(speed):
         return "Hurricane force"
 
 
-def pretty_weather(weather):  # this is literally the dumbest thing my bot has
+def pretty_weather(weather):
     weather = weather.lower()
     if weather == "light rain":
         return ":cloud_rain: Light rain"
@@ -113,11 +113,6 @@ aesthetic_punctuation = '§½！"＃¤％＆／（）＝？`´＠£＄€｛［�
 aesthetic_lowercase = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ１２３４５６７８９０"
 aesthetic_uppercase = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
 
-
-def clean_string(string):
-    string = re.sub("@", "@\u200b", string)
-    string = re.sub("#", "#\u200b", string)
-    return string
 
 
 def aesthetics(string):
