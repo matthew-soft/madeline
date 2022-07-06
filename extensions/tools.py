@@ -277,22 +277,6 @@ class tools(Extension):
         await self.urban(ctx, word)
 
 
-    async def ping(self, ctx):
-        results = Embed(
-            color=0x0083F5,
-            title="🏓 Pong!",
-            description=(f"🌐 WebSocket latency: {self.bot.latency * 1000:.2f}ms\n"),
-        )
-        results.set_footer(
-            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
-        )
-        results.timestamp = datetime.datetime.utcnow()
-        await ctx.send(embed=results)
-
-    @slash_command("ping", description="Check the bot's latency")
-    async def slash_ping(self, ctx):
-        await self.ping(ctx)
-
     @slash_command(
         "konesyntees",
         description="Use superior Estonian technology to express your feelings like you've never before!",
