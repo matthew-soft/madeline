@@ -1,8 +1,14 @@
 import datetime
 from typing import Optional
 
-from naff import (Embed, Extension, OptionTypes, SlashCommandChoice,
-                  slash_command, slash_option)
+from naff import (
+    Embed,
+    Extension,
+    OptionTypes,
+    SlashCommandChoice,
+    slash_command,
+    slash_option,
+)
 from naff.ext.paginators import Paginator
 from samp_client.client import SampClient
 
