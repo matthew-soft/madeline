@@ -7,8 +7,8 @@ import aiohttp
 import naff
 import requests
 import wget
-from dotenv import load_dotenv
 from algoliasearch.search_client import SearchClient
+from dotenv import load_dotenv
 from naff import (
     CommandTypes,
     Embed,
@@ -328,7 +328,7 @@ class tools(Extension):
             await ctx.send(file=pepek)
             # purge the cache
             os.remove(path=pepek)
-    
+
     @slash_command(
         "ddocs", description="Scours the discord api documentations for help"
     )
