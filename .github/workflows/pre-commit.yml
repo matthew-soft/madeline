@@ -22,7 +22,14 @@ jobs:
         uses: PennyDreadfulMTG/setup-linters@main
       - name: Install Pre-commit
         run: |
-          pip install pre-commit
+          pip install pre-commit isort
       - name: Run Pre-commit
+        continue-on-error: true
         run: |
+          isort .
           pre-commit run --all-files
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          # Optional. Commit message for the created commit.
+          # Defaults to "Apply automatic changes"
+          commit_message: "[pre-commit] auto fixes"
