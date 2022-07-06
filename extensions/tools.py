@@ -276,7 +276,6 @@ class tools(Extension):
     async def slash_urban(self, ctx, word: str):
         await self.urban(ctx, word)
 
-
     @slash_command(
         "konesyntees",
         description="Use superior Estonian technology to express your feelings like you've never before!",
