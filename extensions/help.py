@@ -1,13 +1,6 @@
 import datetime
 
-from naff import (
-    ActionRow,
-    Button,
-    ButtonStyles,
-    Embed,
-    Extension,
-    slash_command,
-)
+from naff import ActionRow, Button, ButtonStyles, Embed, Extension, slash_command
 
 
 class help(Extension):
