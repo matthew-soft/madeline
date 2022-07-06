@@ -276,16 +276,6 @@ class tools(Extension):
     async def slash_urban(self, ctx, word: str):
         await self.urban(ctx, word)
 
-    async def lmgtfy(self, ctx, search_terms: str):
-        search_terms = urllib.parse.quote_plus(search_terms)
-        await ctx.send("https://lmgtfy.app/?q={}".format(search_terms))
-
-    @slash_command("lmgtfy", description="Create a lmgtfy link.")
-    @slash_option(
-        "search_terms", "Term to search for", OptionTypes.STRING, required=True
-    )
-    async def slash_lmgtfy(self, ctx, search_terms: str):
-        await self.lmgtfy(ctx, search_terms)
 
     async def ping(self, ctx):
         results = Embed(

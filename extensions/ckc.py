@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 import random
 import re
 import statistics
@@ -433,6 +434,13 @@ class CoolKidsClub(Extension):
                 )
             )
 
+    @slash_command("lmgtfy", description="Create a lmgtfy link.")
+    @slash_option(
+        "search_terms", "Term to search for", OptionTypes.STRING, required=True
+    )
+    async def lmgtfy(self, ctx: InteractionContext, search_terms: str):
+        search_terms = urllib.parse.quote_plus(search_terms)
+        await ctx.send("https://lmgtfy.app/?q={}".format(search_terms))
 
 def setup(bot: CustomClient):
     """Let naff load the extension"""
