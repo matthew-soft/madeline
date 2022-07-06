@@ -7,7 +7,7 @@ class help(Extension):
     @slash_command("help", description="Get the list of available commands")
     async def help(self, ctx):
         embed = Embed(
-            description=f"Use [<:slash:894692029941039194>`help [command]`] for more info on a command\nor Visit our [Official Documentations](https://madeline.my.id) for more info.",
+            description=f"Visit our [Official Documentations](https://madeline.my.id) for more info.",
             color=0x0083F5,
         )
         embed.set_author(
