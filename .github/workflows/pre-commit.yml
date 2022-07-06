@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  linter_name:
+  lint:
     name: runner / Pre-commit actions
     runs-on: ubuntu-latest
     steps:
@@ -35,5 +35,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           # Optional. Commit message for the created commit.
-          # Defaults to "Apply automatic changes"
           commit_message: "[pre-commit] auto fixes"
+          # Optional commit user and author settings
+          commit_user_name: github-actions[bot] # defaults to "github-actions[bot]"
+          commit_user_email: my-github-actions-bot@example.org # defaults to "github-actions[bot]@users.noreply.github.com"
+          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com> # defaults to author of the commit that triggered the run
