@@ -1,16 +1,8 @@
 import datetime
 
 from algoliasearch.search_client import SearchClient
-from naff import (
-    ActionRow,
-    Button,
-    ButtonStyles,
-    Embed,
-    Extension,
-    OptionTypes,
-    slash_command,
-    slash_option,
-)
+from naff import (ActionRow, Button, ButtonStyles, Embed, Extension,
+                  OptionTypes, slash_command, slash_option)
 
 
 class help(Extension):
