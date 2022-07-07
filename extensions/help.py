@@ -43,7 +43,7 @@ class help(Extension):
         )
         embed.add_field(
             name="__Bot Status Commands__",
-            value="`uptime`, `about`, `help`, `ping`",
+            value="`about`, `help`, `ping`",
             inline=False,
         )
         embed.set_footer(
