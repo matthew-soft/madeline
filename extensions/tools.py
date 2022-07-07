@@ -7,6 +7,7 @@ import aiohttp
 import naff
 import requests
 import wget
+from algoliasearch.search_client import SearchClient
 from dotenv import load_dotenv
 from naff import (
     CommandTypes,
@@ -16,9 +17,7 @@ from naff import (
     GuildText,
     GuildVoice,
     OptionTypes,
-    PrefixedContext,
     context_menu,
-    prefixed_command,
     slash_command,
     slash_option,
 )
@@ -30,47 +29,11 @@ load_dotenv()
 class tools(Extension):
     def __init__(self, bot):
         self.bot = bot
-        self.bot_start_time = datetime.datetime.utcnow()
-
-    async def uptime(self, ctx):
-        uptime = datetime.datetime.utcnow() - self.bot_start_time
-
-        day = uptime.days
-        day = str(day)
-
-        uptime = str(uptime)
-        uptime = uptime.split(":")
-
-        hours = uptime[0]
-
-        hours = hours.replace(" days,", "Days")
-        hours = hours.replace(" day,", "Day")
-
-        minitues = uptime[1]
-
-        seconds = uptime[2]
-        seconds = seconds.split(".")
-        seconds = seconds[0]
-
-        embed = Embed(
-            title="🕐 Uptime",
-            description="The bot has been online for %s hours %s minutes %s seconds."
-            % (hours, minitues, seconds),
-            color=0x0C73D3,
-            timestamp=self.bot_start_time,
-        )
-        embed.set_footer(text="Bot start time")
-        await ctx.send(embed=embed)
-
-    @slash_command(
-        name="uptime", description="Shows you for how long has the bot been online"
-    )
-    async def slash_uptime(self, ctx):
-        await self.uptime(ctx)
-
-    @prefixed_command(name="uptime")
-    async def pref_uptime(self, ctx: PrefixedContext):
-        await self.uptime(ctx)
+        ## Fill out from trying a search on the ddevs portal
+        app_id = "BH4D9OD16A"
+        api_key = "f37d91bd900bbb124c8210cca9efcc01"
+        self.search_client = SearchClient.create(app_id, api_key)
+        self.index = self.search_client.init_index("discord")
 
     @context_menu("Guild Avatar", CommandTypes.USER)
     async def context_guild_avatar(self, ctx):
@@ -106,10 +69,6 @@ class tools(Extension):
     async def slash_guild_avatar(self, ctx, member: naff.Member = None):
         await self.guild_avatar(ctx, member)
 
-    @prefixed_command(name="guild-avatar", aliases=["guildavatar", "gavatar", "gav"])
-    async def pref_guild_avatar(self, ctx: PrefixedContext):
-        await self.guild_avatar(ctx, member)
-
     @context_menu("Avatar", CommandTypes.USER)
     async def context_avatar(self, ctx):
         user = self.bot.get_user(ctx.target.id)
@@ -128,10 +87,6 @@ class tools(Extension):
         opt_type=OptionTypes.USER,
     )
     async def slash_avatar(self, ctx, member: naff.Member = None):
-        await self.avatar(ctx, member)
-
-    @prefixed_command(name="avatar", aliases=["av"])
-    async def pref_avatar(self, ctx: PrefixedContext):
         await self.avatar(ctx, member)
 
     async def userinfo(self, ctx, member: naff.Member = None):
@@ -185,10 +140,6 @@ class tools(Extension):
         opt_type=OptionTypes.USER,
     )
     async def slash_userinfo(self, ctx, member: naff.Member = None):
-        await self.userinfo(ctx, member)
-
-    @prefixed_command(name="userinfo", aliases=["ui"])
-    async def pref_userinfo(self, ctx: PrefixedContext):
         await self.userinfo(ctx, member)
 
     @context_menu("User Info", CommandTypes.USER)
@@ -265,10 +216,6 @@ class tools(Extension):
     async def slash_server_info(self, ctx):
         await self.server_info(ctx)
 
-    @prefixed_command(name="serverinfo", aliases=["si"])
-    async def pref_server_info(self, ctx: PrefixedContext):
-        await self.server_info(ctx)
-
     async def urban(self, ctx, word: str):
         try:
             url = "https://api.urbandictionary.com/v0/define"
@@ -335,45 +282,6 @@ class tools(Extension):
     async def slash_urban(self, ctx, word: str):
         await self.urban(ctx, word)
 
-    @prefixed_command(name="urban")
-    async def pref_urban(self, ctx: PrefixedContext, word: str):
-        await self.urban(ctx, word)
-
-    async def lmgtfy(self, ctx, search_terms: str):
-        search_terms = urllib.parse.quote_plus(search_terms)
-        await ctx.send("https://lmgtfy.app/?q={}".format(search_terms))
-
-    @slash_command("lmgtfy", description="Create a lmgtfy link.")
-    @slash_option(
-        "search_terms", "Term to search for", OptionTypes.STRING, required=True
-    )
-    async def slash_lmgtfy(self, ctx, search_terms: str):
-        await self.lmgtfy(ctx, search_terms)
-
-    @prefixed_command(name="lmgtfy")
-    async def pref_lmgtfy(self, ctx: PrefixedContext, search_terms: str):
-        await self.lmgtfy(ctx, search_terms)
-
-    async def ping(self, ctx):
-        results = Embed(
-            color=0x0083F5,
-            title="🏓 Pong!",
-            description=(f"🌐 WebSocket latency: {self.bot.latency * 1000:.2f}ms\n"),
-        )
-        results.set_footer(
-            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
-        )
-        results.timestamp = datetime.datetime.utcnow()
-        await ctx.send(embed=results)
-
-    @slash_command("ping", description="Check the bot's latency")
-    async def slash_ping(self, ctx):
-        await self.ping(ctx)
-
-    @prefixed_command(name="ping")
-    async def pref_ping(self, ctx: PrefixedContext):
-        await self.ping(ctx)
-
     @slash_command(
         "konesyntees",
         description="Use superior Estonian technology to express your feelings like you've never before!",
@@ -420,6 +328,50 @@ class tools(Extension):
             await ctx.send(file=pepek)
             # purge the cache
             os.remove(path=pepek)
+
+    @slash_command(
+        "ddocs", description="Scours the discord api documentations for help"
+    )
+    @slash_option(
+        name="search_term",
+        description="Name of the plugin to get the commands for",
+        required=True,
+        opt_type=OptionTypes.STRING,
+    )
+    async def ddocs(self, ctx, *, search_term):
+
+        results = await self.index.search_async(search_term)
+        description = ""
+        hits = []
+        for hit in results["hits"]:
+            title = self.get_level_str(hit["hierarchy"])
+            if title in hits:
+                continue
+            hits.append(title)
+            url = hit["url"].replace(
+                "https://discord.com/developers/docs", "https://discord.dev"
+            )
+            description += f"[{title}]({url})\n"
+            if len(hits) == 10:
+                break
+        embed = Embed(
+            title="Your help has arrived!",
+            description=description,
+            color=0x7289DA,
+        )
+        embed.set_footer(
+            text=f"Requested by {ctx.author} | Powered by Algolia DocSearch",
+            icon_url=ctx.author.avatar.url,
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        return await ctx.send(embed=embed)
+
+    def get_level_str(self, levels):
+        last = ""
+        for level in levels.values():
+            if level is not None:
+                last = level
+        return last
 
 
 def setup(bot):

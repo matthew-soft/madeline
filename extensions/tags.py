@@ -946,10 +946,10 @@ class Tags(Extension):
             embed.add_field(name="Created:", value=date, inline=True)
             at = tag_to_view["attachment_url"]
             cont = tag_to_view["content"]
-            if len(cont) > 2048:
-                cont = "{}...".format(cont[:2045])
             if at is not None:
                 if cont is not None:
+                    if len(cont) > 2048:
+                        cont = "{}...".format(cont[:2045])
                     embed.description = cont
                     if (
                         at.endswith(".jpg")
@@ -975,6 +975,8 @@ class Tags(Extension):
                             name="🔗 Linked Attachments:", value=at, inline=False
                         )
             else:
+                if len(cont) > 2048:
+                    cont = "{}...".format(cont[:2045])
                 embed.description = cont
             embed.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url

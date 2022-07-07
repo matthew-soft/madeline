@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  linter_name:
+  lint:
     name: runner / Pre-commit actions
     runs-on: ubuntu-latest
     steps:
@@ -20,9 +20,18 @@ jobs:
           python-version: "3.10.x"
       - name: Setup annotations
         uses: PennyDreadfulMTG/setup-linters@main
-      - name: Install Pre-commit
+      - name: Install Dependencies
         run: |
-          pip install pre-commit
+          pip install pre-commit isort
+      - name: Run Isort
+        continue-on-error: true
+        run: |
+          isort .
       - name: Run Pre-commit
+        continue-on-error: true
         run: |
           pre-commit run --all-files
+      - name: Commit Fixes (if any)
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[pre-commit] auto fixes"

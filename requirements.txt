@@ -3,9 +3,8 @@ cloudscraper
 dnspython
 naff
 orjson
-pillow
+psutil
 pymongo
-pytesseract
 python-dateutil
 python-dotenv
 requests-toolbelt
