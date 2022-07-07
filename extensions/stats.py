@@ -51,25 +51,27 @@ class stats(Extension):
 
         return fmt.format(d=days, h=hours, m=minutes, s=seconds)
 
-
-    @slash_command(name="about", description="About me!")
+    @slash_command(name="about", description="Learn more about me")
     async def meee(self, ctx: InteractionContext):
-        embed = Embed(description="Madeline v2 | Rewrite")
-        embed.title = "About:"
-        embed.color = 0x738BD7
-
         owner = self.bot.get_user(self.bot.owner.id)
-
-        embed.set_author(name=str(owner), icon_url=owner.avatar.url)
-
         memory_usage = self.process.memory_full_info().uss / 1024**2
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
+
+        embed = Embed()
+        embed.color = 0x738BD7
+        embed.title = "Madeline v2 | Rewrite"
+        embed.description = "A Multifunctional SA-MP Discord Bot written in NAFF (python)"
+        embed.set_author(name=self.bot.user.username, icon_url=self.bot.user.avatar.url)
+        embed.add_field(name="Owner", value=f"{owner.mention}", inline=False)
+        embed.add_field(name="Guilds", value=len(self.bot.guilds), inline=True)
         embed.add_field(
             name="Process", value=f"{memory_usage:.2f} MiB\n{cpu_usage:.2f}% CPU"
+        , inline=True)
+        embed.add_field(name="Local time", value=f"<t:{int(datetime.datetime.utcnow().timestamp())}:F>", inline=False)
+        embed.add_field(
+            name="Start time", value=f"<t:{int(self.bot.start_time.timestamp())}:F>", inline=True
         )
-
-        embed.add_field(name="Guilds", value=len(self.bot.guilds))
-        embed.add_field(name="Uptime", value=self.get_bot_uptime(brief=True))
+        embed.add_field(name="Uptime", value=self.get_bot_uptime(brief=True), inline=True)
         embed.set_footer(
             text="Made with 💖 with NAFF", icon_url="http://i.imgur.com/5BFecvA.png"
         )
