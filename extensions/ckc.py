@@ -1,3 +1,4 @@
+import datetime
 import os
 import random
 import re
@@ -56,31 +57,31 @@ def beaufort_scale(speed):
 def pretty_weather(weather):
     weather = weather.lower()
     if weather == "light rain":
-        return ":cloud_rain: Light rain"
+        return "Light rain"
     elif weather == "snow":
-        return ":cloud_snow: Snow"
+        return "Snow"
     elif weather == "light intensity drizzle":
-        return ":cloud_rain: Light intensity drizzle"
+        return "Light intensity drizzle"
     elif weather == "light snow":
-        return ":cloud_snow: Light snow"
+        return "Light snow"
     elif weather == "broken clouds":
-        return ":white_sun_cloud: Broken clouds"
+        return "Broken clouds"
     elif weather == "clear sky":
-        return ":large_blue_circle: Clear sky"
+        return "Clear sky"
     elif weather == "haze":
-        return ":foggy: Haze"
+        return "Haze"
     elif weather == "overcast clouds":
-        return ":cloud: Overcast clouds"
+        return "Overcast clouds"
     elif weather == "mist":
-        return ":fog: Mist"
+        return "Mist"
     elif weather == "few clouds":
-        return ":cloud: Few clouds"
+        return "Few clouds"
     elif weather == "scattered clouds":
-        return ":cloud: Scattered clouds"
+        return "Scattered clouds"
     elif weather == "moderate rain":
-        return ":cloud_rain: Moderate rain"
+        return "Moderate rain"
     elif weather == "shower rain":
-        return ":cloud_rain: Shower rain"
+        return "Shower rain"
     else:
         return weather.capitalize()
 
@@ -364,33 +365,74 @@ class CoolKidsClub(Extension):
         temp_k = float(json_object["main"]["temp"])
         temp_c = temp_k - 273.15
         temp_f = temp_c * (9 / 5) + 32
-        city, country, weather, humidity, windspeed = (
+        (
+            city,
+            country,
+            weather,
+            humidity,
+            temp_min,
+            temp_max,
+            windspeed,
+            sunrise,
+            sunset,
+            lon,
+            lat,
+        ) = (
             json_object["name"],
             json_object["sys"]["country"],
             json_object["weather"][0]["description"],
             json_object["main"]["humidity"],
+            json_object["main"]["temp_min"],
+            json_object["main"]["temp_max"],
             json_object["wind"]["speed"],
+            json_object["sys"]["sunrise"],
+            json_object["sys"]["sunset"],
+            json_object["coord"]["lon"],
+            json_object["coord"]["lat"],
         )
+        temp_min = temp_min - 273.15
+        temp_max = temp_max - 273.15
         user = ctx.author
         em = Embed(
             title="Weather in {0}, {1}".format(city, country),
             description="",
             color=0x00FF00,
         )
-        em.set_author(
-            name=user.display_name,
-            icon_url=user.avatar.url,
-            url="https://discordapp.com/users/{}".format(user.id),
+        em.add_field(
+            name=":earth_africa: Location", value=f"{city}, {country}", inline=True
         )
         em.add_field(
-            name="Temperature", value="{0:.1f}°C\n{1:.1f}°F".format(temp_c, temp_f)
+            name=":straight_ruler: Lat,Long", value=f"{lat}, {lon}", inline=True
         )
-        em.add_field(name="Description", value=pretty_weather(weather))
-        em.add_field(name="Humidity", value="{}%".format(humidity))
         em.add_field(
-            name="Wind speed",
-            value="{}m/s\n{}".format(windspeed, beaufort_scale(windspeed)),
+            name=":cloud: Condition", value=pretty_weather(weather), inline=True
         )
+        em.add_field(name=":sweat: Humidity", value="{}%".format(humidity), inline=True)
+        em.add_field(
+            name=":dash: Wind speed",
+            value="{}m/s\n{}".format(windspeed, beaufort_scale(windspeed), inline=True),
+        )
+        em.add_field(
+            name=":thermometer: Temperature",
+            value="{0:.1f}°C\n{1:.1f}°F".format(temp_c, temp_f),
+            inline=True,
+        )
+        em.add_field(
+            name=":high_brightness: Min - Max",
+            value="{0:.1f}°C - {0:.1f}°C".format(temp_min, temp_max),
+            inline=True,
+        )
+        em.add_field(
+            name=":sunrise_over_mountains: Sunrise",
+            value=f"<t:{sunrise}:t>",
+            inline=True,
+        )
+        em.add_field(name=":city_sunset: Sunset", value=f"<t:{sunset}:t>", inline=True)
+        em.set_footer(
+            text=f"Requested by {ctx.author} | Powered by https://openweathermap.org",
+            icon_url=ctx.author.avatar.url,
+        )
+        em.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=em)
 
     @slash_command(name="coinflip", description="Flip a coin")
