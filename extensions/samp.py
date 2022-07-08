@@ -95,7 +95,7 @@ class samp(Extension):
         OptionTypes.INTEGER,
         required=False,
     )
-    async def samp(self, ctx, type: int, ip: str, port: Optional[int] = 7777):
+    async def samp(self, ctx, ip: str, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
         try:
