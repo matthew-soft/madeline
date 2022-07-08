@@ -132,6 +132,10 @@ class samp(Extension):
                 players = kung.get_server_clients_detailed()
                 numpang = kung.get_server_clients()
 
+                pleyers = []
+                for ppq in numpang:
+                    pleyers.append(f"{ppq.name}                    | {ppq.score}")
+
             general = Embed(title=info.hostname, color=0x0083F5)  # Create embed
             general.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
             general.add_field(
@@ -155,18 +159,19 @@ class samp(Extension):
                     inline=False,
                 )
             if info.players > 0:
-                for ppq in numpang:
+                listed = '\n'.join(pleyers)
+                if pleyers == []:
                     general.add_field(
-                        name="[only show 10 player max] Connected Clients :",
-                        value=f"```==============================================\nName                        | Score\n ==============================================\n {ppq.name}                    | {ppq.score}```",
+                        name="Note:",
+                        value="due to __*discord limitations*__, i can't show connected clients summary 😔",
                         inline=False,
                     )
-            if info.players > 10:
-                general.add_field(
-                    name="Note:",
-                    value="due to __*discord limitations*__, i can't show connected clients summary 😔",
-                    inline=False,
-                )
+                else:
+                    general.add_field(
+                        name="[only show 10 player max] Connected Clients :",
+                        value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
+                        inline=False,
+                    )
             general.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
             )
@@ -221,12 +226,14 @@ class samp(Extension):
                         value=f"`{info.players}` / `{info.max_players}` Players",
                         inline=True,
                     )
-                    for ppq in players:
-                        p_info.add_field(
-                            name="[only show 10 player max] Detailed Connected Clients :",
-                            value=f"```==============================================\nID |Name                        | Score | Ping\n ==============================================\n {ppq.id} | {ppq.name}                    | {ppq.score} | {ppq.ping}```",
-                            inline=False,
-                        )
+                    if info.players > 0:
+                        if pleyers != []:
+                            listed = '\n'.join(pleyers)
+                            p_info.add_field(
+                                name="[only show 10 player max] Connected Clients :",
+                                value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
+                                inline=False,
+                            )
                     p_info.set_footer(
                         text=f"Requested by {ctx.author}",
                         icon_url=ctx.author.avatar.url,
