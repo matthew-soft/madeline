@@ -11,6 +11,8 @@ from naff import (
     SlashCommandChoice,
     slash_command,
     slash_option,
+    Permissions,
+    check,
 )
 from naff.ext.paginators import Paginator
 from pymongo import MongoClient
@@ -258,6 +260,7 @@ class samp(Extension):
         OptionTypes.INTEGER,
         required=False,
     )
+    @check(member_permissions(Permissions.MANAGE_MESSAGES))
     async def add(self, ctx, ip: str, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
@@ -294,6 +297,7 @@ class samp(Extension):
         OptionTypes.INTEGER,
         required=False,
     )
+    @check(member_permissions(Permissions.MANAGE_MESSAGES))
     async def edit(self, ctx, ip: str, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
@@ -322,6 +326,7 @@ class samp(Extension):
         sub_cmd_name="remove",
         sub_cmd_description="Remove your server's bookmark",
     )
+    @check(member_permissions(Permissions.MANAGE_MESSAGES))
     async def remove(self, ctx):
         # need to defer it, otherwise, it fails
         await ctx.defer()
