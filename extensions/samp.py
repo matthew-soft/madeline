@@ -8,11 +8,11 @@ from naff import (
     Embed,
     Extension,
     OptionTypes,
+    Permissions,
     SlashCommandChoice,
+    check,
     slash_command,
     slash_option,
-    Permissions,
-    check,
 )
 from naff.ext.paginators import Paginator
 from pymongo import MongoClient
