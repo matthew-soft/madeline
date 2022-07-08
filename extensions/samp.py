@@ -1,18 +1,30 @@
 import datetime
+import os
 from typing import Optional
 
 import cloudscraper
+from dotenv import load_dotenv
 from naff import (
     Embed,
     Extension,
     OptionTypes,
+    Permissions,
     SlashCommandChoice,
+    check,
     slash_command,
     slash_option,
 )
 from naff.ext.paginators import Paginator
+from pymongo import MongoClient
 from samp_client.client import SampClient
 
+from utilities.checks import *
+
+load_dotenv()
+
+cluster = MongoClient(os.getenv("MONGODB_URL"))
+
+server = cluster["madeline"]["servers"]
 scraper = cloudscraper.create_scraper()
 
 
@@ -87,7 +99,7 @@ class samp(Extension):
         "ip",
         "Please enter the Server IP (only support public ip address or domains!)",
         OptionTypes.STRING,
-        required=True,
+        required=False,
     )
     @slash_option(
         "port",
@@ -95,14 +107,34 @@ class samp(Extension):
         OptionTypes.INTEGER,
         required=False,
     )
-    async def samp(self, ctx, type: int, ip: str, port: Optional[int] = 7777):
+    async def samp(self, ctx, ip=None, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
+
+        if ip is None:
+            try:
+                find = server.find_one({"guild_id": ctx.guild_id})
+                ip = find["ip"]
+                port = find["port"]
+            except:
+                embed = Embed(
+                    description=f"<:cross:839158779815657512> Cannot find server info in database. Please use <:slash:894692029941039194>`query add` to add your server info to bookmark.",
+                    color=0xFF0000,
+                )
+                return await ctx.send(embed=embed)
+                return await ctx.send(
+                    "Cannot find server info in database. Please use `/query add` to add your server info to bookmark."
+                )
+
         try:
             with SampClient(address=ip, port=port) as kung:
                 info = kung.get_server_info()
                 players = kung.get_server_clients_detailed()
                 numpang = kung.get_server_clients()
+
+                pleyers = []
+                for ppq in numpang:
+                    pleyers.append(f"{ppq.name}                    | {ppq.score}")
 
             general = Embed(title=info.hostname, color=0x0083F5)  # Create embed
             general.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
@@ -127,18 +159,19 @@ class samp(Extension):
                     inline=False,
                 )
             if info.players > 0:
-                for ppq in numpang:
+                listed = "\n".join(pleyers)
+                if pleyers == []:
                     general.add_field(
-                        name="[only show 10 player max] Connected Clients :",
-                        value=f"```==============================================\nName                        | Score\n ==============================================\n {ppq.name}                    | {ppq.score}```",
+                        name="Note:",
+                        value="due to __*discord limitations*__, i can't show connected clients summary 😔",
                         inline=False,
                     )
-            if info.players > 10:
-                general.add_field(
-                    name="Note:",
-                    value="due to __*discord limitations*__, i can't show connected clients summary 😔",
-                    inline=False,
-                )
+                else:
+                    general.add_field(
+                        name="[only show 10 player max] Connected Clients :",
+                        value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
+                        inline=False,
+                    )
             general.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
             )
@@ -193,12 +226,14 @@ class samp(Extension):
                         value=f"`{info.players}` / `{info.max_players}` Players",
                         inline=True,
                     )
-                    for ppq in players:
-                        p_info.add_field(
-                            name="[only show 10 player max] Detailed Connected Clients :",
-                            value=f"```==============================================\nID |Name                        | Score | Ping\n ==============================================\n {ppq.id} | {ppq.name}                    | {ppq.score} | {ppq.ping}```",
-                            inline=False,
-                        )
+                    if info.players > 0:
+                        if pleyers != []:
+                            listed = "\n".join(pleyers)
+                            p_info.add_field(
+                                name="[only show 10 player max] Connected Clients :",
+                                value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
+                                inline=False,
+                            )
                     p_info.set_footer(
                         text=f"Requested by {ctx.author}",
                         icon_url=ctx.author.avatar.url,
@@ -217,6 +252,126 @@ class samp(Extension):
             embed = Embed(
                 description=f"<:cross:839158779815657512> Couldn't connect to the server",
                 color=0xFF0000,
+            )
+            return await ctx.send(embed=embed)
+
+    @slash_command(
+        name="query",
+        sub_cmd_name="add",
+        sub_cmd_description="Bookmark your server to the list of servers to query",
+    )
+    @slash_option(
+        "ip",
+        "Please enter the Server IP (only support public ip address or domains!)",
+        OptionTypes.STRING,
+        required=True,
+    )
+    @slash_option(
+        "port",
+        "Please enter Server Port (optional, default port is 7777)",
+        OptionTypes.INTEGER,
+        required=False,
+    )
+    @check(member_permissions(Permissions.MANAGE_MESSAGES))
+    async def add(self, ctx, ip: str, port: Optional[int] = 7777):
+        # need to defer it, otherwise, it fails
+        await ctx.defer()
+        find = server.find_one({"guild_id": ctx.guild_id})
+        if find is not None:
+            embed = Embed(
+                description=f"<:cross:839158779815657512> You already have a server in the list!",
+                color=0xFF0000,
+            )
+            return await ctx.send(embed=embed)
+        else:
+            server.insert_one(
+                {
+                    "guild_id": ctx.guild_id,
+                    "ip": ip,
+                    "port": port,
+                    "created_by": ctx.author.id,
+                    "created_at": int(datetime.datetime.utcnow().timestamp()),
+                    "edited_at": None,
+                }
+            )
+            embed = Embed(
+                description=f"<:check:839158727512293406> Server added to the list!",
+                color=0x00FF00,
+            )
+            return await ctx.send(embed=embed)
+
+    @slash_command(
+        name="query",
+        sub_cmd_name="edit",
+        sub_cmd_description="Edit your server's bookmark",
+    )
+    @slash_option(
+        "ip",
+        "Please enter the Server IP (only support public ip address or domains!)",
+        OptionTypes.STRING,
+        required=True,
+    )
+    @slash_option(
+        "port",
+        "Please enter Server Port (optional, default port is 7777)",
+        OptionTypes.INTEGER,
+        required=False,
+    )
+    @check(member_permissions(Permissions.MANAGE_MESSAGES))
+    async def edit(self, ctx, ip: str, port: Optional[int] = 7777):
+        # need to defer it, otherwise, it fails
+        await ctx.defer()
+        find = server.find_one({"guild_id": ctx.guild_id})
+        if find is None:
+            embed = Embed(
+                description=f"<:cross:839158779815657512> Your server is not in our list, Please register it first!",
+                color=0xFF0000,
+            )
+            return await ctx.send(embed=embed)
+        else:
+            server.update_one(
+                {
+                    "guild_id": ctx.guild_id,
+                },
+                {
+                    "$set": {
+                        "ip": ip,
+                        "port": port,
+                        "edited_at": int(datetime.datetime.utcnow().timestamp()),
+                    }
+                },
+            )
+            embed = Embed(
+                description=f"<:check:839158727512293406> Your server has been updated!",
+                color=0x00FF00,
+            )
+            return await ctx.send(embed=embed)
+
+    @slash_command(
+        name="query",
+        sub_cmd_name="remove",
+        sub_cmd_description="Remove your server's bookmark",
+    )
+    @check(member_permissions(Permissions.MANAGE_MESSAGES))
+    async def remove(self, ctx):
+        # need to defer it, otherwise, it fails
+        await ctx.defer()
+        find = server.find_one({"guild_id": ctx.guild_id})
+        if find is None:
+            embed = Embed(
+                description=f"<:cross:839158779815657512> Your server is not in our list, Please register it first!",
+                color=0xFF0000,
+            )
+            return await ctx.send(embed=embed)
+        else:
+            server.delete_one(
+                {
+                    "guild_id": ctx.guild_id,
+                }
+            )
+            embed = Embed(
+                description=f"<:check:839158727512293406> Your server has been removed from our database!",
+                color=0x00FF00,
             )
             return await ctx.send(embed=embed)
 
