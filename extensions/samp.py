@@ -117,6 +117,11 @@ class samp(Extension):
                 ip = find["ip"]
                 port = find["port"]
             except:
+                embed = Embed(
+                    description=f"<:cross:839158779815657512> Cannot find server info in database. Please use <:slash:894692029941039194>`query add` to add your server info to bookmark.",
+                    color=0xFF0000,
+                )
+                return await ctx.send(embed=embed)
                 return await ctx.send(
                     "Cannot find server info in database. Please use `/query add` to add your server info to bookmark."
                 )
@@ -266,7 +271,11 @@ class samp(Extension):
         await ctx.defer()
         find = server.find_one({"guild_id": ctx.guild_id})
         if find is not None:
-            return await ctx.send("You already have a server in the list!")
+            embed = Embed(
+                description=f"<:cross:839158779815657512> You already have a server in the list!",
+                color=0xFF0000,
+            )
+            return await ctx.send(embed=embed)
         else:
             server.insert_one(
                 {
@@ -278,7 +287,11 @@ class samp(Extension):
                     "edited_at": None,
                 }
             )
-            return await ctx.send("Server added to the list!")
+            embed = Embed(
+                description=f"<:check:839158727512293406> Server added to the list!",
+                color=0x00FF00,
+            )
+            return await ctx.send(embed=embed)
 
     @slash_command(
         name="query",
@@ -303,9 +316,11 @@ class samp(Extension):
         await ctx.defer()
         find = server.find_one({"guild_id": ctx.guild_id})
         if find is None:
-            return await ctx.send(
-                "Your server is not in our list, Please register it first!"
+            embed = Embed(
+                description=f"<:cross:839158779815657512> Your server is not in our list, Please register it first!",
+                color=0xFF0000,
             )
+            return await ctx.send(embed=embed)
         else:
             server.update_one(
                 {
@@ -319,7 +334,11 @@ class samp(Extension):
                     }
                 },
             )
-            return await ctx.send("Your server has been updated!")
+            embed = Embed(
+                description=f"<:check:839158727512293406> Your server has been updated!",
+                color=0x00FF00,
+            )
+            return await ctx.send(embed=embed)
 
     @slash_command(
         name="query",
@@ -332,16 +351,22 @@ class samp(Extension):
         await ctx.defer()
         find = server.find_one({"guild_id": ctx.guild_id})
         if find is None:
-            return await ctx.send(
-                "Your server is not in our list, Please register it first!"
+            embed = Embed(
+                description=f"<:cross:839158779815657512> Your server is not in our list, Please register it first!",
+                color=0xFF0000,
             )
+            return await ctx.send(embed=embed)
         else:
             server.delete_one(
                 {
                     "guild_id": ctx.guild_id,
                 }
             )
-            return await ctx.send("Your server has been removed from our database!")
+            embed = Embed(
+                description=f"<:check:839158727512293406> Your server has been removed from our database!",
+                color=0x00FF00,
+            )
+            return await ctx.send(embed=embed)
 
 
 def setup(bot):
