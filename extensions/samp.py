@@ -159,7 +159,7 @@ class samp(Extension):
                     inline=False,
                 )
             if info.players > 0:
-                listed = '\n'.join(pleyers)
+                listed = "\n".join(pleyers)
                 if pleyers == []:
                     general.add_field(
                         name="Note:",
@@ -228,7 +228,7 @@ class samp(Extension):
                     )
                     if info.players > 0:
                         if pleyers != []:
-                            listed = '\n'.join(pleyers)
+                            listed = "\n".join(pleyers)
                             p_info.add_field(
                                 name="[only show 10 player max] Connected Clients :",
                                 value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
