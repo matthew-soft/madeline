@@ -1,9 +1,9 @@
 import datetime
-from typing import Optional
 import os
-from dotenv import load_dotenv
-from pymongo import MongoClient
+from typing import Optional
+
 import cloudscraper
+from dotenv import load_dotenv
 from naff import (
     Embed,
     Extension,
@@ -13,7 +13,9 @@ from naff import (
     slash_option,
 )
 from naff.ext.paginators import Paginator
+from pymongo import MongoClient
 from samp_client.client import SampClient
+
 from utilities.checks import *
 
 load_dotenv()
@@ -103,7 +105,7 @@ class samp(Extension):
         OptionTypes.INTEGER,
         required=False,
     )
-    async def samp(self, ctx, ip = None, port: Optional[int] = 7777):
+    async def samp(self, ctx, ip=None, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
 
@@ -116,7 +118,7 @@ class samp(Extension):
                 return await ctx.send(
                     "Cannot find server info in database. Please use `/query add` to add your server info to bookmark."
                 )
-                
+
         try:
             with SampClient(address=ip, port=port) as kung:
                 info = kung.get_server_info()
@@ -274,7 +276,7 @@ class samp(Extension):
                 }
             )
             return await ctx.send("Server added to the list!")
-        
+
     @slash_command(
         name="query",
         sub_cmd_name="edit",
@@ -297,14 +299,22 @@ class samp(Extension):
         await ctx.defer()
         find = server.find_one({"guild_id": ctx.guild_id})
         if find is None:
-            return await ctx.send("Your server is not in our list, Please register it first!")
+            return await ctx.send(
+                "Your server is not in our list, Please register it first!"
+            )
         else:
             server.update_one(
-                            {
-                                "guild_id": ctx.guild_id,
-                            },
-                            {"$set": {"ip": ip, "port": port, "edited_at": int(datetime.datetime.utcnow().timestamp()),}},
-                        )
+                {
+                    "guild_id": ctx.guild_id,
+                },
+                {
+                    "$set": {
+                        "ip": ip,
+                        "port": port,
+                        "edited_at": int(datetime.datetime.utcnow().timestamp()),
+                    }
+                },
+            )
             return await ctx.send("Your server has been updated!")
 
     @slash_command(
@@ -317,7 +327,9 @@ class samp(Extension):
         await ctx.defer()
         find = server.find_one({"guild_id": ctx.guild_id})
         if find is None:
-            return await ctx.send("Your server is not in our list, Please register it first!")
+            return await ctx.send(
+                "Your server is not in our list, Please register it first!"
+            )
         else:
             server.delete_one(
                 {
@@ -325,6 +337,7 @@ class samp(Extension):
                 }
             )
             return await ctx.send("Your server has been removed from our database!")
+
 
 def setup(bot):
     # This is called by dis-snek so it knows how to load the Extension
