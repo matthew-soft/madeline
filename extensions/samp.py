@@ -1,6 +1,8 @@
 import datetime
 from typing import Optional
-
+import os
+from dotenv import load_dotenv
+from pymongo import MongoClient
 import cloudscraper
 from naff import (
     Embed,
@@ -12,7 +14,13 @@ from naff import (
 )
 from naff.ext.paginators import Paginator
 from samp_client.client import SampClient
+from utilities.checks import *
 
+load_dotenv()
+
+cluster = MongoClient(os.getenv("MONGODB_URL"))
+
+server = cluster["madeline"]["servers"]
 scraper = cloudscraper.create_scraper()
 
 
@@ -87,7 +95,7 @@ class samp(Extension):
         "ip",
         "Please enter the Server IP (only support public ip address or domains!)",
         OptionTypes.STRING,
-        required=True,
+        required=False,
     )
     @slash_option(
         "port",
@@ -95,9 +103,20 @@ class samp(Extension):
         OptionTypes.INTEGER,
         required=False,
     )
-    async def samp(self, ctx, ip: str, port: Optional[int] = 7777):
+    async def samp(self, ctx, ip = None, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
+
+        if ip is None:
+            try:
+                find = server.find_one({"guild_id": ctx.guild_id})
+                ip = find["ip"]
+                port = find["port"]
+            except:
+                return await ctx.send(
+                    "Cannot find server info in database. Please use `/query add` to add your server info to bookmark."
+                )
+                
         try:
             with SampClient(address=ip, port=port) as kung:
                 info = kung.get_server_info()
@@ -220,6 +239,92 @@ class samp(Extension):
             )
             return await ctx.send(embed=embed)
 
+    @slash_command(
+        name="query",
+        sub_cmd_name="add",
+        sub_cmd_description="Bookmark your server to the list of servers to query",
+    )
+    @slash_option(
+        "ip",
+        "Please enter the Server IP (only support public ip address or domains!)",
+        OptionTypes.STRING,
+        required=True,
+    )
+    @slash_option(
+        "port",
+        "Please enter Server Port (optional, default port is 7777)",
+        OptionTypes.INTEGER,
+        required=False,
+    )
+    async def add(self, ctx, ip: str, port: Optional[int] = 7777):
+        # need to defer it, otherwise, it fails
+        await ctx.defer()
+        find = server.find_one({"guild_id": ctx.guild_id})
+        if find is not None:
+            return await ctx.send("You already have a server in the list!")
+        else:
+            server.insert_one(
+                {
+                    "guild_id": ctx.guild_id,
+                    "ip": ip,
+                    "port": port,
+                    "created_by": ctx.author.id,
+                    "created_at": int(datetime.datetime.utcnow().timestamp()),
+                    "edited_at": None,
+                }
+            )
+            return await ctx.send("Server added to the list!")
+        
+    @slash_command(
+        name="query",
+        sub_cmd_name="edit",
+        sub_cmd_description="Edit your server's bookmark",
+    )
+    @slash_option(
+        "ip",
+        "Please enter the Server IP (only support public ip address or domains!)",
+        OptionTypes.STRING,
+        required=True,
+    )
+    @slash_option(
+        "port",
+        "Please enter Server Port (optional, default port is 7777)",
+        OptionTypes.INTEGER,
+        required=False,
+    )
+    async def edit(self, ctx, ip: str, port: Optional[int] = 7777):
+        # need to defer it, otherwise, it fails
+        await ctx.defer()
+        find = server.find_one({"guild_id": ctx.guild_id})
+        if find is None:
+            return await ctx.send("Your server is not in our list, Please register it first!")
+        else:
+            server.update_one(
+                            {
+                                "guild_id": ctx.guild_id,
+                            },
+                            {"$set": {"ip": ip, "port": port, "edited_at": int(datetime.datetime.utcnow().timestamp()),}},
+                        )
+            return await ctx.send("Your server has been updated!")
+
+    @slash_command(
+        name="query",
+        sub_cmd_name="remove",
+        sub_cmd_description="Remove your server's bookmark",
+    )
+    async def remove(self, ctx):
+        # need to defer it, otherwise, it fails
+        await ctx.defer()
+        find = server.find_one({"guild_id": ctx.guild_id})
+        if find is None:
+            return await ctx.send("Your server is not in our list, Please register it first!")
+        else:
+            server.delete_one(
+                {
+                    "guild_id": ctx.guild_id,
+                }
+            )
+            return await ctx.send("Your server has been removed from our database!")
 
 def setup(bot):
     # This is called by dis-snek so it knows how to load the Extension
