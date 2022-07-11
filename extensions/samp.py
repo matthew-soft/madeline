@@ -339,7 +339,7 @@ class samp(Extension):
                         "ip": ip,
                         "port": port,
                         "edited_at": int(datetime.datetime.utcnow().timestamp()),
-                        "full_ip": f"{ip}:{port}"
+                        "full_ip": f"{ip}:{port}",
                     }
                 },
             )
