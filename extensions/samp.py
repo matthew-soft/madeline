@@ -292,6 +292,7 @@ class samp(Extension):
                     "created_by": ctx.author.id,
                     "created_at": int(datetime.datetime.utcnow().timestamp()),
                     "edited_at": None,
+                    "full_ip": f"{ip}:{port}",
                 }
             )
             embed = Embed(
@@ -338,6 +339,7 @@ class samp(Extension):
                         "ip": ip,
                         "port": port,
                         "edited_at": int(datetime.datetime.utcnow().timestamp()),
+                        "full_ip": f"{ip}:{port}"
                     }
                 },
             )
