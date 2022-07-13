@@ -197,7 +197,7 @@ class stats(Extension):
         await self.bot.change_presence(
             status=Status.AFK,
             activity=Activity(
-                name=f"{len(self.bot.guilds)} servers | /help",
+                name=f"{len(self.bot.guilds)} servers | /about",
                 type=ActivityType.COMPETING,
             ),
         )
