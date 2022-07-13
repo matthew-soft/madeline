@@ -22,6 +22,7 @@ from naff import (
     slash_option,
 )
 from naff.api.events.discord import GuildJoin, GuildLeft
+from naff.ext.paginators import Paginator
 
 from core.base import CustomClient
 
@@ -57,37 +58,95 @@ class stats(Extension):
         memory_usage = self.process.memory_full_info().uss / 1024**2
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
 
-        embed = Embed()
-        embed.color = 0x738BD7
-        embed.title = "Madeline v2 | Rewrite"
-        embed.description = (
+        embed = Embed(
+            description=f"Visit our [Official Documentations](https://madeline.my.id) for more info.\n[Join our Discord Server](https://discord.gg/mxkvjpknTN).\n[Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
+            color=0x0083F5,
+        )
+        embed.set_author(
+            name="Madeline™, The Discord Bot",
+            url="https://discord.gg/mxkvjpknTN",
+            icon_url=self.bot.user.avatar.url,
+        )
+        embed.set_thumbnail(url=self.bot.user.avatar.url)
+        embed.add_field(
+            name="__Tool Commands__",
+            value="`ddocs`, `guild-avatar`, `avatar`, `user-info`, `server-info`, `urban`, `konesyntees`",
+            inline=False,
+        )
+        embed.add_field(
+            name="__Cool Kids Club™️ Commands__",
+            value="`aesthetics`, `fraktur`, `bold-fraktur`, `fancy`, `bold-fancy`, `double`, `small-caps`, `8ball`, `weather`, `coinflip`, `dice`, `lmgtfy`",
+            inline=False,
+        )
+        embed.add_field(
+            name="__SA-MP Related Commands__",
+            value="`samp-query`, `samp-wiki`",
+            inline=False,
+        )
+        embed.add_field(
+            name="__Tags Commands__",
+            value="`tag get`, `tag create`, `tag edit`, `tag delete`, `tags`",
+            inline=False,
+        )
+        embed.add_field(
+            name="__Context Menu Commands__",
+            value="`Avatar`, `Guild Avatar`, `User Info`",
+            inline=False,
+        )
+        embed.add_field(
+            name="__Bot Status Commands__",
+            value="`about`, `help`, `ping`",
+            inline=False,
+        )
+        embed.set_footer(
+            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+
+        about = Embed()
+        about.color = 0x738BD7
+        about.title = "Madeline v2 | Rewrite"
+        about.description = (
             "A Multifunctional SA-MP Discord Bot written in NAFF (python)"
         )
-        embed.set_author(name=self.bot.user.username, icon_url=self.bot.user.avatar.url)
-        embed.add_field(name="Owner", value=f"{owner.mention}", inline=False)
-        embed.add_field(name="Guilds", value=len(self.bot.guilds), inline=True)
-        embed.add_field(
+        embed.set_author(
+            name="Madeline™, The Discord Bot",
+            url="https://discord.gg/mxkvjpknTN",
+            icon_url=self.bot.user.avatar.url,
+        )
+        about.add_field(name="Owner", value=f"{owner.mention}", inline=False)
+        about.add_field(name="Guilds", value=len(self.bot.guilds), inline=True)
+        about.add_field(
             name="Process",
             value=f"{memory_usage:.2f} MiB\n{cpu_usage:.2f}% CPU",
             inline=True,
         )
-        embed.add_field(
+        about.add_field(
             name="Local time",
             value=f"<t:{int(datetime.datetime.utcnow().timestamp())}:F>",
             inline=False,
         )
-        embed.add_field(
+        about.add_field(
             name="Start time",
             value=f"<t:{int(self.bot.start_time.timestamp())}:F>",
             inline=True,
         )
-        embed.add_field(
+        about.add_field(
             name="Uptime", value=self.get_bot_uptime(brief=True), inline=True
         )
-        embed.set_footer(
+        about.set_footer(
             text="Made with 💖 with NAFF", icon_url="http://i.imgur.com/5BFecvA.png"
         )
-        await ctx.send(embed=embed)
+        
+        embeds = [embed, about]
+
+        paginators = Paginator(
+                client=self.bot,
+                pages=embeds,
+                timeout_interval=30,
+                show_select_menu=False,
+            )
+        return await paginators.send(ctx)
 
     @slash_command("ping", description="Check the bot's latency")
     async def ping(self, ctx: InteractionContext):
