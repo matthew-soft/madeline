@@ -350,7 +350,7 @@ class tools(Extension):
         required=True,
         opt_type=OptionTypes.STRING,
     )
-    async def weather(self, ctx: InteractionContext, city: str):
+    async def weather(self, ctx, city: str):
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 "http://api.openweathermap.org/data/2.5/weather?q="

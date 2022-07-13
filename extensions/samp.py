@@ -122,12 +122,12 @@ class samp(Extension):
                 port = find["port"]
             except:
                 embed = Embed(
-                    description=f"<:cross:839158779815657512> Cannot find server info in database. Please use <:slash:894692029941039194>`query add` to add your server info to bookmark.",
+                    description=f"<:cross:839158779815657512> Cannot find server info in database. Please use <:slash:894692029941039194>`samp bookmark add` to add your server info to bookmark.",
                     color=0xFF0000,
                 )
                 return await ctx.send(embed=embed)
                 return await ctx.send(
-                    "Cannot find server info in database. Please use `/query add` to add your server info to bookmark."
+                    "Cannot find server info in database. Please use <:slash:894692029941039194>`samp bookmark add` to add your server info to bookmark."
                 )
 
         try:
