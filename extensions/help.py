@@ -54,9 +54,9 @@ class help(Extension):
             ActionRow(
                 Button(
                     style=ButtonStyles.URL,
-                    label="Official Documentations",
+                    label="Documentations",
                     emoji="🚀",
-                    url="https://madeline.my.id",
+                    url="https://www.madeline.my.id",
                 ),
                 Button(
                     style=ButtonStyles.URL,
