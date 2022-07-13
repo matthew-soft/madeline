@@ -29,8 +29,12 @@ scraper = cloudscraper.create_scraper()
 
 
 class samp(Extension):
-    @slash_command(name="samp",
-        description="All SA-MP Commands", sub_cmd_name="wiki", sub_cmd_description="Returns an article from open.mp wiki.")
+    @slash_command(
+        name="samp",
+        description="All SA-MP Commands",
+        sub_cmd_name="wiki",
+        sub_cmd_description="Returns an article from open.mp wiki.",
+    )
     @slash_option(
         name="query",
         description="The wiki term to search",
@@ -97,7 +101,7 @@ class samp(Extension):
         name="samp",
         description="All SA-MP Commands",
         sub_cmd_name="query",
-        sub_cmd_description="Query your favorite SA-MP server"
+        sub_cmd_description="Query your favorite SA-MP server",
     )
     @slash_option(
         "ip",
