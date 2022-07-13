@@ -29,7 +29,8 @@ scraper = cloudscraper.create_scraper()
 
 
 class samp(Extension):
-    @slash_command("samp-wiki", description="Returns an article from open.mp wiki.")
+    @slash_command(name="samp",
+        description="All SA-MP Commands", sub_cmd_name="wiki", sub_cmd_description="Returns an article from open.mp wiki.")
     @slash_option(
         name="query",
         description="The wiki term to search",
@@ -93,7 +94,10 @@ class samp(Extension):
             return await ctx.send(embed=embed)  # Send the embed
 
     @slash_command(
-        "samp-query", description="Show SA-MP server info and basic player information"
+        name="samp",
+        description="All SA-MP Commands",
+        sub_cmd_name="query",
+        sub_cmd_description="Query your favorite SA-MP server"
     )
     @slash_option(
         "ip",
@@ -256,9 +260,12 @@ class samp(Extension):
             return await ctx.send(embed=embed)
 
     @slash_command(
-        name="query",
+        name="samp",
+        description="All SA-MP Commands",
+        group_name="bookmark",
+        group_description="Manage your guild SA-MP server bookmark",
         sub_cmd_name="add",
-        sub_cmd_description="Bookmark your server to the list of servers to query",
+        sub_cmd_description="Add your server to the bookmark",
     )
     @slash_option(
         "ip",
@@ -302,9 +309,12 @@ class samp(Extension):
             return await ctx.send(embed=embed)
 
     @slash_command(
-        name="query",
+        name="samp",
+        description="All SA-MP Commands",
+        group_name="bookmark",
+        group_description="Manage your guild SA-MP server bookmark",
         sub_cmd_name="edit",
-        sub_cmd_description="Edit your server's bookmark",
+        sub_cmd_description="Edit your SA-MP server's bookmark",
     )
     @slash_option(
         "ip",
@@ -350,7 +360,10 @@ class samp(Extension):
             return await ctx.send(embed=embed)
 
     @slash_command(
-        name="query",
+        name="samp",
+        description="All SA-MP Commands",
+        group_name="bookmark",
+        group_description="Manage your guild SA-MP server bookmark",
         sub_cmd_name="remove",
         sub_cmd_description="Remove your server's bookmark",
     )
