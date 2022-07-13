@@ -281,7 +281,7 @@ class tools(Extension):
     @slash_option("word", "Term to search for", OptionTypes.STRING, required=True)
     async def slash_urban(self, ctx, word: str):
         await self.urban(ctx, word)
-    
+
     def beaufort_scale(speed):
         if speed < 0:
             return "I don't fucking know"
@@ -311,7 +311,6 @@ class tools(Extension):
             return "Violent storm"
         else:
             return "Hurricane force"
-
 
     def pretty_weather(weather):
         weather = weather.lower()
