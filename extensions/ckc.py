@@ -178,7 +178,10 @@ class CoolKidsClub(Extension):
     bot: CustomClient
 
     @slash_command(
-        name="aesthetics", description="Generate aesthetics words from a string"
+        name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fonts",
+        group_description="Font Manipulation Commands",
+        sub_cmd_name="aesthetics", sub_cmd_description="Generate aesthetics words from a string"
     )
     @slash_option(
         name="text",
@@ -190,7 +193,9 @@ class CoolKidsClub(Extension):
         # respond to the interaction
         await ctx.send(aesthetics(text))
 
-    @slash_command(name="fraktur", description="Generate fraktur words from a string")
+    @slash_command(name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fonts",
+        group_description="Font Manipulation Commands", sub_cmd_name="fraktur", sub_cmd_description="Generate fraktur words from a string")
     @slash_option(
         name="text",
         description="The text to be converted",
@@ -202,7 +207,9 @@ class CoolKidsClub(Extension):
         await ctx.send(fraktur(text))
 
     @slash_command(
-        name="bold-fraktur", description="Generate bold fraktur words from a string"
+        name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fonts",
+        group_description="Font Manipulation Commands", sub_cmd_name="bold-fraktur", sub_cmd_description="Generate bold fraktur words from a string"
     )
     @slash_option(
         name="text",
@@ -214,7 +221,9 @@ class CoolKidsClub(Extension):
         # respond to the interaction
         await ctx.send(bold_fraktur(text))
 
-    @slash_command(name="fancy", description="Generate fancy words from a string")
+    @slash_command(name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fonts",
+        group_description="Font Manipulation Commands", sub_cmd_name="fancy", sub_cmd_description="Generate fancy words from a string")
     @slash_option(
         name="text",
         description="The text to be converted",
@@ -226,7 +235,10 @@ class CoolKidsClub(Extension):
         await ctx.send(fancy(text))
 
     @slash_command(
-        name="bold-fancy", description="Generate bold fancy words from a string"
+        name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fonts",
+        group_description="Font Manipulation Commands",
+        sub_cmd_name="bold-fancy", sub_cmd_description="Generate bold fancy words from a string"
     )
     @slash_option(
         name="text",
@@ -238,7 +250,9 @@ class CoolKidsClub(Extension):
         # respond to the interaction
         await ctx.send(bold_fancy(text))
 
-    @slash_command(name="double", description="Generate double font from a string")
+    @slash_command(name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fonts",
+        group_description="Font Manipulation Commands", sub_cmd_name="double", sub_cmd_description="Generate double font from a string")
     @slash_option(
         name="text",
         description="The text to be converted",
@@ -250,7 +264,10 @@ class CoolKidsClub(Extension):
         await ctx.send(double_font(text))
 
     @slash_command(
-        name="small-caps", description="Generate small caps words from a string"
+        name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fonts",
+        group_description="Font Manipulation Commands",
+        sub_cmd_name="small-caps", sub_cmd_description="Generate small caps words from a string"
     )
     @slash_option(
         name="text",
@@ -262,7 +279,9 @@ class CoolKidsClub(Extension):
         # respond to the interaction
         await ctx.send(smallcaps(text))
 
-    @slash_command(name="8ball", description="Ask the 8 Ball a question")
+    @slash_command(name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fun",
+        group_description="Fun Commands", sub_cmd_name="8ball", sub_cmd_description="Ask the 8 Ball a question")
     @slash_option(
         name="question",
         description="The question you wanna ask 8 Ball (could be empty)",
@@ -282,7 +301,9 @@ class CoolKidsClub(Extension):
         # respond to the interaction
         await ctx.send(random.choice(("Heads", "Tails")))
 
-    @slash_command(name="dice", description="Roll a dice")
+    @slash_command(name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fun",
+        group_description="Fun Commands", sub_cmd_name="dice", sub_cmd_description="Roll a dice")
     @slash_option(
         name="sides",
         description="The number of sides on the dice",
@@ -318,7 +339,9 @@ class CoolKidsClub(Extension):
                 )
             )
 
-    @slash_command("lmgtfy", description="Create a lmgtfy link.")
+    @slash_command(name="ckc", description="Cool Kids Commands™ 😎",
+        group_name="fun",
+        group_description="Fun Commands", sub_cmd_name="lmgtfy", sub_cmd_description="Create a lmgtfy link.")
     @slash_option(
         "search_terms", "Term to search for", OptionTypes.STRING, required=True
     )
