@@ -137,15 +137,15 @@ class stats(Extension):
         about.set_footer(
             text="Made with 💖 with NAFF", icon_url="http://i.imgur.com/5BFecvA.png"
         )
-        
+
         embeds = [embed, about]
 
         paginators = Paginator(
-                client=self.bot,
-                pages=embeds,
-                timeout_interval=30,
-                show_select_menu=False,
-            )
+            client=self.bot,
+            pages=embeds,
+            timeout_interval=30,
+            show_select_menu=False,
+        )
         return await paginators.send(ctx)
 
     @slash_command("ping", description="Check the bot's latency")
