@@ -59,7 +59,7 @@ class stats(Extension):
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
 
         embed = Embed(
-            description=f"Visit our [Official Documentations](https://madeline.my.id) for more info.\n[Join our Discord Server](https://discord.gg/mxkvjpknTN).\n[Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
+            description=f"[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
             color=0x0083F5,
         )
         embed.set_author(
@@ -109,7 +109,7 @@ class stats(Extension):
         about.description = (
             "A Multifunctional SA-MP Discord Bot written in NAFF (python)"
         )
-        embed.set_author(
+        about.set_author(
             name="Madeline™, The Discord Bot",
             url="https://discord.gg/mxkvjpknTN",
             icon_url=self.bot.user.avatar.url,
