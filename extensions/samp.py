@@ -130,9 +130,6 @@ class samp(Extension):
                     color=0xFF0000,
                 )
                 return await ctx.send(embed=embed)
-                return await ctx.send(
-                    "Cannot find server info in database. Please use <:slash:894692029941039194>`samp bookmark add` to add your server info to bookmark."
-                )
 
         try:
             with SampClient(address=ip, port=port) as kung:
@@ -210,6 +207,7 @@ class samp(Extension):
                     text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar.url,
                 )
+                p_info.timestamp = datetime.datetime.utcnow()
             else:
                 if info.players > 10:
                     p_info = Embed(
