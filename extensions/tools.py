@@ -281,6 +281,158 @@ class tools(Extension):
     @slash_option("word", "Term to search for", OptionTypes.STRING, required=True)
     async def slash_urban(self, ctx, word: str):
         await self.urban(ctx, word)
+    
+    def beaufort_scale(speed):
+        if speed < 0:
+            return "I don't fucking know"
+        elif speed <= 0.3:
+            return "Calm"
+        elif speed <= 1.5:
+            return "Light air"
+        elif speed <= 3.3:
+            return "Light breeze"
+        elif speed <= 5.5:
+            return "Gentle breeze"
+        elif speed <= 7.9:
+            return "Moderate breeze"
+        elif speed <= 10.7:
+            return "Fresh breeze"
+        elif speed <= 13.8:
+            return "Strong breeze"
+        elif speed <= 17.1:
+            return "Moderate gale"
+        elif speed <= 20.7:
+            return "Gale"
+        elif speed <= 24.4:
+            return "Strong gale"
+        elif speed <= 28.4:
+            return "Storm"
+        elif speed <= 32.6:
+            return "Violent storm"
+        else:
+            return "Hurricane force"
+
+
+    def pretty_weather(weather):
+        weather = weather.lower()
+        if weather == "light rain":
+            return "Light rain"
+        elif weather == "snow":
+            return "Snow"
+        elif weather == "light intensity drizzle":
+            return "Light intensity drizzle"
+        elif weather == "light snow":
+            return "Light snow"
+        elif weather == "broken clouds":
+            return "Broken clouds"
+        elif weather == "clear sky":
+            return "Clear sky"
+        elif weather == "haze":
+            return "Haze"
+        elif weather == "overcast clouds":
+            return "Overcast clouds"
+        elif weather == "mist":
+            return "Mist"
+        elif weather == "few clouds":
+            return "Few clouds"
+        elif weather == "scattered clouds":
+            return "Scattered clouds"
+        elif weather == "moderate rain":
+            return "Moderate rain"
+        elif weather == "shower rain":
+            return "Shower rain"
+        else:
+            return weather.capitalize()
+
+    @slash_command(name="weather", description="Get the weather for a city")
+    @slash_option(
+        name="city",
+        description="The city you wanna get the weather for",
+        required=True,
+        opt_type=OptionTypes.STRING,
+    )
+    async def weather(self, ctx: InteractionContext, city: str):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                "http://api.openweathermap.org/data/2.5/weather?q="
+                + city
+                + f"&appid={os.getenv('OWM_TOKEN')}"
+            ) as r:
+                json_object = await r.json()
+        if json_object["cod"] != "404":
+            return await ctx.send("City not found")
+        temp_k = float(json_object["main"]["temp"])
+        temp_c = temp_k - 273.15
+        temp_f = temp_c * (9 / 5) + 32
+        (
+            city,
+            country,
+            weather,
+            humidity,
+            temp_min,
+            temp_max,
+            windspeed,
+            sunrise,
+            sunset,
+            lon,
+            lat,
+        ) = (
+            json_object["name"],
+            json_object["sys"]["country"],
+            json_object["weather"][0]["description"],
+            json_object["main"]["humidity"],
+            json_object["main"]["temp_min"],
+            json_object["main"]["temp_max"],
+            json_object["wind"]["speed"],
+            json_object["sys"]["sunrise"],
+            json_object["sys"]["sunset"],
+            json_object["coord"]["lon"],
+            json_object["coord"]["lat"],
+        )
+        temp_min = temp_min - 273.15
+        temp_max = temp_max - 273.15
+        user = ctx.author
+        em = Embed(
+            title="Weather in {0}, {1}".format(city, country),
+            description="",
+            color=0x00FF00,
+        )
+        em.add_field(
+            name=":earth_africa: Location", value=f"{city}, {country}", inline=True
+        )
+        em.add_field(
+            name=":straight_ruler: Lat,Long", value=f"{lat}, {lon}", inline=True
+        )
+        em.add_field(
+            name=":cloud: Condition", value=pretty_weather(weather), inline=True
+        )
+        em.add_field(name=":sweat: Humidity", value="{}%".format(humidity), inline=True)
+        em.add_field(
+            name=":dash: Wind speed",
+            value="{}m/s\n{}".format(windspeed, beaufort_scale(windspeed), inline=True),
+        )
+        em.add_field(
+            name=":thermometer: Temperature",
+            value="{0:.1f}°C\n{1:.1f}°F".format(temp_c, temp_f),
+            inline=True,
+        )
+        em.add_field(
+            name=":high_brightness: Min - Max",
+            value="{0:.1f}°C - {0:.1f}°C".format(temp_min, temp_max),
+            inline=True,
+        )
+        em.add_field(
+            name=":sunrise_over_mountains: Sunrise",
+            value=f"<t:{sunrise}:t>",
+            inline=True,
+        )
+        em.add_field(name=":city_sunset: Sunset", value=f"<t:{sunset}:t>", inline=True)
+        em.set_footer(
+            text=f"Requested by {ctx.author} | Powered by https://openweathermap.org",
+            icon_url=ctx.author.avatar.url,
+        )
+        em.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed=em)
 
     @slash_command(
         "konesyntees",
