@@ -5,6 +5,7 @@ from typing import Optional
 import cloudscraper
 from dotenv import load_dotenv
 from naff import (
+    AutocompleteContext,
     Embed,
     Extension,
     OptionTypes,
@@ -13,7 +14,6 @@ from naff import (
     check,
     slash_command,
     slash_option,
-    AutocompleteContext,
 )
 from naff.ext.paginators import Paginator
 from pymongo import MongoClient
