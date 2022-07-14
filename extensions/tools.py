@@ -450,6 +450,20 @@ class tools(Extension):
                 last = level
         return last
 
+    @slash_command(name="tools",
+    description="Tools commands",
+    sub_cmd_name="ping", sub_cmd_description="Check the bot's latency")
+    async def ping(self, ctx: InteractionContext):
+        results = Embed(
+            color=0x0083F5,
+            title="🏓 Pong!",
+            description=(f"🌐 WebSocket latency: {self.bot.latency * 1000:.2f}ms\n"),
+        )
+        results.set_footer(
+            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
+        )
+        results.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed=results)
 
 def setup(bot):
     # This is called by dis-snek so it knows how to load the Extension

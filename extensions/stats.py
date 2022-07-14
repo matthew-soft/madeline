@@ -148,19 +148,6 @@ class stats(Extension):
         )
         return await paginators.send(ctx)
 
-    @slash_command("ping", description="Check the bot's latency")
-    async def ping(self, ctx: InteractionContext):
-        results = Embed(
-            color=0x0083F5,
-            title="🏓 Pong!",
-            description=(f"🌐 WebSocket latency: {self.bot.latency * 1000:.2f}ms\n"),
-        )
-        results.set_footer(
-            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
-        )
-        results.timestamp = datetime.datetime.utcnow()
-        await ctx.send(embed=results)
-
     async def send_guild_stats(self, e, guild):
         owner = await self.bot.fetch_user(guild._owner_id)
         e.add_field(name="Name", value=guild.name)
