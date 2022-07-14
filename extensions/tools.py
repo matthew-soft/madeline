@@ -49,6 +49,48 @@ class tools(Extension):
             )
             return await ctx.send(embed=embed)
 
+    @context_menu("User Info", CommandTypes.USER)
+    async def context_userinfo(self, ctx):
+        member = ctx.guild.get_member(ctx.target_id)
+        embed = Embed(color=0x00FF00)
+        embed.set_author(
+            name=str(member),
+            url="https://discordapp.com/users/{}".format(member.id),
+            icon_url=member.avatar.url,
+        )
+        embed.set_thumbnail(url=member.avatar.url)
+        developer = self.bot.owner.id
+        owner = ctx.guild._owner_id
+        embed.add_field(
+            name=f"Joined Discord On:",
+            value=f"<t:{int(member.created_at.timestamp())}:F> (<t:{int(member.created_at.timestamp())}:R>)",
+            inline=False,
+        )
+        embed.add_field(
+            name=f"Joined Server At:",
+            value=f"<t:{int(member.joined_at.timestamp())}:F> (<t:{int(member.joined_at.timestamp())}:R>)",
+            inline=False,
+        )
+        members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
+        embed.add_field(name="User ID:", value=f"{member.id}", inline=False)
+        if len(member.roles) > 1:
+            res = member.roles[::-1]
+            role_string = ", ".join([r.mention for r in res][:-1])
+            embed.add_field(
+                name="Roles:",
+                value=role_string,
+                inline=False,
+            )
+        if member.id == owner:
+            embed.add_field(name="Acknowledgements", value="Server Owner", inline=False)
+        if member.id == developer:
+            embed.add_field(name="Team", value="Bot Owner and Developer", inline=False)
+        embed.set_footer(
+            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed=embed)
+
     @slash_command(
         name="tools",
         description="Tools commands",
@@ -156,48 +198,6 @@ class tools(Extension):
         embed.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=embed)
 
-    @context_menu("User Info", CommandTypes.USER)
-    async def context_userinfo(self, ctx):
-        member = ctx.guild.get_member(ctx.target_id)
-        embed = Embed(color=0x00FF00)
-        embed.set_author(
-            name=str(member),
-            url="https://discordapp.com/users/{}".format(member.id),
-            icon_url=member.avatar.url,
-        )
-        embed.set_thumbnail(url=member.avatar.url)
-        developer = self.bot.owner.id
-        owner = ctx.guild._owner_id
-        embed.add_field(
-            name=f"Joined Discord On:",
-            value=f"<t:{int(member.created_at.timestamp())}:F> (<t:{int(member.created_at.timestamp())}:R>)",
-            inline=False,
-        )
-        embed.add_field(
-            name=f"Joined Server At:",
-            value=f"<t:{int(member.joined_at.timestamp())}:F> (<t:{int(member.joined_at.timestamp())}:R>)",
-            inline=False,
-        )
-        members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
-        embed.add_field(name="User ID:", value=f"{member.id}", inline=False)
-        if len(member.roles) > 1:
-            res = member.roles[::-1]
-            role_string = ", ".join([r.mention for r in res][:-1])
-            embed.add_field(
-                name="Roles:",
-                value=role_string,
-                inline=False,
-            )
-        if member.id == owner:
-            embed.add_field(name="Acknowledgements", value="Server Owner", inline=False)
-        if member.id == developer:
-            embed.add_field(name="Team", value="Bot Owner and Developer", inline=False)
-        embed.set_footer(
-            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await ctx.send(embed=embed)
-
     @slash_command(
         name="tools",
         description="Tools commands",
@@ -207,9 +207,12 @@ class tools(Extension):
         sub_cmd_description="Get information about the server",
     )
     async def slash_server_info(self, ctx):
+        g_icon = ''
+        if ctx.guild.icon:
+            g_icon = ctx.guild.icon.url
         _embed = Embed(title="Server info", color="#f2e785")
-        _embed.set_author(name=f"{ctx.guild.name}", icon_url=ctx.guild.icon.url)
-        _embed.set_thumbnail(url=ctx.guild.icon.url)
+        _embed.set_author(name=f"{ctx.guild.name}", icon_url=g_icon)
+        _embed.set_thumbnail(url=g_icon)
         _embed.add_field(
             name=":globe_with_meridians: Server ID",
             value=f"``{ctx.guild_id}``",
@@ -221,7 +224,7 @@ class tools(Extension):
         _embed.add_field(name="Owner", value=f"<@{ctx.guild._owner_id}>", inline=True)
         _embed.add_field(
             name=f":busts_in_silhouette:Members - {ctx.guild.member_count}",
-            value=f"**Boost level:** {ctx.guild.premium_tier} | **Boosts:** {ctx.guild.premium_subscription_count} \n **Users:** {len([user for user in ctx.guild.members if not user.user.bot])} | **Bots:** {ctx.guild.member_count - len([user for user in ctx.guild.members if not user.user.bot])}",
+            value=f"**Boost level:** {ctx.guild.premium_tier} | **Boosts:** {ctx.guild.premium_subscription_count}",
             inline=True,
         )
         _embed.add_field(
@@ -395,8 +398,10 @@ class tools(Extension):
         await ctx.send(embed=em)
 
     @slash_command(
-        "konesyntees",
-        description="Use superior Estonian technology to express your feelings like you've never before!",
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="konesyntees",
+        sub_cmd_description="Use superior Estonian technology to express your feelings like you've never before!",
     )
     @slash_option("input", "Konesyntezing input", OptionTypes.STRING, required=True)
     @slash_option(
@@ -442,7 +447,9 @@ class tools(Extension):
             os.remove(path=pepek)
 
     @slash_command(
-        "ddocs", description="Scours the discord api documentations for help"
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="ddocs", sub_cmd_description="Scours the discord api documentations for help"
     )
     @slash_option(
         name="search_term",
@@ -491,7 +498,7 @@ class tools(Extension):
         sub_cmd_name="ping",
         sub_cmd_description="Check the bot's latency",
     )
-    async def ping(self, ctx: InteractionContext):
+    async def ping(self, ctx):
         results = Embed(
             color=0x0083F5,
             title="🏓 Pong!",
