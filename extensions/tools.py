@@ -49,7 +49,11 @@ class tools(Extension):
             )
             return await ctx.send(embed=embed)
 
-    @slash_command("guild-avatar", description="See your/other member guild avatar.")
+    @slash_command(name="tools",
+    description="Tools commands",
+    group_name="user",
+    group_description="User related commands",
+    sub_cmd_name="guild-avatar", sub_cmd_description="See your/other member guild avatar.")
     @slash_option(
         name="member",
         description="The target @member",
@@ -73,7 +77,11 @@ class tools(Extension):
         user = self.bot.get_user(ctx.target.id)
         await ctx.send(user.avatar.url)
 
-    @slash_command("avatar", description="See your/other member avatar.")
+    @slash_command(name="tools",
+    description="Tools commands",
+    group_name="user",
+    group_description="User related commands",
+    sub_cmd_name="avatar", sub_cmd_description="See your/other member avatar.")
     @slash_option(
         name="member",
         description="The target @member",
@@ -85,7 +93,11 @@ class tools(Extension):
             member = ctx.author
         return await ctx.send(member.avatar.url)
 
-    @slash_command("user-info", description="Get information about a member")
+    @slash_command(name="tools",
+    description="Tools commands",
+    group_name="user",
+    group_description="User related commands",
+    sub_cmd_name="info", sub_cmd_description="Get information about a member")
     @slash_option(
         name="member",
         description="The target @member",
@@ -178,8 +190,12 @@ class tools(Extension):
         await ctx.send(embed=embed)
 
     @slash_command(
-        name="server-info",
-        description="Get information about the server",
+        name="tools",
+    description="Tools commands",
+    group_name="server",
+    group_description="Server related commands",
+    sub_cmd_name="info",
+        sub_cmd_description="Get information about the server",
     )
     async def slash_server_info(self, ctx):
         _embed = Embed(title="Server info", color="#f2e785")
@@ -206,7 +222,9 @@ class tools(Extension):
         )
         await ctx.send(embed=_embed)
 
-    @slash_command("urban", description="Search for a term on the Urban Dictionary")
+    @slash_command(name="tools",
+    description="Tools commands",
+    sub_cmd_name="urban", sub_cmd_description="Search for a term on the Urban Dictionary")
     @slash_option("word", "Term to search for", OptionTypes.STRING, required=True)
     async def slash_urban(self, ctx, word: str):
         try:
@@ -269,7 +287,9 @@ class tools(Extension):
                 "No Urban Dictionary entries were found, or there was an error in the process."
             )
 
-    @slash_command(name="weather", description="Get the weather for a city")
+    @slash_command(name="tools",
+    description="Tools commands",
+    sub_cmd_name="weather", sub_cmd_description="Get the weather for a city")
     @slash_option(
         name="city",
         description="The city you wanna get the weather for",
