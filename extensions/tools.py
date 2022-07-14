@@ -207,7 +207,7 @@ class tools(Extension):
         sub_cmd_description="Get information about the server",
     )
     async def slash_server_info(self, ctx):
-        g_icon = ''
+        g_icon = ""
         if ctx.guild.icon:
             g_icon = ctx.guild.icon.url
         _embed = Embed(title="Server info", color="#f2e785")
@@ -449,7 +449,8 @@ class tools(Extension):
     @slash_command(
         name="tools",
         description="Tools commands",
-        sub_cmd_name="ddocs", sub_cmd_description="Scours the discord api documentations for help"
+        sub_cmd_name="ddocs",
+        sub_cmd_description="Scours the discord api documentations for help",
     )
     @slash_option(
         name="search_term",
