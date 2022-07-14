@@ -16,7 +16,6 @@ from naff import (
 )
 
 from core.base import CustomClient
-
 from utilities.ckc import *
 
 
@@ -164,7 +163,9 @@ class CoolKidsClub(Extension):
         opt_type=OptionTypes.STRING,
     )
     async def ball(self, ctx: InteractionContext, question=None):
-        await ctx.send(":8ball: | {}, **{}**".format(ball_response(), ctx.author.display_name))
+        await ctx.send(
+            ":8ball: | {}, **{}**".format(ball_response(), ctx.author.display_name)
+        )
 
     @slash_command(
         name="ckc",
