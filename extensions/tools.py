@@ -22,6 +22,7 @@ from naff import (
     slash_option,
 )
 from naff.ext.paginators import Paginator
+
 from utilities.weather import *
 
 load_dotenv()
@@ -47,7 +48,6 @@ class tools(Extension):
                 color=0xFF0000,
             )
             return await ctx.send(embed=embed)
-
 
     @slash_command("guild-avatar", description="See your/other member guild avatar.")
     @slash_option(

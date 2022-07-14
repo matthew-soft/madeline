@@ -28,6 +28,7 @@ def beaufort_scale(speed):
     else:
         return "Hurricane force"
 
+
 def pretty_weather(weather):
     weather = weather.lower()
     if weather == "light rain":
