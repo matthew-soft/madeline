@@ -22,6 +22,7 @@ from naff import (
     slash_option,
 )
 from naff.ext.paginators import Paginator
+from utilities.weather import *
 
 load_dotenv()
 
@@ -47,7 +48,15 @@ class tools(Extension):
             )
             return await ctx.send(embed=embed)
 
-    async def guild_avatar(self, ctx, member: naff.Member = None):
+
+    @slash_command("guild-avatar", description="See your/other member guild avatar.")
+    @slash_option(
+        name="member",
+        description="The target @member",
+        required=False,
+        opt_type=OptionTypes.USER,
+    )
+    async def slash_guild_avatar(self, ctx, member: naff.Member = None):
         if member is None:
             member = ctx.author
         if member.guild_avatar is not None:
@@ -59,25 +68,10 @@ class tools(Extension):
             )
             return await ctx.send(embed=embed)
 
-    @slash_command("guild-avatar", description="See your/other member guild avatar.")
-    @slash_option(
-        name="member",
-        description="The target @member",
-        required=False,
-        opt_type=OptionTypes.USER,
-    )
-    async def slash_guild_avatar(self, ctx, member: naff.Member = None):
-        await self.guild_avatar(ctx, member)
-
     @context_menu("Avatar", CommandTypes.USER)
     async def context_avatar(self, ctx):
         user = self.bot.get_user(ctx.target.id)
         await ctx.send(user.avatar.url)
-
-    async def avatar(self, ctx, member: naff.Member = None):
-        if member is None:
-            member = ctx.author
-        return await ctx.send(member.avatar.url)
 
     @slash_command("avatar", description="See your/other member avatar.")
     @slash_option(
@@ -87,9 +81,18 @@ class tools(Extension):
         opt_type=OptionTypes.USER,
     )
     async def slash_avatar(self, ctx, member: naff.Member = None):
-        await self.avatar(ctx, member)
+        if member is None:
+            member = ctx.author
+        return await ctx.send(member.avatar.url)
 
-    async def userinfo(self, ctx, member: naff.Member = None):
+    @slash_command("user-info", description="Get information about a member")
+    @slash_option(
+        name="member",
+        description="The target @member",
+        required=False,
+        opt_type=OptionTypes.USER,
+    )
+    async def slash_userinfo(self, ctx, member: naff.Member = None):
         if member is None:
             member = ctx.author
 
@@ -131,16 +134,6 @@ class tools(Extension):
         )
         embed.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=embed)
-
-    @slash_command("user-info", description="Get information about a member")
-    @slash_option(
-        name="member",
-        description="The target @member",
-        required=False,
-        opt_type=OptionTypes.USER,
-    )
-    async def slash_userinfo(self, ctx, member: naff.Member = None):
-        await self.userinfo(ctx, member)
 
     @context_menu("User Info", CommandTypes.USER)
     async def context_userinfo(self, ctx):
@@ -184,7 +177,11 @@ class tools(Extension):
         embed.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=embed)
 
-    async def server_info(self, ctx):
+    @slash_command(
+        name="server-info",
+        description="Get information about the server",
+    )
+    async def slash_server_info(self, ctx):
         _embed = Embed(title="Server info", color="#f2e785")
         _embed.set_author(name=f"{ctx.guild.name}", icon_url=ctx.guild.icon.url)
         _embed.set_thumbnail(url=ctx.guild.icon.url)
@@ -209,14 +206,9 @@ class tools(Extension):
         )
         await ctx.send(embed=_embed)
 
-    @slash_command(
-        name="server-info",
-        description="Get information about the server",
-    )
-    async def slash_server_info(self, ctx):
-        await self.server_info(ctx)
-
-    async def urban(self, ctx, word: str):
+    @slash_command("urban", description="Search for a term on the Urban Dictionary")
+    @slash_option("word", "Term to search for", OptionTypes.STRING, required=True)
+    async def slash_urban(self, ctx, word: str):
         try:
             url = "https://api.urbandictionary.com/v0/define"
 
@@ -277,11 +269,6 @@ class tools(Extension):
                 "No Urban Dictionary entries were found, or there was an error in the process."
             )
 
-    @slash_command("urban", description="Search for a term on the Urban Dictionary")
-    @slash_option("word", "Term to search for", OptionTypes.STRING, required=True)
-    async def slash_urban(self, ctx, word: str):
-        await self.urban(ctx, word)
-
     @slash_command(name="weather", description="Get the weather for a city")
     @slash_option(
         name="city",
@@ -297,7 +284,7 @@ class tools(Extension):
                 + f"&appid={os.getenv('OWM_TOKEN')}"
             ) as r:
                 json_object = await r.json()
-        if json_object["cod"] != "404":
+        if json_object["cod"] == "404":
             return await ctx.send("City not found")
         temp_k = float(json_object["main"]["temp"])
         temp_c = temp_k - 273.15
