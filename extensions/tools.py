@@ -23,6 +23,8 @@ from naff import (
 )
 from naff.ext.paginators import Paginator
 
+from utilities.weather import *
+
 load_dotenv()
 
 
@@ -46,101 +48,6 @@ class tools(Extension):
                 color=0xFF0000,
             )
             return await ctx.send(embed=embed)
-
-    async def guild_avatar(self, ctx, member: naff.Member = None):
-        if member is None:
-            member = ctx.author
-        if member.guild_avatar is not None:
-            return await ctx.send(member.guild_avatar.url)
-        else:
-            embed = Embed(
-                description=f"<:cross:839158779815657512> {member.display_name} doesn't have an guild avatar!",
-                color=0xFF0000,
-            )
-            return await ctx.send(embed=embed)
-
-    @slash_command("guild-avatar", description="See your/other member guild avatar.")
-    @slash_option(
-        name="member",
-        description="The target @member",
-        required=False,
-        opt_type=OptionTypes.USER,
-    )
-    async def slash_guild_avatar(self, ctx, member: naff.Member = None):
-        await self.guild_avatar(ctx, member)
-
-    @context_menu("Avatar", CommandTypes.USER)
-    async def context_avatar(self, ctx):
-        user = self.bot.get_user(ctx.target.id)
-        await ctx.send(user.avatar.url)
-
-    async def avatar(self, ctx, member: naff.Member = None):
-        if member is None:
-            member = ctx.author
-        return await ctx.send(member.avatar.url)
-
-    @slash_command("avatar", description="See your/other member avatar.")
-    @slash_option(
-        name="member",
-        description="The target @member",
-        required=False,
-        opt_type=OptionTypes.USER,
-    )
-    async def slash_avatar(self, ctx, member: naff.Member = None):
-        await self.avatar(ctx, member)
-
-    async def userinfo(self, ctx, member: naff.Member = None):
-        if member is None:
-            member = ctx.author
-
-        embed = Embed(color=0x00FF00)
-        embed.set_author(
-            name=str(member),
-            url="https://discordapp.com/users/{}".format(member.id),
-            icon_url=member.avatar.url,
-        )
-        embed.set_thumbnail(url=member.avatar.url)
-        developer = self.bot.owner.id
-        owner = ctx.guild._owner_id
-        embed.add_field(
-            name=f"Joined Discord On:",
-            value=f"<t:{int(member.created_at.timestamp())}:F> (<t:{int(member.created_at.timestamp())}:R>)",
-            inline=False,
-        )
-        embed.add_field(
-            name=f"Joined Server At:",
-            value=f"<t:{int(member.joined_at.timestamp())}:F> (<t:{int(member.joined_at.timestamp())}:R>)",
-            inline=False,
-        )
-        members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
-        embed.add_field(name="User ID:", value=f"{member.id}", inline=False)
-        if len(member.roles) > 1:
-            res = member.roles[::-1]
-            role_string = ", ".join([r.mention for r in res][:-1])
-            embed.add_field(
-                name="Roles:",
-                value=role_string,
-                inline=False,
-            )
-        if member.id == owner:
-            embed.add_field(name="Acknowledgements", value="Server Owner", inline=False)
-        if member.id == developer:
-            embed.add_field(name="Team", value="Bot Owner and Developer", inline=False)
-        embed.set_footer(
-            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
-        )
-        embed.timestamp = datetime.datetime.utcnow()
-        await ctx.send(embed=embed)
-
-    @slash_command("user-info", description="Get information about a member")
-    @slash_option(
-        name="member",
-        description="The target @member",
-        required=False,
-        opt_type=OptionTypes.USER,
-    )
-    async def slash_userinfo(self, ctx, member: naff.Member = None):
-        await self.userinfo(ctx, member)
 
     @context_menu("User Info", CommandTypes.USER)
     async def context_userinfo(self, ctx):
@@ -184,10 +91,128 @@ class tools(Extension):
         embed.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=embed)
 
-    async def server_info(self, ctx):
+    @slash_command(
+        name="tools",
+        description="Tools commands",
+        group_name="user",
+        group_description="User related commands",
+        sub_cmd_name="guild-avatar",
+        sub_cmd_description="See your/other member guild avatar.",
+    )
+    @slash_option(
+        name="member",
+        description="The target @member",
+        required=False,
+        opt_type=OptionTypes.USER,
+    )
+    async def slash_guild_avatar(self, ctx, member: naff.Member = None):
+        if member is None:
+            member = ctx.author
+        if member.guild_avatar is not None:
+            return await ctx.send(member.guild_avatar.url)
+        else:
+            embed = Embed(
+                description=f"<:cross:839158779815657512> {member.display_name} doesn't have an guild avatar!",
+                color=0xFF0000,
+            )
+            return await ctx.send(embed=embed)
+
+    @context_menu("Avatar", CommandTypes.USER)
+    async def context_avatar(self, ctx):
+        user = self.bot.get_user(ctx.target.id)
+        await ctx.send(user.avatar.url)
+
+    @slash_command(
+        name="tools",
+        description="Tools commands",
+        group_name="user",
+        group_description="User related commands",
+        sub_cmd_name="avatar",
+        sub_cmd_description="See your/other member avatar.",
+    )
+    @slash_option(
+        name="member",
+        description="The target @member",
+        required=False,
+        opt_type=OptionTypes.USER,
+    )
+    async def slash_avatar(self, ctx, member: naff.Member = None):
+        if member is None:
+            member = ctx.author
+        return await ctx.send(member.avatar.url)
+
+    @slash_command(
+        name="tools",
+        description="Tools commands",
+        group_name="user",
+        group_description="User related commands",
+        sub_cmd_name="info",
+        sub_cmd_description="Get information about a member",
+    )
+    @slash_option(
+        name="member",
+        description="The target @member",
+        required=False,
+        opt_type=OptionTypes.USER,
+    )
+    async def slash_userinfo(self, ctx, member: naff.Member = None):
+        if member is None:
+            member = ctx.author
+
+        embed = Embed(color=0x00FF00)
+        embed.set_author(
+            name=str(member),
+            url="https://discordapp.com/users/{}".format(member.id),
+            icon_url=member.avatar.url,
+        )
+        embed.set_thumbnail(url=member.avatar.url)
+        developer = self.bot.owner.id
+        owner = ctx.guild._owner_id
+        embed.add_field(
+            name=f"Joined Discord On:",
+            value=f"<t:{int(member.created_at.timestamp())}:F> (<t:{int(member.created_at.timestamp())}:R>)",
+            inline=False,
+        )
+        embed.add_field(
+            name=f"Joined Server At:",
+            value=f"<t:{int(member.joined_at.timestamp())}:F> (<t:{int(member.joined_at.timestamp())}:R>)",
+            inline=False,
+        )
+        members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
+        embed.add_field(name="User ID:", value=f"{member.id}", inline=False)
+        if len(member.roles) > 1:
+            res = member.roles[::-1]
+            role_string = ", ".join([r.mention for r in res][:-1])
+            embed.add_field(
+                name="Roles:",
+                value=role_string,
+                inline=False,
+            )
+        if member.id == owner:
+            embed.add_field(name="Acknowledgements", value="Server Owner", inline=False)
+        if member.id == developer:
+            embed.add_field(name="Team", value="Bot Owner and Developer", inline=False)
+        embed.set_footer(
+            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
+        )
+        embed.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed=embed)
+
+    @slash_command(
+        name="tools",
+        description="Tools commands",
+        group_name="server",
+        group_description="Server related commands",
+        sub_cmd_name="info",
+        sub_cmd_description="Get information about the server",
+    )
+    async def slash_server_info(self, ctx):
+        g_icon = ""
+        if ctx.guild.icon:
+            g_icon = ctx.guild.icon.url
         _embed = Embed(title="Server info", color="#f2e785")
-        _embed.set_author(name=f"{ctx.guild.name}", icon_url=ctx.guild.icon.url)
-        _embed.set_thumbnail(url=ctx.guild.icon.url)
+        _embed.set_author(name=f"{ctx.guild.name}", icon_url=g_icon)
+        _embed.set_thumbnail(url=g_icon)
         _embed.add_field(
             name=":globe_with_meridians: Server ID",
             value=f"``{ctx.guild_id}``",
@@ -199,7 +224,7 @@ class tools(Extension):
         _embed.add_field(name="Owner", value=f"<@{ctx.guild._owner_id}>", inline=True)
         _embed.add_field(
             name=f":busts_in_silhouette:Members - {ctx.guild.member_count}",
-            value=f"**Boost level:** {ctx.guild.premium_tier} | **Boosts:** {ctx.guild.premium_subscription_count} \n **Users:** {len([user for user in ctx.guild.members if not user.user.bot])} | **Bots:** {ctx.guild.member_count - len([user for user in ctx.guild.members if not user.user.bot])}",
+            value=f"**Boost level:** {ctx.guild.premium_tier} | **Boosts:** {ctx.guild.premium_subscription_count}",
             inline=True,
         )
         _embed.add_field(
@@ -210,13 +235,13 @@ class tools(Extension):
         await ctx.send(embed=_embed)
 
     @slash_command(
-        name="server-info",
-        description="Get information about the server",
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="urban",
+        sub_cmd_description="Search for a term on the Urban Dictionary",
     )
-    async def slash_server_info(self, ctx):
-        await self.server_info(ctx)
-
-    async def urban(self, ctx, word: str):
+    @slash_option("word", "Term to search for", OptionTypes.STRING, required=True)
+    async def slash_urban(self, ctx, word: str):
         try:
             url = "https://api.urbandictionary.com/v0/define"
 
@@ -277,14 +302,106 @@ class tools(Extension):
                 "No Urban Dictionary entries were found, or there was an error in the process."
             )
 
-    @slash_command("urban", description="Search for a term on the Urban Dictionary")
-    @slash_option("word", "Term to search for", OptionTypes.STRING, required=True)
-    async def slash_urban(self, ctx, word: str):
-        await self.urban(ctx, word)
+    @slash_command(
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="weather",
+        sub_cmd_description="Get the weather for a city",
+    )
+    @slash_option(
+        name="city",
+        description="The city you wanna get the weather for",
+        required=True,
+        opt_type=OptionTypes.STRING,
+    )
+    async def weather(self, ctx, city: str):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                "http://api.openweathermap.org/data/2.5/weather?q="
+                + city
+                + f"&appid={os.getenv('OWM_TOKEN')}"
+            ) as r:
+                json_object = await r.json()
+        if json_object["cod"] == "404":
+            return await ctx.send("City not found")
+        temp_k = float(json_object["main"]["temp"])
+        temp_c = temp_k - 273.15
+        temp_f = temp_c * (9 / 5) + 32
+        (
+            city,
+            country,
+            weather,
+            humidity,
+            temp_min,
+            temp_max,
+            windspeed,
+            sunrise,
+            sunset,
+            lon,
+            lat,
+        ) = (
+            json_object["name"],
+            json_object["sys"]["country"],
+            json_object["weather"][0]["description"],
+            json_object["main"]["humidity"],
+            json_object["main"]["temp_min"],
+            json_object["main"]["temp_max"],
+            json_object["wind"]["speed"],
+            json_object["sys"]["sunrise"],
+            json_object["sys"]["sunset"],
+            json_object["coord"]["lon"],
+            json_object["coord"]["lat"],
+        )
+        temp_min = temp_min - 273.15
+        temp_max = temp_max - 273.15
+        user = ctx.author
+        em = Embed(
+            title="Weather in {0}, {1}".format(city, country),
+            description="",
+            color=0x00FF00,
+        )
+        em.add_field(
+            name=":earth_africa: Location", value=f"{city}, {country}", inline=True
+        )
+        em.add_field(
+            name=":straight_ruler: Lat,Long", value=f"{lat}, {lon}", inline=True
+        )
+        em.add_field(
+            name=":cloud: Condition", value=pretty_weather(weather), inline=True
+        )
+        em.add_field(name=":sweat: Humidity", value="{}%".format(humidity), inline=True)
+        em.add_field(
+            name=":dash: Wind speed",
+            value="{}m/s\n{}".format(windspeed, beaufort_scale(windspeed), inline=True),
+        )
+        em.add_field(
+            name=":thermometer: Temperature",
+            value="{0:.1f}°C\n{1:.1f}°F".format(temp_c, temp_f),
+            inline=True,
+        )
+        em.add_field(
+            name=":high_brightness: Min - Max",
+            value="{0:.1f}°C - {0:.1f}°C".format(temp_min, temp_max),
+            inline=True,
+        )
+        em.add_field(
+            name=":sunrise_over_mountains: Sunrise",
+            value=f"<t:{sunrise}:t>",
+            inline=True,
+        )
+        em.add_field(name=":city_sunset: Sunset", value=f"<t:{sunset}:t>", inline=True)
+        em.set_footer(
+            text=f"Requested by {ctx.author} | Powered by https://openweathermap.org",
+            icon_url=ctx.author.avatar.url,
+        )
+        em.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed=em)
 
     @slash_command(
-        "konesyntees",
-        description="Use superior Estonian technology to express your feelings like you've never before!",
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="konesyntees",
+        sub_cmd_description="Use superior Estonian technology to express your feelings like you've never before!",
     )
     @slash_option("input", "Konesyntezing input", OptionTypes.STRING, required=True)
     @slash_option(
@@ -330,7 +447,10 @@ class tools(Extension):
             os.remove(path=pepek)
 
     @slash_command(
-        "ddocs", description="Scours the discord api documentations for help"
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="ddocs",
+        sub_cmd_description="Scours the discord api documentations for help",
     )
     @slash_option(
         name="search_term",
@@ -372,6 +492,24 @@ class tools(Extension):
             if level is not None:
                 last = level
         return last
+
+    @slash_command(
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="ping",
+        sub_cmd_description="Check the bot's latency",
+    )
+    async def ping(self, ctx):
+        results = Embed(
+            color=0x0083F5,
+            title="🏓 Pong!",
+            description=(f"🌐 WebSocket latency: {self.bot.latency * 1000:.2f}ms\n"),
+        )
+        results.set_footer(
+            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
+        )
+        results.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed=results)
 
 
 def setup(bot):

@@ -20,9 +20,9 @@ if __name__ == "__main__":
         intents=Intents.DEFAULT,  # intents are what events we want to receive from discord, `DEFAULT` is usually fine
         # auto_defer=True,  # automatically deferring interactions
         status=Status.IDLE,
-        activity=Activity(
-            name=f"(loading) servers | /help", type=ActivityType.COMPETING
-        ),  # the status message of the bot
+        # activity=Activity(
+        #    name=f"(loading) servers | /about", type=ActivityType.COMPETING
+        # ),  # the status message of the bot
         sync_interactions=True,  # sync application commands with discord
         delete_unused_application_cmds=True,  # Delete commands that arent listed here
     )

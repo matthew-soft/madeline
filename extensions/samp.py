@@ -5,6 +5,7 @@ from typing import Optional
 import cloudscraper
 from dotenv import load_dotenv
 from naff import (
+    AutocompleteContext,
     Embed,
     Extension,
     OptionTypes,
@@ -29,7 +30,12 @@ scraper = cloudscraper.create_scraper()
 
 
 class samp(Extension):
-    @slash_command("samp-wiki", description="Returns an article from open.mp wiki.")
+    @slash_command(
+        name="samp",
+        description="All SA-MP Commands",
+        sub_cmd_name="wiki",
+        sub_cmd_description="Returns an article from open.mp wiki.",
+    )
     @slash_option(
         name="query",
         description="The wiki term to search",
@@ -93,7 +99,10 @@ class samp(Extension):
             return await ctx.send(embed=embed)  # Send the embed
 
     @slash_command(
-        "samp-query", description="Show SA-MP server info and basic player information"
+        name="samp",
+        description="All SA-MP Commands",
+        sub_cmd_name="query",
+        sub_cmd_description="Query your favorite SA-MP server",
     )
     @slash_option(
         "ip",
@@ -118,13 +127,10 @@ class samp(Extension):
                 port = find["port"]
             except:
                 embed = Embed(
-                    description=f"<:cross:839158779815657512> Cannot find server info in database. Please use <:slash:894692029941039194>`query add` to add your server info to bookmark.",
+                    description=f"<:cross:839158779815657512> Cannot find server info in database. Please use <:slash:894692029941039194>`samp bookmark add` to add your server info to bookmark.",
                     color=0xFF0000,
                 )
                 return await ctx.send(embed=embed)
-                return await ctx.send(
-                    "Cannot find server info in database. Please use `/query add` to add your server info to bookmark."
-                )
 
         try:
             with SampClient(address=ip, port=port) as kung:
@@ -202,6 +208,7 @@ class samp(Extension):
                     text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar.url,
                 )
+                p_info.timestamp = datetime.datetime.utcnow()
             else:
                 if info.players > 10:
                     p_info = Embed(
@@ -255,10 +262,22 @@ class samp(Extension):
             )
             return await ctx.send(embed=embed)
 
+    @samp.autocomplete("ip")
+    async def samp_ip_autocomplete(self, ctx: AutocompleteContext, ip: str):
+        choices = []
+        findall = server.find({"guild_id": ctx.guild_id})
+        for addr in findall:
+            address = addr["ip"]
+            choices.append({"name": f"{address}", "value": f"{address}"})
+        await ctx.send(choices=choices)
+
     @slash_command(
-        name="query",
+        name="samp",
+        description="All SA-MP Commands",
+        group_name="bookmark",
+        group_description="Manage your guild SA-MP server bookmark",
         sub_cmd_name="add",
-        sub_cmd_description="Bookmark your server to the list of servers to query",
+        sub_cmd_description="Add your server to the bookmark",
     )
     @slash_option(
         "ip",
@@ -302,9 +321,12 @@ class samp(Extension):
             return await ctx.send(embed=embed)
 
     @slash_command(
-        name="query",
+        name="samp",
+        description="All SA-MP Commands",
+        group_name="bookmark",
+        group_description="Manage your guild SA-MP server bookmark",
         sub_cmd_name="edit",
-        sub_cmd_description="Edit your server's bookmark",
+        sub_cmd_description="Edit your SA-MP server's bookmark",
     )
     @slash_option(
         "ip",
@@ -350,7 +372,10 @@ class samp(Extension):
             return await ctx.send(embed=embed)
 
     @slash_command(
-        name="query",
+        name="samp",
+        description="All SA-MP Commands",
+        group_name="bookmark",
+        group_description="Manage your guild SA-MP server bookmark",
         sub_cmd_name="remove",
         sub_cmd_description="Remove your server's bookmark",
     )
