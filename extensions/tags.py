@@ -753,7 +753,9 @@ class Tags(Extension):
 
     @slash_command(
         name="tag",
-        sub_cmd_name="mod-delete",
+        group_name="mod",
+        group_description="Moderate tags",
+        sub_cmd_name="delete",
         sub_cmd_description="Delete a tag [Requires 'MANAGE_MESSAGES' permissions]",
     )
     @slash_option(
