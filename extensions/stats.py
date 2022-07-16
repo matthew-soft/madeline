@@ -148,7 +148,7 @@ class stats(Extension):
         )
         return await paginators.send(ctx)
 
-    async def send_guild_stats(self, e, guild):
+    async def send_guild_stats(self, e, guild, r_channel):
         owner = await self.bot.fetch_user(guild._owner_id)
         e.add_field(name="Name", value=guild.name)
         e.add_field(name="ID", value=guild.id)
@@ -163,21 +163,21 @@ class stats(Extension):
         if guild.me:
             e.timestamp = guild.me.joined_at
 
-        ch = self.bot.get_channel(993972357414785076)
+        ch = self.bot.get_channel(r_channel)
         await ch.send(embed=e)
 
     @listen()
     async def on_guild_join(self, event: GuildJoin):
         if self.bot.is_ready:
             guild = event.guild
-            e = Embed(color=0x53DDA4, title="New Guild")
-            await self.send_guild_stats(e, guild)
+            e = Embed(color=0x53DDA4, title="Joined a Guild")
+            await self.send_guild_stats(e, guild, 997921447701921953)
 
     @listen()
     async def on_guild_left(self, event: GuildLeft):
         guild = event.guild
-        e = Embed(color=0x53DDA4, title="Left Guild")
-        await self.send_guild_stats(e, guild)
+        e = Embed(color=0x53DDA4, title="Left a Guild")
+        await self.send_guild_stats(e, guild, 997921473861799976)
 
     @Task.create(IntervalTrigger(seconds=30))
     async def presence_changes(self):
