@@ -59,8 +59,8 @@ class stats(Extension):
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
 
         embed = Embed(
-            description=f"[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
-            color=0x0083F5,
+            description=f"Useful Links\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
+            color=0x738BD7,
         )
         embed.set_author(
             name="Madeline™, The Discord Bot",
@@ -70,22 +70,22 @@ class stats(Extension):
         embed.set_thumbnail(url=self.bot.user.avatar.url)
         embed.add_field(
             name="__Tool Commands__",
-            value="`ddocs`, `guild-avatar`, `avatar`, `user-info`, `server-info`, `urban`, `konesyntees`",
+            value="`tools ddocs`, `tools user guild-avatar`, `tools user avatar`, `tools user info`, `tools server info`, `tools urban`, `tools konesyntees`, `tools weather`, `tools ping`",
             inline=False,
         )
         embed.add_field(
             name="__Cool Kids Club™️ Commands__",
-            value="`aesthetics`, `fraktur`, `bold-fraktur`, `fancy`, `bold-fancy`, `double`, `small-caps`, `8ball`, `weather`, `coinflip`, `dice`, `lmgtfy`",
+            value="`ckc fonts aesthetics`, `ckc fonts fraktur`, `ckc fonts bold-fraktur`, `ckc fonts fancy`, `ckc fonts bold-fancy`, `ckc fonts double`, `ckc fonts small-caps`, `ckc fun 8ball`, `ckc fun coinflip`, `ckc fun dice`, `ckc fun lmgtfy`",
             inline=False,
         )
         embed.add_field(
             name="__SA-MP Related Commands__",
-            value="`samp-query`, `samp-wiki`",
+            value="`samp query`, `samp wiki`, `samp bookmark add`, `samp bookmark edit`, `samp bookmark remove`",
             inline=False,
         )
         embed.add_field(
             name="__Tags Commands__",
-            value="`tag get`, `tag create`, `tag edit`, `tag delete`, `tags`",
+            value="`tag get`, `tag create`, `tag edit`, `tag delete`, `tags`, `tag mod delete`",
             inline=False,
         )
         embed.add_field(
@@ -94,8 +94,8 @@ class stats(Extension):
             inline=False,
         )
         embed.add_field(
-            name="__Bot Status Commands__",
-            value="`about`, `help`, `ping`",
+            name="__Help Commands__",
+            value="`about`",
             inline=False,
         )
         embed.set_footer(
