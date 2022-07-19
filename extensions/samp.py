@@ -137,6 +137,7 @@ class samp(Extension):
                 info = kung.get_server_info()
                 players = kung.get_server_clients_detailed()
                 numpang = kung.get_server_clients()
+                rule = kung.get_server_rules()
 
                 pleyers = []
                 for ppq in numpang:
@@ -145,6 +146,11 @@ class samp(Extension):
             general = Embed(title=info.hostname, color=0x0083F5)  # Create embed
             general.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
             general.add_field(
+                name="Players : ",
+                value=f"`{info.players}` / `{info.max_players}` Players",
+                inline=True,
+            )
+            general.add_field(
                 name="Gamemode : ", value=f"`{info.gamemode}`", inline=True
             )
             general.add_field(
@@ -152,11 +158,6 @@ class samp(Extension):
             )
             general.add_field(
                 name="Passworded? : ", value=f"`{info.password}`", inline=True
-            )
-            general.add_field(
-                name="Players : ",
-                value=f"`{info.players}` / `{info.max_players}` Players",
-                inline=True,
             )
             if info.players == 0:
                 general.add_field(
@@ -184,16 +185,17 @@ class samp(Extension):
             general.timestamp = datetime.datetime.utcnow()
 
             srv_info = Embed(title=info.hostname, color=0x0083F5)  # Create embed
-            srv_info.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
-            srv_info.add_field(
-                name="Gamemode : ", value=f"`{info.gamemode}`", inline=True
-            )
-            srv_info.add_field(
-                name="Language : ", value=f"`{info.language}`", inline=True
-            )
-            srv_info.add_field(
-                name="Passworded? : ", value=f"`{info.password}`", inline=True
-            )
+            srv_info.add_field(name="IP", value=f"`{ip}:{port}`", inline=False)
+            srv_info.add_field(name="Gamemode", value=info.gamemode, inline=False)
+            srv_info.add_field(name="Language", value=info.language, inline=False)
+            if info.password is True:
+                srv_info.add_field(name="Passworded?", value="Yes", inline=False)
+            srv_info.add_field(name=rule[0].name, value=rule[0].value, inline=False)
+            srv_info.add_field(name=rule[1].name, value=rule[1].value, inline=False)
+            srv_info.add_field(name=rule[2].name, value=rule[2].value, inline=False)
+            srv_info.add_field(name=rule[3].name, value=rule[3].value, inline=False)
+            srv_info.add_field(name=rule[4].name, value=rule[4].value, inline=False)
+            srv_info.add_field(name=rule[5].name, value=rule[5].value, inline=False)
             srv_info.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
             )
