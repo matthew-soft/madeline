@@ -9,15 +9,15 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH "${PYTHONPATH}:/app"
 
 # install uvloop for faster asyncio
-RUN pip3 install uvloop
+RUN pip3.10 install uvloop
 
 # install the requirements
 COPY ./requirements.txt /app/requirements.txt
-RUN pip3 install -r /app/requirements.txt
+RUN pip3.10 install -r /app/requirements.txt
 
 # copy over the source files
 COPY ./ /app/
 
 # start the bot
 WORKDIR /app
-CMD ["python3", "main.py"]
+CMD ["python3.10", "main.py"]
