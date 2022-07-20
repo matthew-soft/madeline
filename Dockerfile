@@ -1,4 +1,5 @@
 FROM python:latest
+FROM rust:latest
 
 # we want stdout
 ENV PYTHONDONTWRITEBYTECODE=1
