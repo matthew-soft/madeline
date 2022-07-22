@@ -191,29 +191,17 @@ class samp(Extension):
             if info.password is True:
                 srv_info.add_field(name="Passworded?", value="Yes", inline=False)
             if rule[0] is not None:
-                srv_info.add_field(
-                    name=rule[0].name, value=rule[0].value, inline=False
-                )
+                srv_info.add_field(name=rule[0].name, value=rule[0].value, inline=False)
             if rule[1] is not None:
-                srv_info.add_field(
-                    name=rule[1].name, value=rule[1].value, inline=False
-                )
+                srv_info.add_field(name=rule[1].name, value=rule[1].value, inline=False)
             if rule[2] is not None:
-                srv_info.add_field(
-                    name=rule[2].name, value=rule[2].value, inline=False
-                )
+                srv_info.add_field(name=rule[2].name, value=rule[2].value, inline=False)
             if rule[3] is not None:
-                srv_info.add_field(
-                    name=rule[3].name, value=rule[3].value, inline=False
-                )
+                srv_info.add_field(name=rule[3].name, value=rule[3].value, inline=False)
             if rule[4] is not None:
-                srv_info.add_field(
-                    name=rule[4].name, value=rule[4].value, inline=False
-                )
+                srv_info.add_field(name=rule[4].name, value=rule[4].value, inline=False)
             if rule[5] is not None:
-                srv_info.add_field(
-                    name=rule[5].name, value=rule[5].value, inline=False
-                )
+                srv_info.add_field(name=rule[5].name, value=rule[5].value, inline=False)
             srv_info.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
             )
