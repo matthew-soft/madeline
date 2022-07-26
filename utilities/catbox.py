@@ -1,4 +1,6 @@
 import requests
+
+
 class CatBox:
     def url_upload(url=None):
         """
