@@ -6,7 +6,9 @@ RUN apt-get update
 # Get Ubuntu packages
 RUN apt-get install -y \
     build-essential \
-    curl
+    curl \
+    gcc \
+    python3-dev
 
 # Update new packages
 RUN apt-get update
