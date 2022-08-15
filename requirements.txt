@@ -10,5 +10,5 @@ python-dotenv
 requests-toolbelt
 samp-client
 sentry-sdk
-wget
 speedtest-cli
+wget

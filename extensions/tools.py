@@ -1,14 +1,14 @@
+import asyncio
+import concurrent
 import datetime
 import os
 import urllib.parse
 from typing import Optional
-import speedtest
-import asyncio
-import concurrent
 
 import aiohttp
 import naff
 import requests
+import speedtest
 import wget
 from algoliasearch.search_client import SearchClient
 from dotenv import load_dotenv
