@@ -29,6 +29,7 @@ from naff.ext.paginators import Paginator
 
 from utilities.checks import *
 from utilities.weather import *
+from utilities.wikipedia import *
 
 load_dotenv()
 
@@ -555,6 +556,50 @@ class tools(Extension):
         )
         results.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=results)
+
+
+    @slash_command(
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="wikipedia",
+        sub_cmd_description="Search for a term on the Wikipedia",
+    )
+    @slash_option(
+        "search_terms", "Term to search for", OptionTypes.STRING, required=True
+    )
+    @slash_option(
+        name="only_first_result",
+        description="Shows only first result?",
+        required=False,
+        opt_type=OptionTypes.BOOLEAN,
+    )
+    async def wikipedia(
+        self, ctx, search_terms: str, only_first_result: bool = False
+    ):
+        await ctx.defer()
+        embeds, url = await perform_search(
+            search_terms, only_first_result=only_first_result
+        )
+
+        if not embeds:
+            await ctx.send(
+                (f"I'm sorry, I couldn't find \"{search_terms}\" on Wikipedia")
+            )
+        elif len(embeds) == 1:
+            embeds[0].set_author(name="Result 1 of 1")
+            await ctx.send(embed=embeds[0])
+        else:
+            count = 0
+            for embed in embeds:
+                count += 1
+                embed.set_author(name=f"Result {count} of {len(embeds)}")
+            paginators = Paginator(
+                client=self.bot,
+                pages=embeds,
+                timeout_interval=30,
+                show_select_menu=False,
+            )
+            await paginators.send(ctx)
 
 
 def setup(bot):
