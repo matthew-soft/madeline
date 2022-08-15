@@ -28,6 +28,7 @@ def member_permissions(*permissions: Permissions) -> TYPE_CHECK_FUNCTION:
 
     return check
 
+
 def is_owner():
     """
     Is the author the owner of the bot.

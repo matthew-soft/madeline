@@ -20,15 +20,16 @@ from naff import (
     GuildText,
     GuildVoice,
     OptionTypes,
+    check,
     context_menu,
     slash_command,
     slash_option,
-    check
 )
 from naff.ext.paginators import Paginator
 
-from utilities.weather import *
 from utilities.checks import *
+from utilities.weather import *
+
 load_dotenv()
 
 
