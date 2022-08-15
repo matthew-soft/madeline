@@ -1,8 +1,5 @@
-name: pre-commit
+name: pre-commit-pr
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
@@ -10,7 +7,7 @@ on:
 
 jobs:
   lint:
-    name: runner / Pre-commit actions
+    name: runner / Pre-commit actions (PR)
     runs-on: ubuntu-latest
     steps:
       - name: Generate token
