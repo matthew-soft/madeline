@@ -59,7 +59,7 @@ class stats(Extension):
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
 
         embed = Embed(
-            description=f"Useful Links\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
+            description=f"The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Donating**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, __forever__.\n\n__Useful Links__\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
             color=0x738BD7,
         )
         embed.set_author(
@@ -70,12 +70,12 @@ class stats(Extension):
         embed.set_thumbnail(url=self.bot.user.avatar.url)
         embed.add_field(
             name="__Tool Commands__",
-            value="`tools ddocs`, `tools user guild-avatar`, `tools user avatar`, `tools user info`, `tools server info`, `tools urban`, `tools konesyntees`, `tools weather`, `tools ping`",
+            value="`tools ddocs`, `tools wikipedia`, `tools user guild-avatar`, `tools user avatar`, `tools user info`, `tools server info`, `tools urban`, `tools konesyntees`, `tools weather`, `tools ping`, `tools speedtest`(<:be:999874963936903228><:ta:999874979439050762>)",
             inline=False,
         )
         embed.add_field(
             name="__Cool Kids Club™️ Commands__",
-            value="`ckc fonts aesthetics`, `ckc fonts fraktur`, `ckc fonts bold-fraktur`, `ckc fonts fancy`, `ckc fonts bold-fancy`, `ckc fonts double`, `ckc fonts small-caps`, `ckc fun 8ball`, `ckc fun coinflip`, `ckc fun dice`, `ckc fun lmgtfy`",
+            value="`ckc fonts uwu`, `ckc fonts aesthetics`, `ckc fonts fraktur`, `ckc fonts bold-fraktur`, `ckc fonts fancy`, `ckc fonts bold-fancy`, `ckc fonts double`, `ckc fonts small-caps`, `ckc fun 8ball`, `ckc fun coinflip`, `ckc fun dice`, `ckc fun lmgtfy`",
             inline=False,
         )
         embed.add_field(
