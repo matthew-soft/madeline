@@ -518,7 +518,7 @@ class tools(Extension):
         name="tools",
         description="Tools commands",
         sub_cmd_name="speedtest",
-        sub_cmd_description="Test the internet speed of the server bot is hosted on.",
+        sub_cmd_description="Test the host of the bot internet speed.",
     )
     async def speedtest(self, ctx):
         await ctx.defer()
