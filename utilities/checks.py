@@ -27,3 +27,13 @@ def member_permissions(*permissions: Permissions) -> TYPE_CHECK_FUNCTION:
             return True
 
     return check
+
+def is_owner():
+    """
+    Is the author the owner of the bot.
+    """
+
+    async def check(ctx: Context) -> bool:
+        return ctx.author.id == 351150966948757504
+
+    return check
