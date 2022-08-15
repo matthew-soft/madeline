@@ -23,11 +23,12 @@ from naff import (
     context_menu,
     slash_command,
     slash_option,
+    check
 )
 from naff.ext.paginators import Paginator
 
 from utilities.weather import *
-
+from utilities.checks import *
 load_dotenv()
 
 
@@ -520,6 +521,7 @@ class tools(Extension):
         sub_cmd_name="speedtest",
         sub_cmd_description="Test the host of the bot internet speed.",
     )
+    @check(is_owner())
     async def speedtest(self, ctx):
         await ctx.defer()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
@@ -531,8 +533,6 @@ class tools(Extension):
         await loop.run_in_executor(executor, speed_test.upload)
 
         results_dict = speed_test.results.dict()
-
-        print(results_dict)
 
         results = Embed(
             color=0x0083F5,
