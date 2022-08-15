@@ -1,4 +1,5 @@
 algoliasearch
+brainly-scraper
 cloudscraper
 dnspython
 naff
@@ -12,4 +13,3 @@ samp-client
 sentry-sdk
 speedtest-cli
 wget
-brainly-scraper
