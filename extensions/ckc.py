@@ -17,10 +17,30 @@ from naff import (
 
 from core.base import CustomClient
 from utilities.ckc import *
+from utilities.uwu import *
 
 
 class CoolKidsClub(Extension):
     bot: CustomClient
+
+    @slash_command(
+        name="ckc",
+        description="Cool Kids Commands™ 😎",
+        group_name="fonts",
+        group_description="Font Manipulation Commands",
+        sub_cmd_name="uwu",
+        sub_cmd_description="UwUize a string",
+    )
+    @slash_option(
+        name="text",
+        description="The text to be converted",
+        required=True,
+        opt_type=OptionTypes.STRING,
+    )
+    async def uwu(self, ctx: InteractionContext, text: str):
+        # respond to the interaction
+        await ctx.defer()
+        await ctx.send(uwuize_word(text))
 
     @slash_command(
         name="ckc",
