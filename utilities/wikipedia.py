@@ -1,7 +1,7 @@
 import re
 
-import naff
 import aiohttp
+import naff
 from dateutil.parser import isoparse
 
 DISAMBIGUATION_CAT = "Category:All disambiguation pages"

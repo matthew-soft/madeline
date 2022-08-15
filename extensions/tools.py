@@ -557,7 +557,6 @@ class tools(Extension):
         results.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=results)
 
-
     @slash_command(
         name="tools",
         description="Tools commands",
@@ -573,9 +572,7 @@ class tools(Extension):
         required=False,
         opt_type=OptionTypes.BOOLEAN,
     )
-    async def wikipedia(
-        self, ctx, search_terms: str, only_first_result: bool = False
-    ):
+    async def wikipedia(self, ctx, search_terms: str, only_first_result: bool = False):
         await ctx.defer()
         embeds, url = await perform_search(
             search_terms, only_first_result=only_first_result
