@@ -2,6 +2,9 @@ import datetime
 import os
 import urllib.parse
 from typing import Optional
+import speedtest
+import asyncio
+import concurrent
 
 import aiohttp
 import naff
@@ -504,6 +507,47 @@ class tools(Extension):
             color=0x0083F5,
             title="🏓 Pong!",
             description=(f"🌐 WebSocket latency: {self.bot.latency * 1000:.2f}ms\n"),
+        )
+        results.set_footer(
+            text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
+        )
+        results.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed=results)
+
+    @slash_command(
+        name="tools",
+        description="Tools commands",
+        sub_cmd_name="speedtest",
+        sub_cmd_description="Test the internet speed of the server bot is hosted on.",
+    )
+    async def speedtest(self, ctx):
+        await ctx.defer()
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        loop = asyncio.get_event_loop()
+        speed_test = speedtest.Speedtest(secure=True)
+        await loop.run_in_executor(executor, speed_test.get_servers)
+        await loop.run_in_executor(executor, speed_test.get_best_server)
+        await loop.run_in_executor(executor, speed_test.download)
+        await loop.run_in_executor(executor, speed_test.upload)
+
+        results_dict = speed_test.results.dict()
+
+        print(results_dict)
+
+        results = Embed(
+            color=0x0083F5,
+            title="⚡ Speedtest Results",
+        )
+        results.add_field(name="🌐 Ping", value=f"{results_dict['ping']}ms", inline=True)
+        results.add_field(
+            name="📉 Download",
+            value=f"**{results_dict['download'] / 1_000_000:.2f}** mbps",
+            inline=True,
+        )
+        results.add_field(
+            name="📈 Upload",
+            value=f"**{results_dict['upload'] / 1_000_000:.2f}** mbps",
+            inline=True,
         )
         results.set_footer(
             text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
