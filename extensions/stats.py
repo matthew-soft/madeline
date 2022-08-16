@@ -51,15 +51,15 @@ class stats(Extension):
 
         return fmt.format(d=days, h=hours, m=minutes, s=seconds)
 
-    @slash_command(name="about", description="Learn more about me")
-    async def meee(self, ctx: InteractionContext):
+    @slash_command(name="help", description="Get the list of available commands")
+    async def help(self, ctx: InteractionContext):
         owner = self.bot.get_user(self.bot.owner.id)
         memory_usage = self.process.memory_full_info().uss / 1024**2
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
 
         embed = Embed(
-            title="Help Page",
-            description=f"__Useful Links__\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
+            title="Main Help Page",
+            description=f"A Multifunctional SA-MP Discord Bot written in NAFF (python).\n\nFYI: The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Sponsoring us**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, _forever._\n\n__Useful Links__\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
             color=0x738BD7,
         )
         embed.set_author(
@@ -68,75 +68,213 @@ class stats(Extension):
             icon_url=self.bot.user.avatar.url,
         )
         embed.set_thumbnail(url=self.bot.user.avatar.url)
+        embed.add_field(name="Owner", value=f"{owner.mention}", inline=False)
+        embed.add_field(name="Guilds", value=len(self.bot.guilds), inline=True)
         embed.add_field(
-            name="__Tool Commands__",
-            value="`tools ddocs`, `tools wikipedia`, `tools user guild-avatar`, `tools user avatar`, `tools user info`, `tools server info`, `tools urban`, `tools konesyntees`, `tools weather`, `tools ping`, `tools speedtest`(<:be:999874963936903228><:ta:999874979439050762>)",
+            name="Process",
+            value=f"{memory_usage:.2f} MiB\n{cpu_usage:.2f}% CPU",
+            inline=True,
+        )
+        embed.add_field(
+            name="Local time",
+            value=f"<t:{int(datetime.datetime.utcnow().timestamp())}:F>",
             inline=False,
         )
         embed.add_field(
-            name="__Cool Kids Club™️ Commands__",
-            value="`ckc fonts uwu`, `ckc fonts aesthetics`, `ckc fonts fraktur`, `ckc fonts bold-fraktur`, `ckc fonts fancy`, `ckc fonts bold-fancy`, `ckc fonts double`, `ckc fonts small-caps`, `ckc fun 8ball`, `ckc fun coinflip`, `ckc fun dice`, `ckc fun lmgtfy`",
-            inline=False,
+            name="Start time",
+            value=f"<t:{int(self.bot.start_time.timestamp())}:F>",
+            inline=True,
         )
         embed.add_field(
-            name="__SA-MP Related Commands__",
-            value="`samp query`, `samp wiki`, `samp bookmark add`, `samp bookmark edit`, `samp bookmark remove`",
-            inline=False,
-        )
-        embed.add_field(
-            name="__Tags Commands__",
-            value="`tag get`, `tag create`, `tag edit`, `tag delete`, `tags`, `tag mod delete`",
-            inline=False,
-        )
-        embed.add_field(
-            name="__Context Menu Commands__",
-            value="`Avatar`, `Guild Avatar`, `User Info`",
-            inline=False,
-        )
-        embed.add_field(
-            name="__Help Commands__",
-            value="`about`",
-            inline=False,
+            name="Uptime", value=self.get_bot_uptime(brief=True), inline=True
         )
         embed.set_footer(
             text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
         )
         embed.timestamp = datetime.datetime.utcnow()
 
-        about = Embed()
-        about.color = 0x738BD7
-        about.title = "Stats Page"
-        about.description = "A Multifunctional SA-MP Discord Bot written in NAFF (python).\n\nFYI: The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Sponsoring us**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, _forever._"
-        about.set_author(
-            name="Madeline™, The Discord Bot",
-            url="https://discord.gg/mxkvjpknTN",
-            icon_url=self.bot.user.avatar.url,
+        ckc = Embed(
+            title="Cool Kids Commands™️",
+            description=f"Some cool commands to try out 👀",
+            color=0x738BD7,
         )
-        about.add_field(name="Owner", value=f"{owner.mention}", inline=False)
-        about.add_field(name="Guilds", value=len(self.bot.guilds), inline=True)
-        about.add_field(
-            name="Process",
-            value=f"{memory_usage:.2f} MiB\n{cpu_usage:.2f}% CPU",
-            inline=True,
+        ckc.add_field(
+            name="`/ckc fonts uwu <text>`", value=f"UwUfy your messages.", inline=False
         )
-        about.add_field(
-            name="Local time",
-            value=f"<t:{int(datetime.datetime.utcnow().timestamp())}:F>",
+        ckc.add_field(
+            name="`/ckc fonts aesthetics <text>`",
+            value=f"Returns your text as fullwidth.",
             inline=False,
         )
-        about.add_field(
-            name="Start time",
-            value=f"<t:{int(self.bot.start_time.timestamp())}:F>",
-            inline=True,
+        ckc.add_field(
+            name="`/ckc fonts bold-fancy <text>`",
+            value=f"Returns your text as bold cursive.",
+            inline=False,
         )
-        about.add_field(
-            name="Uptime", value=self.get_bot_uptime(brief=True), inline=True
+        ckc.add_field(
+            name="`/ckc fonts bold-fraktur <text>`",
+            value=f"Returns your text as bold blackletter.",
+            inline=False,
         )
-        about.set_footer(
-            text="Made with 💖 with NAFF", icon_url="http://i.imgur.com/5BFecvA.png"
+        ckc.add_field(
+            name="`/ckc fonts double <text>`",
+            value=f"The example would return '𝕎𝕠𝕒𝕙, 𝕕𝕠𝕦𝕓𝕝𝕖 𝕤𝕥𝕣𝕦𝕔𝕜 𝕥𝕖𝕩𝕥'",
+            inline=False,
+        )
+        ckc.add_field(
+            name="`/ckc fonts fancy <text>`",
+            value=f"Returns your text as cursive.",
+            inline=False,
+        )
+        ckc.add_field(
+            name="`/ckc fonts fraktur <text>`",
+            value=f"Returns your text as blackletter.",
+            inline=False,
+        )
+        ckc.add_field(
+            name="`/ckc fonts small-caps <text>`",
+            value=f"Returns your text as smallcaps.",
+            inline=False,
+        )
+        ckc.add_field(
+            name="`/ckc 8ball [question]`",
+            value=f"It's like any other 8ball command on discord. Annoying, useless and unreasonably popular.",
+            inline=False,
+        )
+        ckc.add_field(
+            name="`/ckc dice [sides] [rolls]`", value=f"Roll a dice", inline=False
+        )
+        ckc.add_field(name="`/ckc coinflip`", value=f"Flips a coin", inline=False)
+        ckc.add_field(
+            name="`/ckc lmgtfy <search_terms>`",
+            value=f"Returns you a LMGTFY link. Good to counter people who lazy enough to open up Google in their browser :3",
+            inline=False,
         )
 
-        embeds = [embed, about]
+        samp = Embed(
+            title="SA-MP Commands",
+            description=f"The main features of this bot.",
+            color=0x738BD7,
+        )
+        samp.add_field(
+            name="`/samp wiki <query>`",
+            value=f"Returns an article from open.mp wiki",
+            inline=False,
+        )
+        samp.add_field(
+            name="`/samp query [ip] [port]`",
+            value=f"Query your favorite SA-MP server",
+            inline=False,
+        )
+        samp.add_field(
+            name="`/samp bookmark add [ip] [port]`",
+            value=f"Add your server to the bookmark",
+            inline=False,
+        )
+        samp.add_field(
+            name="`/samp bookmark edit [ip] [port]`",
+            value=f"Edit your SA-MP server's bookmark",
+            inline=False,
+        )
+        samp.add_field(
+            name="`/samp bookmark remove`",
+            value=f"Remove your server's bookmark",
+            inline=False,
+        )
+
+        tags = Embed(
+            title="Tags Commands",
+            description=f"Tags are used to store text or attachment or both that can be used later on.",
+            color=0x738BD7,
+        )
+        tags.add_field(
+            name="`/tag get <name>`",
+            value=f"Get a tag",
+            inline=False,
+        )
+        tags.add_field(
+            name="`/tag create <name> [content] [attachment]`",
+            value=f"Create a tag",
+            inline=False,
+        )
+        tags.add_field(
+            name="`/tag edit <name> [content] [attachment]`",
+            value=f"Edit a tag",
+            inline=False,
+        )
+        tags.add_field(
+            name="`/tag delete <name>`",
+            value=f"Delete a tag",
+            inline=False,
+        )
+        tags.add_field(
+            name="`/tag mod delete <name>`",
+            value=f"Delete a tag (Requires `MANAGE_MESSAGES` Permissions)",
+            inline=False,
+        )
+        tags.add_field(
+            name="`/tags [search]`",
+            value=f"Get a list of tags and/or inspect a tag",
+            inline=False,
+        )
+
+        tools = Embed(
+            title="Tools Commands",
+            description=f"Some tools that can be used to make your life easier.",
+            color=0x738BD7,
+        )
+        tools.add_field(
+            name="`/tools ping`",
+            value=f"Check the bot's latency",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools server info`",
+            value=f"Get information about the server",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools user avatar [member]`",
+            value=f"See your/other member avatar",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools user guild-avatar [member]`",
+            value=f"See your/other member guild avatar",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools user info [member]`",
+            value=f"Get information about a member",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools wikipedia <search_terms> [only_first_result]`",
+            value=f"Search for a term on the Wikipedia",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools ddocs <search_terms>`",
+            value=f"Scours the discord api documentations for help",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools urban <word>`",
+            value=f"Search for a term on the Urban Dictionary",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools weather <city>`",
+            value=f"Get the weather for a city",
+            inline=False,
+        )
+        tools.add_field(
+            name="`/tools konesyntees <input> [voice] [speed]`",
+            value=f"Use superior Estonian technology to express your feelings like you've never before!",
+            inline=False,
+        )
+
+        embeds = [embed, ckc, samp, tags, tools]
 
         paginators = Paginator(
             client=self.bot,
