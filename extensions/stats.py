@@ -1,10 +1,5 @@
-import asyncio
 import datetime
-import functools
-import logging
 import os
-import traceback
-from collections import Counter
 
 import psutil
 from naff import (
