@@ -1,5 +1,7 @@
 import datetime
 import os
+import aiohttp
+from dotenv import load_dotenv
 
 import psutil
 from naff import (
@@ -20,6 +22,8 @@ from naff.api.events.discord import GuildJoin, GuildLeft
 from naff.ext.paginators import Paginator
 
 from core.base import CustomClient
+
+load_dotenv()
 
 
 class stats(Extension):
@@ -195,6 +199,22 @@ class stats(Extension):
         """Gets triggered on startup"""
 
         self.presence_changes.start()
+
+    @Task.create(IntervalTrigger(minutes=30))
+    async def upload_stats(self):
+        payload = {
+            "server_count": len(self.bot.guilds),
+        }
+        headers = {
+            "Authorization": str(os.getenv("TOPGG_TOKEN")),
+            "Content-Type": "application/json",
+        }
+        async with aiohttp.ClientSession() as session:
+            await session.post(
+                f"https://top.gg/api/bots/{self.bot.user.id}/stats",
+                json=payload,
+                headers=headers,
+            )
 
 
 def setup(bot: CustomClient):
