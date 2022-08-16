@@ -106,9 +106,7 @@ class stats(Extension):
         about = Embed()
         about.color = 0x738BD7
         about.title = "Stats Page"
-        about.description = (
-            "A Multifunctional SA-MP Discord Bot written in NAFF (python).\n\nFYI: The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Sponsoring us**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, _forever._"
-        )
+        about.description = "A Multifunctional SA-MP Discord Bot written in NAFF (python).\n\nFYI: The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Sponsoring us**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, _forever._"
         about.set_author(
             name="Madeline™, The Discord Bot",
             url="https://discord.gg/mxkvjpknTN",
