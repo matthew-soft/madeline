@@ -59,7 +59,8 @@ class stats(Extension):
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
 
         embed = Embed(
-            description=f"The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Donating**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, __forever__.\n\n__Useful Links__\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
+            title="Help Page",
+            description=f"__Useful Links__\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
             color=0x738BD7,
         )
         embed.set_author(
@@ -105,9 +106,9 @@ class stats(Extension):
 
         about = Embed()
         about.color = 0x738BD7
-        about.title = "Madeline v2 | Rewrite"
+        about.title = "Stats Page"
         about.description = (
-            "A Multifunctional SA-MP Discord Bot written in NAFF (python)"
+            "A Multifunctional SA-MP Discord Bot written in NAFF (python).\n\nFYI: The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Sponsoring us**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, _forever._"
         )
         about.set_author(
             name="Madeline™, The Discord Bot",
@@ -144,7 +145,12 @@ class stats(Extension):
             client=self.bot,
             pages=embeds,
             timeout_interval=30,
-            show_select_menu=False,
+            show_first_button=False,
+            show_back_button=False,
+            show_next_button=False,
+            show_last_button=False,
+            show_callback_button=False,
+            show_select_menu=True,
         )
         return await paginators.send(ctx)
 
