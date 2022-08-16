@@ -1,9 +1,9 @@
 import datetime
 import os
-import aiohttp
-from dotenv import load_dotenv
 
+import aiohttp
 import psutil
+from dotenv import load_dotenv
 from naff import (
     Activity,
     ActivityType,
