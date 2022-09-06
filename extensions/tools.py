@@ -28,8 +28,8 @@ from naff import (
 from naff.ext.paginators import Paginator
 
 from utilities.checks import *
-from utilities.weather import *
-from utilities.wikipedia import *
+from src.weather import *
+from src.wikipedia import *
 
 load_dotenv()
 

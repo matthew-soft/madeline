@@ -22,6 +22,7 @@ from naff.api.events.discord import GuildJoin, GuildLeft
 from naff.ext.paginators import Paginator
 
 from core.base import CustomClient
+from utilities.uptime import *
 
 load_dotenv()
 
@@ -31,25 +32,6 @@ class stats(Extension):
 
     def __init__(self, bot):
         self.process = psutil.Process()
-
-    def get_bot_uptime(self, *, brief=False):
-        now = datetime.datetime.utcnow()
-        delta = now - self.bot.start_time
-        hours, remainder = divmod(int(delta.total_seconds()), 3600)
-        minutes, seconds = divmod(remainder, 60)
-        days, hours = divmod(hours, 24)
-
-        if not brief:
-            if days:
-                fmt = "{d} days, {h} hours, {m} minutes, and {s} seconds"
-            else:
-                fmt = "{h} hours, {m} minutes, and {s} seconds"
-        else:
-            fmt = "{h}h {m}m {s}s"
-            if days:
-                fmt = "{d}d " + fmt
-
-        return fmt.format(d=days, h=hours, m=minutes, s=seconds)
 
     @slash_command(name="help", description="Get the list of available commands")
     async def help(self, ctx: InteractionContext):
@@ -86,7 +68,7 @@ class stats(Extension):
             inline=True,
         )
         embed.add_field(
-            name="Uptime", value=self.get_bot_uptime(brief=True), inline=True
+            name="Uptime", value=get_bot_uptime(brief=True), inline=True
         )
         embed.set_footer(
             text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
