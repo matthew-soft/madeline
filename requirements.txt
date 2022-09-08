@@ -1,7 +1,7 @@
 algoliasearch
 cloudscraper
 dnspython
-naff
+git+https://github.com/madeline-bot/NAFF
 orjson
 psutil
 pymongo
