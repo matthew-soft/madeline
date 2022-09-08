@@ -81,7 +81,9 @@ class stats(Extension):
             color=0x738BD7,
         )
         ckc.add_field(
-            name="</ckc fonts uwu:996967239976747170>", value=f"UwUfy your messages.", inline=False
+            name="</ckc fonts uwu:996967239976747170>",
+            value=f"UwUfy your messages.",
+            inline=False,
         )
         ckc.add_field(
             name="</ckc fonts aesthetics:996967239976747170>",
@@ -124,9 +126,15 @@ class stats(Extension):
             inline=False,
         )
         ckc.add_field(
-            name="</ckc fun dice:996967239976747170>", value=f"Roll a dice", inline=False
+            name="</ckc fun dice:996967239976747170>",
+            value=f"Roll a dice",
+            inline=False,
         )
-        ckc.add_field(name="</ckc fun coinflip:996967239976747170>", value=f"Flips a coin", inline=False)
+        ckc.add_field(
+            name="</ckc fun coinflip:996967239976747170>",
+            value=f"Flips a coin",
+            inline=False,
+        )
         ckc.add_field(
             name="</ckc fun lmgtfy:996967239976747170>",
             value=f"Returns you a LMGTFY link. Good to counter people who lazy enough to open up Google in their browser :3",
