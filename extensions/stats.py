@@ -305,9 +305,9 @@ class stats(Extension):
     @Task.create(IntervalTrigger(seconds=30))
     async def presence_changes(self):
         await self.bot.change_presence(
-            status=Status.AFK,
+            status=Status.ONLINE,
             activity=Activity(
-                name=f"{len(self.bot.guilds)} servers | /about",
+                name=f"{len(self.bot.guilds)} servers | /help",
                 type=ActivityType.COMPETING,
             ),
         )
