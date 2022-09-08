@@ -1,13 +1,7 @@
 import datetime
-import psutil
 
-from naff import (
-    Embed,
-    Extension,
-    InteractionContext,
-    slash_command,
-    slash_option,
-)
+import psutil
+from naff import Embed, Extension, InteractionContext, slash_command, slash_option
 from naff.ext.paginators import Paginator
 
 from core.base import CustomClient

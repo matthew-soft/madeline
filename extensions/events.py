@@ -18,7 +18,8 @@ from naff.api.events.discord import GuildJoin, GuildLeft
 from core.base import CustomClient
 from utilities.events import *
 
-load_dotenv()    
+load_dotenv()
+
 
 class events(Extension):
     bot: CustomClient
