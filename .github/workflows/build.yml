@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: madeline-bot/madeline-v2
+  IMAGE_NAME: madeline-bot/madeline
 
 jobs:
   lint:

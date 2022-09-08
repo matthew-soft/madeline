@@ -16,8 +16,8 @@ from naff import (
 )
 
 from core.base import CustomClient
-from utilities.ckc import *
-from utilities.uwu import *
+from src.ckc import *
+from src.uwu import *
 
 
 class CoolKidsClub(Extension):

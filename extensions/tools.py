@@ -27,9 +27,9 @@ from naff import (
 )
 from naff.ext.paginators import Paginator
 
+from src.weather import *
+from src.wikipedia import *
 from utilities.checks import *
-from utilities.weather import *
-from utilities.wikipedia import *
 
 load_dotenv()
 
