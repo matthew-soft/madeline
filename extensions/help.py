@@ -1,33 +1,14 @@
 import datetime
-import os
 
-import aiohttp
 import psutil
-from dotenv import load_dotenv
-from naff import (
-    Activity,
-    ActivityType,
-    Embed,
-    Extension,
-    InteractionContext,
-    IntervalTrigger,
-    OptionTypes,
-    Status,
-    Task,
-    listen,
-    slash_command,
-    slash_option,
-)
-from naff.api.events.discord import GuildJoin, GuildLeft
+from naff import Embed, Extension, InteractionContext, slash_command, slash_option
 from naff.ext.paginators import Paginator
 
 from core.base import CustomClient
 from utilities.uptime import *
 
-load_dotenv()
 
-
-class stats(Extension):
+class help(Extension):
     bot: CustomClient
 
     def __init__(self, bot):
@@ -279,71 +260,8 @@ class stats(Extension):
         )
         return await paginators.send(ctx)
 
-    async def send_guild_stats(self, e, guild, r_channel):
-        owner = await self.bot.fetch_user(guild._owner_id)
-        e.add_field(name="Name", value=guild.name)
-        e.add_field(name="ID", value=guild.id)
-        e.add_field(name="Owner", value=f"{owner.mention} (ID: {owner.id})")
-
-        total = guild.member_count
-        e.add_field(name="Members", value=str(total))
-
-        if guild.icon:
-            e.set_thumbnail(url=guild.icon.url)
-
-        if guild.me:
-            e.timestamp = guild.me.joined_at
-
-        ch = self.bot.get_channel(r_channel)
-        await ch.send(embed=e)
-
-    @listen()
-    async def on_guild_join(self, event: GuildJoin):
-        if self.bot.is_ready:
-            guild = event.guild
-            e = Embed(color=0x53DDA4, title="Joined a Guild")
-            await self.send_guild_stats(e, guild, 997921447701921953)
-
-    @listen()
-    async def on_guild_left(self, event: GuildLeft):
-        guild = event.guild
-        e = Embed(color=0x53DDA4, title="Left a Guild")
-        await self.send_guild_stats(e, guild, 997921473861799976)
-
-    @Task.create(IntervalTrigger(seconds=30))
-    async def presence_changes(self):
-        await self.bot.change_presence(
-            status=Status.ONLINE,
-            activity=Activity(
-                name=f"{len(self.bot.guilds)} servers | /help",
-                type=ActivityType.COMPETING,
-            ),
-        )
-
-    @listen()
-    async def on_startup(self):
-        """Gets triggered on startup"""
-
-        self.presence_changes.start()
-
-    @Task.create(IntervalTrigger(minutes=30))
-    async def upload_stats(self):
-        payload = {
-            "server_count": len(self.bot.guilds),
-        }
-        headers = {
-            "Authorization": str(os.getenv("TOPGG_TOKEN")),
-            "Content-Type": "application/json",
-        }
-        async with aiohttp.ClientSession() as session:
-            await session.post(
-                f"https://top.gg/api/bots/{self.bot.user.id}/stats",
-                json=payload,
-                headers=headers,
-            )
-
 
 def setup(bot: CustomClient):
     """Let naff load the extension"""
 
-    stats(bot)
+    help(bot)

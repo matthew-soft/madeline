@@ -31,10 +31,37 @@ def member_permissions(*permissions: Permissions) -> TYPE_CHECK_FUNCTION:
 
 def is_owner():
     """
-    Is the author the owner of the bot.
+    Is the author the owner of the bot?
     """
 
     async def check(ctx: Context) -> bool:
         return ctx.author.id == 351150966948757504
 
     return check
+
+
+def geturl(string):
+    """
+    Check if message has any links.
+
+    Args:
+        *string: The messages to check for
+    """
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+    url = re.findall(regex, string)
+    return [x[0] for x in url]
+
+
+def find_member(ctx, userid):
+    """
+    Double check if member is still in that guild or not.
+
+    Args:
+        ctx: Pass the Context
+        *userid: The user id to check for
+    """
+    members = [m for m in ctx.guild.members if m.id == userid]
+    if members != []:
+        for m in members:
+            return m
+    return None
