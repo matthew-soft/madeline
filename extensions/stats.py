@@ -81,54 +81,54 @@ class stats(Extension):
             color=0x738BD7,
         )
         ckc.add_field(
-            name="`/ckc fonts uwu <text>`", value=f"UwUfy your messages.", inline=False
+            name="</ckc fonts uwu:996967239976747170>", value=f"UwUfy your messages.", inline=False
         )
         ckc.add_field(
-            name="`/ckc fonts aesthetics <text>`",
+            name="</ckc fonts aesthetics:996967239976747170>",
             value=f"Returns your text as fullwidth.",
             inline=False,
         )
         ckc.add_field(
-            name="`/ckc fonts bold-fancy <text>`",
+            name="</ckc fonts bold-fancy:996967239976747170>",
             value=f"Returns your text as bold cursive.",
             inline=False,
         )
         ckc.add_field(
-            name="`/ckc fonts bold-fraktur <text>`",
+            name="</ckc fonts bold-fraktur:996967239976747170>",
             value=f"Returns your text as bold blackletter.",
             inline=False,
         )
         ckc.add_field(
-            name="`/ckc fonts double <text>`",
+            name="</ckc fonts double:996967239976747170>",
             value=f"The example would return '𝕎𝕠𝕒𝕙, 𝕕𝕠𝕦𝕓𝕝𝕖 𝕤𝕥𝕣𝕦𝕔𝕜 𝕥𝕖𝕩𝕥'",
             inline=False,
         )
         ckc.add_field(
-            name="`/ckc fonts fancy <text>`",
+            name="</ckc fonts fancy:996967239976747170>",
             value=f"Returns your text as cursive.",
             inline=False,
         )
         ckc.add_field(
-            name="`/ckc fonts fraktur <text>`",
+            name="</ckc fonts fraktur:996967239976747170>",
             value=f"Returns your text as blackletter.",
             inline=False,
         )
         ckc.add_field(
-            name="`/ckc fonts small-caps <text>`",
+            name="</ckc fonts small-caps:996967239976747170>",
             value=f"Returns your text as smallcaps.",
             inline=False,
         )
         ckc.add_field(
-            name="`/ckc 8ball [question]`",
+            name="</ckc fun 8ball:996967239976747170>",
             value=f"It's like any other 8ball command on discord. Annoying, useless and unreasonably popular.",
             inline=False,
         )
         ckc.add_field(
-            name="`/ckc dice [sides] [rolls]`", value=f"Roll a dice", inline=False
+            name="</ckc fun dice:996967239976747170>", value=f"Roll a dice", inline=False
         )
-        ckc.add_field(name="`/ckc coinflip`", value=f"Flips a coin", inline=False)
+        ckc.add_field(name="</ckc fun coinflip:996967239976747170>", value=f"Flips a coin", inline=False)
         ckc.add_field(
-            name="`/ckc lmgtfy <search_terms>`",
+            name="</ckc fun lmgtfy:996967239976747170>",
             value=f"Returns you a LMGTFY link. Good to counter people who lazy enough to open up Google in their browser :3",
             inline=False,
         )
@@ -139,27 +139,27 @@ class stats(Extension):
             color=0x738BD7,
         )
         samp.add_field(
-            name="`/samp wiki <query>`",
+            name="</samp wiki:996967239976747169>",
             value=f"Returns an article from open.mp wiki",
             inline=False,
         )
         samp.add_field(
-            name="`/samp query [ip] [port]`",
+            name="</samp query:996967239976747169>",
             value=f"Query your favorite SA-MP server",
             inline=False,
         )
         samp.add_field(
-            name="`/samp bookmark add [ip] [port]`",
+            name="</samp bookmark add:996967239976747169>",
             value=f"Add your server to the bookmark",
             inline=False,
         )
         samp.add_field(
-            name="`/samp bookmark edit [ip] [port]`",
+            name="</samp bookmark edit:996967239976747169>",
             value=f"Edit your SA-MP server's bookmark",
             inline=False,
         )
         samp.add_field(
-            name="`/samp bookmark remove`",
+            name="</samp bookmark remove:996967239976747169>",
             value=f"Remove your server's bookmark",
             inline=False,
         )
@@ -170,32 +170,32 @@ class stats(Extension):
             color=0x738BD7,
         )
         tags.add_field(
-            name="`/tag get <name>`",
+            name="</tag get:989488858922090568>",
             value=f"Get a tag",
             inline=False,
         )
         tags.add_field(
-            name="`/tag create <name> [content] [attachment]`",
+            name="</tag create:989488858922090568>",
             value=f"Create a tag",
             inline=False,
         )
         tags.add_field(
-            name="`/tag edit <name> [content] [attachment]`",
+            name="</tag edit:989488858922090568>",
             value=f"Edit a tag",
             inline=False,
         )
         tags.add_field(
-            name="`/tag delete <name>`",
+            name="</tag delete:989488858922090568>",
             value=f"Delete a tag",
             inline=False,
         )
         tags.add_field(
-            name="`/tag mod delete <name>`",
+            name="</tag mod delete:989488858922090568>",
             value=f"Delete a tag (Requires `MANAGE_MESSAGES` Permissions)",
             inline=False,
         )
         tags.add_field(
-            name="`/tags [search]`",
+            name="</tags:988481216166633545>",
             value=f"Get a list of tags and/or inspect a tag",
             inline=False,
         )
@@ -206,52 +206,52 @@ class stats(Extension):
             color=0x738BD7,
         )
         tools.add_field(
-            name="`/tools ping`",
+            name="</tools ping:997202321945669673>",
             value=f"Check the bot's latency",
             inline=False,
         )
         tools.add_field(
-            name="`/tools server info`",
+            name="</tools server info:997202321945669673>",
             value=f"Get information about the server",
             inline=False,
         )
         tools.add_field(
-            name="`/tools user avatar [member]`",
+            name="</tools user avatar:997202321945669673>",
             value=f"See your/other member avatar",
             inline=False,
         )
         tools.add_field(
-            name="`/tools user guild-avatar [member]`",
+            name="</tools user guild-avatar:997202321945669673>",
             value=f"See your/other member guild avatar",
             inline=False,
         )
         tools.add_field(
-            name="`/tools user info [member]`",
+            name="</tools user info:997202321945669673>",
             value=f"Get information about a member",
             inline=False,
         )
         tools.add_field(
-            name="`/tools wikipedia <search_terms> [only_first_result]`",
+            name="</tools wikipedia:997202321945669673>",
             value=f"Search for a term on the Wikipedia",
             inline=False,
         )
         tools.add_field(
-            name="`/tools ddocs <search_terms>`",
+            name="</tools ddocs:997202321945669673>",
             value=f"Scours the discord api documentations for help",
             inline=False,
         )
         tools.add_field(
-            name="`/tools urban <word>`",
+            name="</tools urban:997202321945669673>",
             value=f"Search for a term on the Urban Dictionary",
             inline=False,
         )
         tools.add_field(
-            name="`/tools weather <city>`",
+            name="</tools weather:997202321945669673>",
             value=f"Get the weather for a city",
             inline=False,
         )
         tools.add_field(
-            name="`/tools konesyntees <input> [voice] [speed]`",
+            name="</tools konesyntees:997202321945669673>",
             value=f"Use superior Estonian technology to express your feelings like you've never before!",
             inline=False,
         )
