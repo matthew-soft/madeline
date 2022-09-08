@@ -68,7 +68,7 @@ class stats(Extension):
             inline=True,
         )
         embed.add_field(
-            name="Uptime", value=get_bot_uptime(brief=True), inline=True
+            name="Uptime", value=get_bot_uptime(self, brief=True), inline=True
         )
         embed.set_footer(
             text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
