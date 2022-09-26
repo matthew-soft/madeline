@@ -2,12 +2,19 @@ import datetime
 
 import psutil
 from algoliasearch.search_client import SearchClient
-from naff import Embed, Extension, InteractionContext, slash_command, slash_option, OptionTypes
+from naff import (
+    Embed,
+    Extension,
+    InteractionContext,
+    OptionTypes,
+    slash_command,
+    slash_option,
+)
 from naff.ext.paginators import Paginator
 
 from core.base import CustomClient
-from utilities.uptime import *
 from utilities.checks import *
+from utilities.uptime import *
 
 
 class help(Extension):

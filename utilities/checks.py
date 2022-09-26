@@ -66,6 +66,7 @@ def find_member(ctx, userid):
             return m
     return None
 
+
 def get_level_str(levels):
     last = ""
     for level in levels.values():
