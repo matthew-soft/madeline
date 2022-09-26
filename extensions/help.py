@@ -2,7 +2,7 @@ import datetime
 
 import psutil
 from algoliasearch.search_client import SearchClient
-from naff import Embed, Extension, InteractionContext, slash_command, slash_option
+from naff import Embed, Extension, InteractionContext, slash_command, slash_option, OptionTypes
 
 from core.base import CustomClient
 from utilities.uptime import *
@@ -34,7 +34,7 @@ class help(Extension):
 
             embed = Embed(
                 title="Main Help Page",
-                description=f"A Multifunctional SA-MP Discord Bot written in NAFF (python).\n\nFYI: The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Sponsoring us**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, _forever._\n\n__Useful Links__\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
+                description=f"A Multifunctional SA-MP Discord Bot written in NAFF (python).\n\nFYI: The bot is absolutely free to use, you don't have to pay anything.\nHowever, to keep the host online 24/7/365, We need sponsors.\nYou can help us by [__**Sponsoring us**__](https://github.com/sponsors/madeline-bot), so we can keep the bot up and running, _forever._\n\n__**Useful Links**__\n[Official Documentations](https://www.madeline.my.id) | [Support Server](https://discord.gg/mxkvjpknTN) | [Invite me to your server](https://discord.com/oauth2/authorize?client_id=859991918800011295&permissions=313344&scope=bot%20applications.commands)",
                 color=0x738BD7,
             )
             embed.set_author(
