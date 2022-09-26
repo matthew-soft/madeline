@@ -36,3 +36,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "fix: pre-commit auto fixes"
+          commit_user_name: ${{ secrets.APP_NAME }}
+          commit_user_email: ${{ secrets.APP_EMAIL }}
