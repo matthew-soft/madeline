@@ -1,7 +1,11 @@
 algoliasearch
+algoliasearch
+appdirs
+BeautifulSoup4
 cloudscraper
 dnspython
 git+https://github.com/madeline-bot/NAFF
+kbbi
 orjson
 psutil
 pymongo
@@ -12,7 +16,3 @@ samp-client
 sentry-sdk
 speedtest-cli
 wget
-kbbi
-BeautifulSoup4
-appdirs
-algoliasearch
