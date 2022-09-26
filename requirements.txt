@@ -12,3 +12,4 @@ samp-client
 sentry-sdk
 speedtest-cli
 wget
+kbbi
