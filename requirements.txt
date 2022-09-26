@@ -13,3 +13,5 @@ sentry-sdk
 speedtest-cli
 wget
 kbbi
+BeautifulSoup4
+appdirs
