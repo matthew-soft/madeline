@@ -23,6 +23,18 @@ class CustomClient(Client):
         traces_sample_rate=1.0,
     )
 
+    async def on_error(self, source, error):
+        """Gets triggered on an error"""
+        self.logger.error(f"{source} raised {error}")
+    
+    async def on_command_error(self, ctx, error):
+        """Gets triggered on a command error"""
+        self.logger.error(f"Command error: {ctx} raised {error}")
+    
+    async def on_command(self, ctx):
+        """Gets triggered on a command"""
+        self.logger.info(f"Command: {ctx} was executed")
+
     @listen()
     async def on_startup(self):
         """Gets triggered on startup"""
