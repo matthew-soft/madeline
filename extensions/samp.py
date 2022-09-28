@@ -12,6 +12,8 @@ from naff import (
     Permissions,
     SlashCommandChoice,
     check,
+    cooldown,
+    Buckets,
     slash_command,
     slash_option,
 )
@@ -42,6 +44,7 @@ class samp(Extension):
         required=True,
         opt_type=OptionTypes.STRING,
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=5)
     async def wiki(self, ctx, *, query: str):
         await ctx.defer()
         data = scraper.get(
@@ -116,6 +119,7 @@ class samp(Extension):
         OptionTypes.INTEGER,
         required=False,
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=10)
     async def samp(self, ctx, ip=None, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
@@ -300,6 +304,7 @@ class samp(Extension):
         required=False,
     )
     @check(member_permissions(Permissions.MANAGE_MESSAGES))
+    @cooldown(bucket=Buckets.USER, rate=1, interval=2)
     async def add(self, ctx, ip: str, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
@@ -336,6 +341,7 @@ class samp(Extension):
         sub_cmd_name="edit",
         sub_cmd_description="Edit your SA-MP server's bookmark",
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=2)
     @slash_option(
         "ip",
         "Please enter the Server IP (only support public ip address or domains!)",
@@ -388,6 +394,7 @@ class samp(Extension):
         sub_cmd_description="Remove your server's bookmark",
     )
     @check(member_permissions(Permissions.MANAGE_MESSAGES))
+    @cooldown(bucket=Buckets.USER, rate=1, interval=2)
     async def remove(self, ctx):
         # need to defer it, otherwise, it fails
         await ctx.defer()
