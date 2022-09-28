@@ -6,6 +6,7 @@ import cloudscraper
 from dotenv import load_dotenv
 from naff import (
     AutocompleteContext,
+    Buckets,
     Embed,
     Extension,
     OptionTypes,
@@ -13,7 +14,6 @@ from naff import (
     SlashCommandChoice,
     check,
     cooldown,
-    Buckets,
     slash_command,
     slash_option,
 )
