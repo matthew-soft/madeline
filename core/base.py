@@ -22,8 +22,6 @@ class CustomClient(Client):
     # you can use that logger in all your extensions
     logger = logging.getLogger(logger_name)
 
-    load_dotenv()
-
     # sentry sdk init
     sentry_sdk.init(
         os.getenv("SENTRY_DSN"),
