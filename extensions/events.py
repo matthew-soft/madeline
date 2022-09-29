@@ -24,6 +24,14 @@ load_dotenv()
 class events(Extension):
     bot: CustomClient
 
+    def __init__(self, *args, **kwargs):
+        self.top_gg_token = os.getenv("TOPGG_TOKEN")
+
+        if self.top_gg_token:
+            self.upload_stats.start()
+        else:
+            log.warning("No top.gg token provided, not posting to top.gg")
+
     @listen()
     async def on_guild_join(self, event: GuildJoin):
         if self.bot.is_ready:
@@ -55,19 +63,24 @@ class events(Extension):
 
     @Task.create(IntervalTrigger(minutes=30))
     async def upload_stats(self):
-        payload = {
-            "server_count": len(self.bot.guilds),
-        }
-        headers = {
-            "Authorization": str(os.getenv("TOPGG_TOKEN")),
-            "Content-Type": "application/json",
-        }
-        async with aiohttp.ClientSession() as session:
-            await session.post(
-                f"https://top.gg/api/bots/{self.bot.user.id}/stats",
-                json=payload,
-                headers=headers,
-            )
+        if self.top_gg_token:
+            await self.bot.wait_until_ready()
+
+            async with aiohttp.ClientSession(
+                headers={"Authorization": self.top_gg_token}
+            ) as session:
+                resp = await session.post(
+                    f"https://top.gg/api/bots/{self.bot.app.id}/stats",
+                    json={
+                        "server_count": len(self.bot.guilds),
+                    },
+                )
+                if resp.status == 200:
+                    log.debug("Posted stats to top.gg")
+                else:
+                    log.warning(
+                        f"Failed to post stats to top.gg: {resp.status} {resp.reason}"
+                    )
 
 
 def setup(bot: CustomClient):

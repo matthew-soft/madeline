@@ -6,12 +6,14 @@ import cloudscraper
 from dotenv import load_dotenv
 from naff import (
     AutocompleteContext,
+    Buckets,
     Embed,
     Extension,
     OptionTypes,
     Permissions,
     SlashCommandChoice,
     check,
+    cooldown,
     slash_command,
     slash_option,
 )
@@ -42,6 +44,7 @@ class samp(Extension):
         required=True,
         opt_type=OptionTypes.STRING,
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=5)
     async def wiki(self, ctx, *, query: str):
         await ctx.defer()
         data = scraper.get(
@@ -116,6 +119,7 @@ class samp(Extension):
         OptionTypes.INTEGER,
         required=False,
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=10)
     async def samp(self, ctx, ip=None, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
@@ -190,18 +194,6 @@ class samp(Extension):
             srv_info.add_field(name="Language", value=info.language, inline=False)
             if info.password is True:
                 srv_info.add_field(name="Passworded?", value="Yes", inline=False)
-            if rule[0] is not None:
-                srv_info.add_field(name=rule[0].name, value=rule[0].value, inline=False)
-            if rule[1] is not None:
-                srv_info.add_field(name=rule[1].name, value=rule[1].value, inline=False)
-            if rule[2] is not None:
-                srv_info.add_field(name=rule[2].name, value=rule[2].value, inline=False)
-            if rule[3] is not None:
-                srv_info.add_field(name=rule[3].name, value=rule[3].value, inline=False)
-            if rule[4] is not None:
-                srv_info.add_field(name=rule[4].name, value=rule[4].value, inline=False)
-            if rule[5] is not None:
-                srv_info.add_field(name=rule[5].name, value=rule[5].value, inline=False)
             srv_info.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
             )
@@ -300,6 +292,7 @@ class samp(Extension):
         required=False,
     )
     @check(member_permissions(Permissions.MANAGE_MESSAGES))
+    @cooldown(bucket=Buckets.USER, rate=1, interval=2)
     async def add(self, ctx, ip: str, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
@@ -336,6 +329,7 @@ class samp(Extension):
         sub_cmd_name="edit",
         sub_cmd_description="Edit your SA-MP server's bookmark",
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=2)
     @slash_option(
         "ip",
         "Please enter the Server IP (only support public ip address or domains!)",
@@ -388,6 +382,7 @@ class samp(Extension):
         sub_cmd_description="Remove your server's bookmark",
     )
     @check(member_permissions(Permissions.MANAGE_MESSAGES))
+    @cooldown(bucket=Buckets.USER, rate=1, interval=2)
     async def remove(self, ctx):
         # need to defer it, otherwise, it fails
         await ctx.defer()
