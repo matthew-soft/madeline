@@ -1,12 +1,12 @@
 import datetime
+import os
 import subprocess
 from functools import cached_property
-import os
-from dotenv import load_dotenv
 
 import naff
 import psutil
 from algoliasearch.search_client import SearchClient
+from dotenv import load_dotenv
 from naff import (
     Embed,
     Extension,
@@ -22,6 +22,7 @@ from utilities.checks import *
 from utilities.uptime import *
 
 load_dotenv()
+
 
 class help(Extension):
     bot: CustomClient
@@ -345,6 +346,7 @@ class help(Extension):
             )
         else:
             await ctx.send("Voting has been temporarily disabled", ephemeral=True)
+
 
 def setup(bot: CustomClient):
     """Let naff load the extension"""

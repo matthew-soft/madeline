@@ -32,7 +32,6 @@ class events(Extension):
         else:
             log.warning("No top.gg token provided, not posting to top.gg")
 
-
     @listen()
     async def on_guild_join(self, event: GuildJoin):
         if self.bot.is_ready:
@@ -67,7 +66,9 @@ class events(Extension):
         if self.top_gg_token:
             await self.bot.wait_until_ready()
 
-            async with aiohttp.ClientSession(headers={"Authorization": self.top_gg_token}) as session:
+            async with aiohttp.ClientSession(
+                headers={"Authorization": self.top_gg_token}
+            ) as session:
                 resp = await session.post(
                     f"https://top.gg/api/bots/{self.bot.app.id}/stats",
                     json={
@@ -77,7 +78,9 @@ class events(Extension):
                 if resp.status == 200:
                     log.debug("Posted stats to top.gg")
                 else:
-                    log.warning(f"Failed to post stats to top.gg: {resp.status} {resp.reason}")
+                    log.warning(
+                        f"Failed to post stats to top.gg: {resp.status} {resp.reason}"
+                    )
 
 
 def setup(bot: CustomClient):
