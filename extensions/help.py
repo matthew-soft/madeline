@@ -1,6 +1,10 @@
 import datetime
 
+import subprocess
+from functools import cached_property
+
 import psutil
+import naff
 from algoliasearch.search_client import SearchClient
 from naff import (
     Embed,
@@ -27,6 +31,16 @@ class help(Extension):
         api_key = "ba2ad6b12791eddbc7079344250ed2ce"
         self.search_client = SearchClient.create(app_id, api_key)
         self.index = self.search_client.init_index("docs")
+
+    @cached_property
+    def naff_commit(self) -> str:
+        deps = subprocess.check_output(["pip", "freeze"]).decode("ascii").splitlines()
+        naff_module = [dep for dep in deps if dep.startswith("naff")][0]
+        return naff_module.split("@")[-1]
+
+    @cached_property
+    def madeline_commit(self) -> str:
+        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("ascii").strip()
 
     @slash_command(name="help", description="Get the list of available commands")
     @slash_option(
@@ -57,6 +71,16 @@ class help(Extension):
             embed.add_field(
                 name="Process",
                 value=f"{memory_usage:.2f} MiB\n{cpu_usage:.2f}% CPU",
+                inline=True,
+            )
+            embed.add_field(
+                name="NAFF version",
+                value=f"[{naff.const.__version__}](https://github.com/madeline-bot/NAFF/commit/{self.naff_commit})",
+                inline=True,
+            )
+            embed.add_field(
+                name="Madeline Commit",
+                value=f"[{self.madeline_commit}](https://github.com/madeline-bot/madeline/commit/{self.madeline_commit})",
                 inline=True,
             )
             embed.add_field(
