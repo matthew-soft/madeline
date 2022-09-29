@@ -1,10 +1,9 @@
 import datetime
-
 import subprocess
 from functools import cached_property
 
-import psutil
 import naff
+import psutil
 from algoliasearch.search_client import SearchClient
 from naff import (
     Embed,
@@ -40,7 +39,11 @@ class help(Extension):
 
     @cached_property
     def madeline_commit(self) -> str:
-        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("ascii").strip()
+        return (
+            subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+            .decode("ascii")
+            .strip()
+        )
 
     @slash_command(name="help", description="Get the list of available commands")
     @slash_option(
