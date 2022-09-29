@@ -1,6 +1,8 @@
 import datetime
 import subprocess
 from functools import cached_property
+import os
+from dotenv import load_dotenv
 
 import naff
 import psutil
@@ -19,11 +21,13 @@ from core.base import CustomClient
 from utilities.checks import *
 from utilities.uptime import *
 
+load_dotenv()
 
 class help(Extension):
     bot: CustomClient
 
     def __init__(self, bot):
+        self.top_gg_token = os.getenv("TOPGG_TOKEN")
         self.process = psutil.Process()
         ## Fill out from trying a search on the docs
         app_id = "BYGLTBMRH0"
@@ -331,6 +335,16 @@ class help(Extension):
         embed.timestamp = datetime.datetime.utcnow()
         return await ctx.send(embed=embed)
 
+    @slash_command("vote", description="Vote for the bot on top.gg")
+    async def top_gg_vote(self, ctx: InteractionContext):
+        if self.top_gg_token:
+            await ctx.send(
+                "Thanks for voting! You won't get anything, but it helps the bot grow!\n\nhttps://top.gg/bot/{}/vote".format(
+                    self.bot.app.id
+                )
+            )
+        else:
+            await ctx.send("Voting has been temporarily disabled", ephemeral=True)
 
 def setup(bot: CustomClient):
     """Let naff load the extension"""
