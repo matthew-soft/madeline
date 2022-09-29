@@ -4,7 +4,7 @@ import os
 
 import sentry_sdk
 from dotenv import load_dotenv
-from naff import BrandColors, Client, Embed, InteractionContext, listen, logger_name
+from naff import Client, Embed, InteractionContext, listen, logger_name
 from naff.client.errors import CommandCheckFailure, CommandOnCooldown
 from pymongo import MongoClient
 
@@ -17,7 +17,7 @@ error_logs = cluster["madeline"]["error"]
 
 
 class CustomClient(Client):
-    """Subclass of naff.Client with our own logger and on_startup event"""
+    """Subclass of naff.Client with our own customized methods"""
 
     # you can use that logger in all your extensions
     logger = logging.getLogger(logger_name)
