@@ -1,11 +1,7 @@
 algoliasearch
-algoliasearch
-appdirs
-BeautifulSoup4
 cloudscraper
 dnspython
 git+https://github.com/madeline-bot/NAFF
-kbbi
 orjson
 psutil
 pymongo
