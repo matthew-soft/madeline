@@ -2,7 +2,7 @@
 
 | Build Production CI | pre-commit checks |
 | :---: | :---: |
-|  [![Build Production](https://github.com/madeline-bot/madeline-v2/actions/workflows/build.yml/badge.svg)](https://github.com/madeline-bot/madeline-v2/actions/workflows/build.yml)|  [![precommit-action](https://github.com/madeline-bot/madeline-v2/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/madeline-bot/madeline-v2/actions/workflows/pre-commit.yml)  |
+|  [![Build Production](https://github.com/madeline-bot/madeline/actions/workflows/build.yml/badge.svg)](https://github.com/madeline-bot/madeline/actions/workflows/build.yml)|  [![precommit-action](https://github.com/madeline-bot/madeline/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/madeline-bot/madeline/actions/workflows/pre-commit.yml)  |
 -------------------------------------------------
 A Multifunctional SA-MP Discord Bot written in [NAFF](https://github.com/NAFTeam/NAFF) (python).
 
