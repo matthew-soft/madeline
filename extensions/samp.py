@@ -194,6 +194,8 @@ class samp(Extension):
             srv_info.add_field(name="Language", value=info.language, inline=False)
             if info.password is True:
                 srv_info.add_field(name="Passworded?", value="Yes", inline=False)
+            for i in rule:
+                srv_info.add_field(name=i.name, value=i.value, inline=True)
             srv_info.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
             )
