@@ -7,11 +7,6 @@ from naff.models.naff.context import Context
 
 TYPE_CHECK_FUNCTION = Callable[[Context], Awaitable[bool]]
 
-
-class MissingPermissions(CommandException):
-    """User is missing permissions"""
-
-
 def member_permissions(*permissions: Permissions) -> TYPE_CHECK_FUNCTION:
     """
     Check if member has any of the given permissions.
