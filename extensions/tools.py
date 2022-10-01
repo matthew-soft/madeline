@@ -77,7 +77,7 @@ class tools(Extension):
             value=f"<t:{int(member.joined_at.timestamp())}:F> (<t:{int(member.joined_at.timestamp())}:R>)",
             inline=False,
         )
-        members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
+        members = sorted(member.roles, key=lambda x: -x.position)
         embed.add_field(name="User ID:", value=f"{member.id}", inline=False)
         if len(member.roles) > 1:
             res = member.roles[::-1]
@@ -184,7 +184,7 @@ class tools(Extension):
             value=f"<t:{int(member.joined_at.timestamp())}:F> (<t:{int(member.joined_at.timestamp())}:R>)",
             inline=False,
         )
-        members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
+        members = sorted(member.roles, key=lambda x: -x.position)
         embed.add_field(name="User ID:", value=f"{member.id}", inline=False)
         if len(member.roles) > 1:
             res = member.roles[::-1]
