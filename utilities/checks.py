@@ -7,6 +7,7 @@ from naff.models.naff.context import Context
 
 TYPE_CHECK_FUNCTION = Callable[[Context], Awaitable[bool]]
 
+
 def member_permissions(*permissions: Permissions) -> TYPE_CHECK_FUNCTION:
     """
     Check if member has any of the given permissions.
