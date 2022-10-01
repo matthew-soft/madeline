@@ -4,7 +4,7 @@ import os
 
 import sentry_sdk
 from dotenv import load_dotenv
-from naff import Client, Embed, InteractionContext, listen, logger_name
+from naff import Client, Embed, InteractionContext, listen, logger_name, Task, IntervalTrigger
 from naff.client.errors import CommandCheckFailure, CommandOnCooldown
 from pymongo import MongoClient
 
@@ -98,11 +98,22 @@ class CustomClient(Client):
             f"Command: [{symbol}{ctx.invoke_target}] was executed with {ctx.args = } | {ctx.kwargs = }"
         )
 
-    @listen()
     async def on_startup(self):
         """Gets triggered on startup"""
 
+        self.presence_changes.start()
+        
         self.logger.info(f"{os.getenv('PROJECT_NAME')} - Startup Finished!")
         self.logger.info(
             "Note: Discord needs up to an hour to load global commands / context menus. They may not appear immediately\n"
+        )
+
+    @Task.create(IntervalTrigger(seconds=30))
+    async def presence_changes(self):
+        await self.bot.change_presence(
+            status=Status.ONLINE,
+            activity=Activity(
+                name=f"{len(self.bot.guilds)} servers | /help",
+                type=ActivityType.COMPETING,
+            ),
         )

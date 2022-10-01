@@ -45,22 +45,6 @@ class events(Extension):
         e = Embed(color=0x53DDA4, title="Left a Guild")
         await send_guild_stats(self, e, guild, 997921473861799976)
 
-    @Task.create(IntervalTrigger(seconds=30))
-    async def presence_changes(self):
-        await self.bot.change_presence(
-            status=Status.ONLINE,
-            activity=Activity(
-                name=f"{len(self.bot.guilds)} servers | /help",
-                type=ActivityType.COMPETING,
-            ),
-        )
-
-    @listen()
-    async def on_startup(self):
-        """Gets triggered on startup"""
-
-        self.presence_changes.start()
-
     @Task.create(IntervalTrigger(minutes=30))
     async def upload_stats(self):
         if self.top_gg_token:
