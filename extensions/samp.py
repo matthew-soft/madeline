@@ -131,7 +131,7 @@ class samp(Extension):
                 port = find["port"]
             except:
                 embed = Embed(
-                    description=f"<:cross:839158779815657512> Cannot find server info in database. Please use <:slash:894692029941039194>`samp bookmark add` to add your server info to bookmark.",
+                    description=f"<:cross:839158779815657512> Cannot find server info in database. Please use </samp bookmark add:996967239976747169> to add your server info to bookmark.",
                     color=0xFF0000,
                 )
                 return await ctx.send(embed=embed)
@@ -194,6 +194,8 @@ class samp(Extension):
             srv_info.add_field(name="Language", value=info.language, inline=False)
             if info.password is True:
                 srv_info.add_field(name="Passworded?", value="Yes", inline=False)
+            for i in rule:
+                srv_info.add_field(name=i.name, value=i.value, inline=True)
             srv_info.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
             )
@@ -257,7 +259,7 @@ class samp(Extension):
             return await paginators.send(ctx)
         except:
             embed = Embed(
-                description=f"<:cross:839158779815657512> Couldn't connect to the server",
+                description=f"<:cross:839158779815657512> Couldn't connect to the server, or there's an error in our end. Please Try again later!",
                 color=0xFF0000,
             )
             return await ctx.send(embed=embed)
@@ -349,7 +351,7 @@ class samp(Extension):
         find = server.find_one({"guild_id": ctx.guild_id})
         if find is None:
             embed = Embed(
-                description=f"<:cross:839158779815657512> Your server is not in our list, Please register it first!",
+                description=f"<:cross:839158779815657512> Your server is not in our database yet, Please register it first!",
                 color=0xFF0000,
             )
             return await ctx.send(embed=embed)
@@ -389,7 +391,7 @@ class samp(Extension):
         find = server.find_one({"guild_id": ctx.guild_id})
         if find is None:
             embed = Embed(
-                description=f"<:cross:839158779815657512> Your server is not in our list, Please register it first!",
+                description=f"<:cross:839158779815657512> Your server is not in our database yet, Please register it first!",
                 color=0xFF0000,
             )
             return await ctx.send(embed=embed)
