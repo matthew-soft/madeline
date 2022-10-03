@@ -83,7 +83,7 @@ class help(Extension):
             )
             embed.add_field(
                 name="NAFF version",
-                value=f"[{naff.const.__version__}](https://github.com/madeline-bot/NAFF/commit/{self.naff_commit})",
+                value=f"{naff.const.__version__}",
                 inline=True,
             )
             embed.add_field(
