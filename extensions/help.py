@@ -87,7 +87,7 @@ class help(Extension):
                 inline=True,
             )
             embed.add_field(
-                name="Madeline Commit",
+                name="Last Commit",
                 value=f"[{self.madeline_commit}](https://github.com/madeline-bot/madeline/commit/{self.madeline_commit})",
                 inline=True,
             )
@@ -206,42 +206,6 @@ class help(Extension):
                 inline=False,
             )
 
-            tags = Embed(
-                title="Tags Commands",
-                description=f"Tags are used to store text or attachment or both that can be used later on.",
-                color=0x738BD7,
-            )
-            tags.add_field(
-                name="</tag get:989488858922090568>",
-                value=f"Get a tag",
-                inline=False,
-            )
-            tags.add_field(
-                name="</tag create:989488858922090568>",
-                value=f"Create a tag",
-                inline=False,
-            )
-            tags.add_field(
-                name="</tag edit:989488858922090568>",
-                value=f"Edit a tag",
-                inline=False,
-            )
-            tags.add_field(
-                name="</tag delete:989488858922090568>",
-                value=f"Delete a tag",
-                inline=False,
-            )
-            tags.add_field(
-                name="</tag mod delete:989488858922090568>",
-                value=f"Delete a tag (Requires `MANAGE_MESSAGES` Permissions)",
-                inline=False,
-            )
-            tags.add_field(
-                name="</tags:988481216166633545>",
-                value=f"Get a list of tags and/or inspect a tag",
-                inline=False,
-            )
-
             tools = Embed(
                 title="Tools Commands",
                 description=f"Some tools that can be used to make your life easier.",
@@ -298,7 +262,7 @@ class help(Extension):
                 inline=False,
             )
 
-            embeds = [embed, ckc, samp, tags, tools]
+            embeds = [embed, ckc, samp, tools]
 
             paginators = Paginator(
                 client=self.bot,
