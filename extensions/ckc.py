@@ -1,13 +1,7 @@
-import datetime
 import random
-import re
 import statistics
-import string
-import urllib.parse
 
-import aiohttp
 from naff import (
-    Embed,
     Extension,
     InteractionContext,
     OptionTypes,
@@ -16,8 +10,7 @@ from naff import (
 )
 
 from core.base import CustomClient
-from src.ckc import *
-from src.uwu import *
+from src.ckc.main import *
 
 
 class CoolKidsClub(Extension):
@@ -183,9 +176,7 @@ class CoolKidsClub(Extension):
         opt_type=OptionTypes.STRING,
     )
     async def ball(self, ctx: InteractionContext, question=None):
-        await ctx.send(
-            ":8ball: | {}, **{}**".format(ball_response(), ctx.author.display_name)
-        )
+        await ctx.send(balls(ctx))
 
     @slash_command(
         name="ckc",
@@ -197,7 +188,7 @@ class CoolKidsClub(Extension):
     )
     async def flipcoin(self, ctx: InteractionContext):
         # respond to the interaction
-        await ctx.send(random.choice(("Heads", "Tails")))
+        await ctx.send(flipcoin())
 
     @slash_command(
         name="ckc",
@@ -254,8 +245,8 @@ class CoolKidsClub(Extension):
         "search_terms", "Term to search for", OptionTypes.STRING, required=True
     )
     async def lmgtfy(self, ctx: InteractionContext, search_terms: str):
-        search_terms = urllib.parse.quote_plus(search_terms)
-        await ctx.send("https://lmgtfy.app/?q={}".format(search_terms))
+        # respond to the interaction
+        await ctx.send(lmgtfy(search_terms))
 
 
 def setup(bot: CustomClient):
