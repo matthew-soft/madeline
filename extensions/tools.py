@@ -28,7 +28,7 @@ from naff import (
 from naff.ext.paginators import Paginator
 
 from src.tools.main import *
-from utilities.checks import *
+from src.utilities.checks import *
 
 load_dotenv()
 

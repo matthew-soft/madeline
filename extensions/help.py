@@ -18,8 +18,8 @@ from naff import (
 from naff.ext.paginators import Paginator
 
 from core.base import CustomClient
-from utilities.checks import *
-from utilities.uptime import *
+from src.utilities.checks import *
+from src.utilities.uptime import *
 
 load_dotenv()
 

@@ -20,7 +20,7 @@ from naff.api.events.discord import GuildJoin, GuildLeft
 from naff.client.errors import CommandCheckFailure, CommandOnCooldown
 from pymongo import MongoClient
 
-from utilities.events import *
+from src.utilities.events import *
 
 load_dotenv()
 
