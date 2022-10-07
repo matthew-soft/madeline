@@ -5,22 +5,21 @@ import os
 import sentry_sdk
 from dotenv import load_dotenv
 from naff import (
+    Activity,
+    ActivityType,
     Client,
     Embed,
     InteractionContext,
-    listen,
-    logger_name,
-    Activity,
-    ActivityType,
-    Embed,
     IntervalTrigger,
     Status,
     Task,
     listen,
+    logger_name,
 )
 from naff.api.events.discord import GuildJoin, GuildLeft
 from naff.client.errors import CommandCheckFailure, CommandOnCooldown
 from pymongo import MongoClient
+
 from utilities.events import *
 
 load_dotenv()
@@ -30,6 +29,7 @@ cluster = MongoClient(os.getenv("MONGODB_URL"))
 context = cluster["madeline"]["context"]
 error_logs = cluster["madeline"]["error"]
 
+
 def __init__(self, *args, **kwargs):
     self.top_gg_token = os.getenv("TOPGG_TOKEN")
 
@@ -37,6 +37,7 @@ def __init__(self, *args, **kwargs):
         self.upload_stats.start()
     else:
         log.warning("No top.gg token provided, not posting to top.gg")
+
 
 class CustomClient(Client):
     """Subclass of naff.Client with our own customized methods"""
@@ -124,7 +125,7 @@ class CustomClient(Client):
     async def on_startup(self):
         """Gets triggered on startup"""
         self.presence_changes.start()
-        
+
         self.logger.info(f"{os.getenv('PROJECT_NAME')} - Startup Finished!")
         self.logger.info(
             "Note: Discord needs up to an hour to load global commands / context menus. They may not appear immediately\n"

@@ -182,6 +182,7 @@ def ball_response():
     returnthis = random.choice(eight_ball_responses)
     return returnthis
 
+
 def uwuize_string(string: str):
     """Uwuize and return a string."""
     converted = ""
@@ -288,13 +289,16 @@ def uwuize_word(word: str):
 
     return uwu
 
+
 def lmgtfy(url):
     returnthis = f"https://lmgtfy.app/?q={urllib.parse.quote_plus(url)}"
     return returnthis
 
+
 def balls(ctx):
     returnthis = f":8ball: | {ball_response()}, **{ctx.author.display_name}**"
     return returnthis
+
 
 def flipcoin():
     returnthis = random.choice(("Heads", "Tails"))
