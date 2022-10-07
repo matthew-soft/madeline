@@ -2,12 +2,13 @@ import re
 
 import aiohttp
 import naff
-from dateutil.parser import isoparse
 from algoliasearch.search_client import SearchClient
+from dateutil.parser import isoparse
 
 DISAMBIGUATION_CAT = "Category:All disambiguation pages"
 WHITESPACE = re.compile(r"[\n\s]{4,}")
 NEWLINES = re.compile(r"\n+")
+
 
 def __init__(self, bot):
     self.bot = bot
@@ -16,6 +17,7 @@ def __init__(self, bot):
     api_key = "f37d91bd900bbb124c8210cca9efcc01"
     self.search_client = SearchClient.create(app_id, api_key)
     self.index = self.search_client.init_index("discord")
+
 
 def generate_payload(query: str):
     """Generate the payload for Wikipedia based on a query string."""
@@ -128,6 +130,7 @@ def generate_embed(page_json):
     )
     return embed
 
+
 def beaufort_scale(speed):
     if speed < 0:
         return "I don't fucking know"
@@ -190,8 +193,10 @@ def pretty_weather(weather):
     else:
         return weather.capitalize()
 
+
 def guild_av(member):
     return member.guild_avatar.url
+
 
 def av(member):
     return user.avatar.url
