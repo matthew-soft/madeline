@@ -190,3 +190,8 @@ def pretty_weather(weather):
     else:
         return weather.capitalize()
 
+def guild_av(member):
+    return member.guild_avatar.url
+
+def av(member):
+    return user.avatar.url

@@ -46,7 +46,7 @@ class tools(Extension):
     async def context_guild_avatar(self, ctx):
         member = ctx.guild.get_member(ctx.target_id)
         if member.guild_avatar is not None:
-            return await ctx.send(member.guild_avatar.url)
+            await ctx.send(context_guild_av(member))
         else:
             embed = Embed(
                 description=f"<:cross:839158779815657512> {member.display_name} doesn't have an guild avatar!",
@@ -114,7 +114,7 @@ class tools(Extension):
         if member is None:
             member = ctx.author
         if member.guild_avatar is not None:
-            return await ctx.send(member.guild_avatar.url)
+            await ctx.send(slash_guild_av(member))
         else:
             embed = Embed(
                 description=f"<:cross:839158779815657512> {member.display_name} doesn't have an guild avatar!",
@@ -125,7 +125,7 @@ class tools(Extension):
     @context_menu("Avatar", CommandTypes.USER)
     async def context_avatar(self, ctx):
         user = self.bot.get_user(ctx.target.id)
-        await ctx.send(user.avatar.url)
+        await ctx.send(av(user))
 
     @slash_command(
         name="tools",
@@ -144,7 +144,7 @@ class tools(Extension):
     async def slash_avatar(self, ctx, member: naff.Member = None):
         if member is None:
             member = ctx.author
-        return await ctx.send(member.avatar.url)
+        return await ctx.send(av(member))
 
     @slash_command(
         name="tools",
