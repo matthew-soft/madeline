@@ -19,7 +19,7 @@ from naff.ext.paginators import Paginator
 
 from core.base import CustomClient
 from src.utilities.checks import *
-from src.utilities.uptime import *
+from src.help.main import *
 
 load_dotenv()
 
