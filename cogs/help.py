@@ -37,12 +37,6 @@ class help(Extension):
         self.index = self.search_client.init_index("docs")
 
     @cached_property
-    def naff_commit(self) -> str:
-        deps = subprocess.check_output(["pip", "freeze"]).decode("ascii").splitlines()
-        naff_module = [dep for dep in deps if dep.startswith("naff")][0]
-        return naff_module.split("@")[-1]
-
-    @cached_property
     def madeline_commit(self) -> str:
         return (
             subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
