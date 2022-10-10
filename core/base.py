@@ -57,14 +57,6 @@ class CustomClient(Client):
     async def on_command_error(self, ctx, error):
         """Gets triggered on a command error"""
         if isinstance(error, CommandCheckFailure):
-            errs = {
-                "time": datetime.datetime.utcnow(),
-                "guild_id": ctx.guild_id,
-                "author_id": ctx.author.id,
-                "error": f"{error}",
-            }
-            error_logs.insert_one(errs)
-
             if isinstance(ctx, InteractionContext):
                 symbol = "/"
 
@@ -80,14 +72,6 @@ class CustomClient(Client):
             )
 
         elif isinstance(error, CommandOnCooldown):
-            errs = {
-                "time": datetime.datetime.utcnow(),
-                "guild_id": ctx.guild_id,
-                "author_id": ctx.author.id,
-                "error": f"{error}",
-            }
-            error_logs.insert_one(errs)
-
             if isinstance(ctx, InteractionContext):
                 symbol = "/"
 
@@ -99,7 +83,7 @@ class CustomClient(Client):
                 ephemeral=True,
             )
             self.logger.warning(
-                f"Cooldown Error on Command: [{symbol}{ctx.invoke_target}] for {int(error.cooldown.get_cooldown_time())} seconds"
+                f"Command Ratelimit on: [{symbol}{ctx.invoke_target}] for {int(error.cooldown.get_cooldown_time())} seconds"
             )
 
     async def on_command(self, ctx):
