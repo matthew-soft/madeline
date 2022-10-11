@@ -1,7 +1,16 @@
 import random
 import statistics
 
-from naff import Extension, InteractionContext, OptionTypes, slash_command, slash_option, Embed, cooldown, Buckets
+from naff import (
+    Buckets,
+    Embed,
+    Extension,
+    InteractionContext,
+    OptionTypes,
+    cooldown,
+    slash_command,
+    slash_option,
+)
 
 from core.base import CustomClient
 from src.ckc.main import *
