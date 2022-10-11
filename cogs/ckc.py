@@ -298,7 +298,7 @@ class CoolKidsClub(Extension):
             except:
                 await ctx.send(
                     embeds=Embed(
-                        description=f"Something went wrong, please try again later.",
+                        description=f"<:cross:839158779815657512> Something went wrong, please try again later.",
                         color=0xFF0000,
                     ),
                     ephemeral=True,
@@ -306,7 +306,7 @@ class CoolKidsClub(Extension):
         else:
             await ctx.send(
                 embeds=Embed(
-                    description=f"File Must be `png`, `jpg`, or `jpeg`!",
+                    description=f"<:cross:839158779815657512> File Must be `png`, `jpg`, or `jpeg`!",
                     color=0xFF0000,
                 ),
                 ephemeral=True,

@@ -586,7 +586,7 @@ class tools(Extension):
 
         if not embeds:
             await ctx.send(
-                (f"I'm sorry, I couldn't find \"{search_terms}\" on Wikipedia")
+                (f"<:cross:839158779815657512> I'm sorry, I couldn't find \"{search_terms}\" on Wikipedia")
             )
         elif len(embeds) == 1:
             embeds[0].set_author(name="Result 1 of 1")
