@@ -303,3 +303,20 @@ def balls(ctx):
 def flipcoin():
     returnthis = random.choice(("Heads", "Tails"))
     return returnthis
+
+
+def detect_text_uri(uri):
+    """Detects text in the file located in Google Cloud Storage or on the Web.
+    """
+    from google.cloud import vision
+    client = vision.ImageAnnotatorClient()
+    image = vision.Image()
+    image.source.image_uri = uri
+
+    response = client.text_detection(image=image)
+    texts = response.text_annotations[0].description
+
+    if response.error.message:
+        return response.error.message
+    else:
+        return texts
