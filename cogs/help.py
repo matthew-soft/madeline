@@ -168,6 +168,11 @@ class help(Extension):
                 value=f"Returns you a LMGTFY link. Good to counter people who lazy enough to open up Google in their browser :3",
                 inline=False,
             )
+            ckc.add_field(
+                name="</ckc image ocr:996967239976747170>",
+                value=f"Read text inside of an image (Optical Character Recognition)",
+                inline=False,
+            )
 
             samp = Embed(
                 title="SA-MP Commands",
