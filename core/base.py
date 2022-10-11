@@ -83,7 +83,7 @@ class CustomClient(Client):
                 ephemeral=True,
             )
             self.logger.warning(
-                f"Command Ratelimit on: [{symbol}{ctx.invoke_target}] for {int(error.cooldown.get_cooldown_time())} seconds"
+                f"Command Ratelimited for {int(error.cooldown.get_cooldown_time())} seconds on: [{symbol}{ctx.invoke_target}]"
             )
 
     async def on_command(self, ctx):
