@@ -272,6 +272,7 @@ class CoolKidsClub(Extension):
         else:
             await ctx.send("File Must be `png`, `jpg`, or `jpeg`!")
 
+
 def setup(bot: CustomClient):
     """Let naff load the extension"""
 
