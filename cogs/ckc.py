@@ -277,7 +277,6 @@ class CoolKidsClub(Extension):
             or (image.content_type == "image/jpeg")
         ):
             try:
-                preview = catbox.url_upload(attachment.url)
                 embed = Embed(color=0x00FF00)
                 embed.set_author(
                     name=f"{ctx.author.username}#{ctx.author.discriminator}",
@@ -289,6 +288,7 @@ class CoolKidsClub(Extension):
                 if len(results) > 2048:
                     results = "{}...".format(results[:2045])
                 embed.description = results
+                preview = catbox.url_upload(attachment.url)
                 embed.set_thumbnail(url=preview)
                 embed.set_footer(
                     text="Optical Character Recognition",
