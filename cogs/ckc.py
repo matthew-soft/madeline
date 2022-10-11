@@ -1,7 +1,7 @@
 import random
 import statistics
 
-from naff import Extension, InteractionContext, OptionTypes, slash_command, slash_option
+from naff import Extension, InteractionContext, OptionTypes, slash_command, slash_option, Embed, cooldown, Buckets
 
 from core.base import CustomClient
 from src.ckc.main import *
@@ -256,6 +256,7 @@ class CoolKidsClub(Extension):
         opt_type=OptionTypes.ATTACHMENT,
         required=True,
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=60)
     async def ocr(self, ctx: InteractionContext, image: OptionTypes.ATTACHMENT):
         # respond to the interaction
         await ctx.defer()
