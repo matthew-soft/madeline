@@ -241,6 +241,35 @@ class CoolKidsClub(Extension):
     async def lmgtfy(self, ctx: InteractionContext, search_terms: str):
         # respond to the interaction
         await ctx.send(lmgtfy(search_terms))
+    
+    @slash_command(
+        name="ckc",
+        description="Cool Kids Commands™ 😎",
+        group_name="image",
+        group_description="Image Manipulation Commands",
+        sub_cmd_name="ocr",
+        sub_cmd_description="Read text inside of an image (Optical Character Recognition)",
+    )
+    @slash_option(
+        name="image",
+        description="The image to read",
+        opt_type=OptionTypes.ATTACHMENT,
+        required=True,
+    )
+    async def ocr(self, ctx: InteractionContext, image: OptionTypes.ATTACHMENT):
+        # respond to the interaction
+        await ctx.defer()
+        if (
+            (image.content_type == "image/png")
+            or (image.content_type == "image/jpg")
+            or (image.content_type == "image/jpeg")
+            ):  
+                try:
+                    results = detect_text_uri(image.url)
+                    await ctx.send(results)
+                except:
+                    await ctx.send("Something went wrong, please try again later.")
+        
 
 
 def setup(bot: CustomClient):
