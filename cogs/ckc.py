@@ -14,6 +14,8 @@ from naff import (
 
 from core.base import CustomClient
 from src.ckc.main import *
+from src.utilities.catbox import CatBox as catbox
+
 
 
 class CoolKidsClub(Extension):
@@ -269,14 +271,28 @@ class CoolKidsClub(Extension):
     async def ocr(self, ctx: InteractionContext, image: OptionTypes.ATTACHMENT):
         # respond to the interaction
         await ctx.defer()
+
         if (
             (image.content_type == "image/png")
             or (image.content_type == "image/jpg")
             or (image.content_type == "image/jpeg")
         ):
             try:
+                preview = catbox.url_upload(attachment.url)
+                embed = Embed(color=0x00FF00)
+                embed.set_author(
+                    name=f"{ctx.author.username}#{ctx.author.discriminator}",
+                    url="https://discordapp.com/users/{}".format(ctx.author.id),
+                    icon_url=ctx.author.avatar.url,
+                )
+                embed.title = "OCR Results: "
                 results = detect_text_uri(image.url)
-                await ctx.send(results)
+                if len(results) > 2048:
+                    results = "{}...".format(results[:2045])
+                embed.description = results
+                embed.set_thumbnail(url=preview)
+                embed.set_footer(text="Optical Character Recognition", icon_url="https://cdn.notsobot.com/brands/google-go.png")
+                await ctx.send(embed=embed)
             except:
                 await ctx.send("Something went wrong, please try again later.")
         else:
