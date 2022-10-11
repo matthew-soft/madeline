@@ -18,8 +18,8 @@ from naff import (
 from naff.ext.paginators import Paginator
 
 from core.base import CustomClient
-from utilities.checks import *
-from utilities.uptime import *
+from src.help.main import *
+from src.utilities.checks import *
 
 load_dotenv()
 
@@ -35,12 +35,6 @@ class help(Extension):
         api_key = "ba2ad6b12791eddbc7079344250ed2ce"
         self.search_client = SearchClient.create(app_id, api_key)
         self.index = self.search_client.init_index("docs")
-
-    @cached_property
-    def naff_commit(self) -> str:
-        deps = subprocess.check_output(["pip", "freeze"]).decode("ascii").splitlines()
-        naff_module = [dep for dep in deps if dep.startswith("naff")][0]
-        return naff_module.split("@")[-1]
 
     @cached_property
     def madeline_commit(self) -> str:

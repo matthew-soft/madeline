@@ -21,7 +21,7 @@ from naff.ext.paginators import Paginator
 from pymongo import MongoClient
 from samp_client.client import SampClient
 
-from utilities.checks import *
+from src.utilities.checks import *
 
 load_dotenv()
 

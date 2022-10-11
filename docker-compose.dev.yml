@@ -8,6 +8,7 @@ services:
     env_file: .env
     volumes:
       - ./logs:/app/logs
+      - ./gcp-key.json:/app/gcp-key.json
     networks:
       - madeline-network
     restart:

@@ -1,23 +1,20 @@
-import datetime
 import random
-import re
 import statistics
-import string
-import urllib.parse
 
-import aiohttp
 from naff import (
+    Buckets,
     Embed,
     Extension,
     InteractionContext,
     OptionTypes,
+    cooldown,
     slash_command,
     slash_option,
 )
 
 from core.base import CustomClient
-from src.ckc import *
-from src.uwu import *
+from src.ckc.main import *
+from src.utilities.catbox import CatBox as catbox
 
 
 class CoolKidsClub(Extension):
@@ -183,9 +180,7 @@ class CoolKidsClub(Extension):
         opt_type=OptionTypes.STRING,
     )
     async def ball(self, ctx: InteractionContext, question=None):
-        await ctx.send(
-            ":8ball: | {}, **{}**".format(ball_response(), ctx.author.display_name)
-        )
+        await ctx.send(balls(ctx))
 
     @slash_command(
         name="ckc",
@@ -197,7 +192,7 @@ class CoolKidsClub(Extension):
     )
     async def flipcoin(self, ctx: InteractionContext):
         # respond to the interaction
-        await ctx.send(random.choice(("Heads", "Tails")))
+        await ctx.send(flipcoin())
 
     @slash_command(
         name="ckc",
@@ -254,8 +249,68 @@ class CoolKidsClub(Extension):
         "search_terms", "Term to search for", OptionTypes.STRING, required=True
     )
     async def lmgtfy(self, ctx: InteractionContext, search_terms: str):
-        search_terms = urllib.parse.quote_plus(search_terms)
-        await ctx.send("https://lmgtfy.app/?q={}".format(search_terms))
+        # respond to the interaction
+        await ctx.send(lmgtfy(search_terms))
+
+    @slash_command(
+        name="ckc",
+        description="Cool Kids Commands™ 😎",
+        group_name="image",
+        group_description="Image Manipulation Commands",
+        sub_cmd_name="ocr",
+        sub_cmd_description="Read text inside of an image (Optical Character Recognition)",
+    )
+    @slash_option(
+        name="image",
+        description="The image to read",
+        opt_type=OptionTypes.ATTACHMENT,
+        required=True,
+    )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=60)
+    async def ocr(self, ctx: InteractionContext, image: OptionTypes.ATTACHMENT):
+        # respond to the interaction
+        await ctx.defer()
+
+        if (
+            (image.content_type == "image/png")
+            or (image.content_type == "image/jpg")
+            or (image.content_type == "image/jpeg")
+        ):
+            try:
+                embed = Embed(color=0x00FF00)
+                embed.set_author(
+                    name=f"{ctx.author.username}#{ctx.author.discriminator}",
+                    url="https://discordapp.com/users/{}".format(ctx.author.id),
+                    icon_url=ctx.author.avatar.url,
+                )
+                embed.title = "OCR Results: "
+                results = detect_text_uri(image.url)
+                if len(results) > 2048:
+                    results = "{}...".format(results[:2045])
+                embed.description = results
+                preview = catbox.url_upload(attachment.url)
+                embed.set_thumbnail(url=preview)
+                embed.set_footer(
+                    text="Optical Character Recognition",
+                    icon_url="https://cdn.notsobot.com/brands/google-go.png",
+                )
+                await ctx.send(embed=embed)
+            except:
+                await ctx.send(
+                    embeds=Embed(
+                        description=f"Something went wrong, please try again later.",
+                        color=0xFF0000,
+                    ),
+                    ephemeral=True,
+                )
+        else:
+            await ctx.send(
+                embeds=Embed(
+                    description=f"File Must be `png`, `jpg`, or `jpeg`!",
+                    color=0xFF0000,
+                ),
+                ephemeral=True,
+            )
 
 
 def setup(bot: CustomClient):
