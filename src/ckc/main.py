@@ -306,9 +306,9 @@ def flipcoin():
 
 
 def detect_text_uri(uri):
-    """Detects text in the file located in Google Cloud Storage or on the Web.
-    """
+    """Detects text in the file located in Google Cloud Storage or on the Web."""
     from google.cloud import vision
+
     client = vision.ImageAnnotatorClient()
     image = vision.Image()
     image.source.image_uri = uri
