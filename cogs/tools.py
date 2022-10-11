@@ -13,17 +13,17 @@ import wget
 from algoliasearch.search_client import SearchClient
 from dotenv import load_dotenv
 from naff import (
+    Buckets,
     CommandTypes,
     Embed,
     Extension,
-    cooldown,
-    Buckets,
     GuildCategory,
     GuildText,
     GuildVoice,
     OptionTypes,
     check,
     context_menu,
+    cooldown,
     slash_command,
     slash_option,
 )

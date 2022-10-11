@@ -305,12 +305,12 @@ class CoolKidsClub(Extension):
                 )
         else:
             await ctx.send(
-                    embeds=Embed(
-                        description=f"File Must be `png`, `jpg`, or `jpeg`!",
-                        color=0xFF0000,
-                    ),
-                    ephemeral=True,
-                )
+                embeds=Embed(
+                    description=f"File Must be `png`, `jpg`, or `jpeg`!",
+                    color=0xFF0000,
+                ),
+                ephemeral=True,
+            )
 
 
 def setup(bot: CustomClient):
