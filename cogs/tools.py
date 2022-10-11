@@ -16,6 +16,8 @@ from naff import (
     CommandTypes,
     Embed,
     Extension,
+    cooldown,
+    Buckets,
     GuildCategory,
     GuildText,
     GuildVoice,
@@ -246,6 +248,7 @@ class tools(Extension):
         sub_cmd_description="Search for a term on the Urban Dictionary",
     )
     @slash_option("word", "Term to search for", OptionTypes.STRING, required=True)
+    @cooldown(bucket=Buckets.USER, rate=1, interval=30)
     async def slash_urban(self, ctx, word: str):
         try:
             url = "https://api.urbandictionary.com/v0/define"
@@ -319,6 +322,7 @@ class tools(Extension):
         required=True,
         opt_type=OptionTypes.STRING,
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=30)
     async def weather(self, ctx, city: str):
         async with aiohttp.ClientSession() as session:
             async with session.get(
@@ -421,6 +425,7 @@ class tools(Extension):
         OptionTypes.STRING,
         required=False,
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=10)
     async def konesyntees(
         self,
         ctx,
@@ -522,6 +527,7 @@ class tools(Extension):
         sub_cmd_name="speedtest",
         sub_cmd_description="Test the host of the bot internet speed.",
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=5)
     @check(is_owner())
     async def speedtest(self, ctx):
         await ctx.defer()
@@ -571,6 +577,7 @@ class tools(Extension):
         required=False,
         opt_type=OptionTypes.BOOLEAN,
     )
+    @cooldown(bucket=Buckets.USER, rate=1, interval=60)
     async def wikipedia(self, ctx, search_terms: str, only_first_result: bool = False):
         await ctx.defer()
         embeds, url = await perform_search(
