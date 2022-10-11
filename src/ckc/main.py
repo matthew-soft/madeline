@@ -318,8 +318,8 @@ def detect_text_uri(uri):
 
     if response.error.message:
         raise Exception(
-            '{}\nFor more info on error messages, check: '
-            'https://cloud.google.com/apis/design/errors'.format(
-                response.error.message))
+            "{}\nFor more info on error messages, check: "
+            "https://cloud.google.com/apis/design/errors".format(response.error.message)
+        )
     else:
         return texts

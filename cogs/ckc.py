@@ -241,7 +241,7 @@ class CoolKidsClub(Extension):
     async def lmgtfy(self, ctx: InteractionContext, search_terms: str):
         # respond to the interaction
         await ctx.send(lmgtfy(search_terms))
-    
+
     @slash_command(
         name="ckc",
         description="Cool Kids Commands™ 😎",
@@ -263,14 +263,14 @@ class CoolKidsClub(Extension):
             (image.content_type == "image/png")
             or (image.content_type == "image/jpg")
             or (image.content_type == "image/jpeg")
-            ):  
-                try:
-                    results = detect_text_uri(image.url)
-                    await ctx.send(results)
-                except:
-                    await ctx.send("Something went wrong, please try again later.")
-        
-
+        ):
+            try:
+                results = detect_text_uri(image.url)
+                await ctx.send(results)
+            except:
+                await ctx.send("Something went wrong, please try again later.")
+        else:
+            await ctx.send("File Must be `png`, `jpg`, or `jpeg`!")
 
 def setup(bot: CustomClient):
     """Let naff load the extension"""
