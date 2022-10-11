@@ -39,7 +39,7 @@ COPY ./ /app/
 WORKDIR /app
 
 # Add Google Cloud Credentials to PATH
-RUN export GOOGLE_APPLICATION_CREDENTIALS="/app/gcp-key.json"
+ENV GOOGLE_APPLICATION_CREDENTIALS="/app/gcp-key.json"
 
 # start the bot
 CMD ["python3.10", "main.py"]
