@@ -17,7 +17,6 @@ from src.ckc.main import *
 from src.utilities.catbox import CatBox as catbox
 
 
-
 class CoolKidsClub(Extension):
     bot: CustomClient
 
@@ -291,7 +290,10 @@ class CoolKidsClub(Extension):
                     results = "{}...".format(results[:2045])
                 embed.description = results
                 embed.set_thumbnail(url=preview)
-                embed.set_footer(text="Optical Character Recognition", icon_url="https://cdn.notsobot.com/brands/google-go.png")
+                embed.set_footer(
+                    text="Optical Character Recognition",
+                    icon_url="https://cdn.notsobot.com/brands/google-go.png",
+                )
                 await ctx.send(embed=embed)
             except:
                 await ctx.send("Something went wrong, please try again later.")
