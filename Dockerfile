@@ -35,6 +35,11 @@ RUN pip3.10 install -r /app/requirements.txt
 # copy over the source files
 COPY ./ /app/
 
-# start the bot
+# set the working directory
 WORKDIR /app
+
+# Add Google Cloud Credentials to PATH
+RUN export GOOGLE_APPLICATION_CREDENTIALS="/app/gcp-key.json"
+
+# start the bot
 CMD ["python3.10", "main.py"]
