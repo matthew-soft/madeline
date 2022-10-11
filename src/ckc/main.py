@@ -317,6 +317,9 @@ def detect_text_uri(uri):
     texts = response.text_annotations[0].description
 
     if response.error.message:
-        return response.error.message
+        raise Exception(
+            '{}\nFor more info on error messages, check: '
+            'https://cloud.google.com/apis/design/errors'.format(
+                response.error.message))
     else:
         return texts
