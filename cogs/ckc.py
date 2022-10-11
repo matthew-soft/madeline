@@ -296,9 +296,21 @@ class CoolKidsClub(Extension):
                 )
                 await ctx.send(embed=embed)
             except:
-                await ctx.send("Something went wrong, please try again later.")
+                await ctx.send(
+                    embeds=Embed(
+                        description=f"Something went wrong, please try again later.",
+                        color=0xFF0000,
+                    ),
+                    ephemeral=True,
+                )
         else:
-            await ctx.send("File Must be `png`, `jpg`, or `jpeg`!")
+            await ctx.send(
+                    embeds=Embed(
+                        description=f"File Must be `png`, `jpg`, or `jpeg`!",
+                        color=0xFF0000,
+                    ),
+                    ephemeral=True,
+                )
 
 
 def setup(bot: CustomClient):
