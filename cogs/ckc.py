@@ -14,7 +14,7 @@ from naff import (
 
 from core.base import CustomClient
 from src.ckc.main import *
-
+from src.utilities.catbox import catbox
 
 class CoolKidsClub(Extension):
     bot: CustomClient
@@ -287,6 +287,8 @@ class CoolKidsClub(Extension):
                 if len(results) > 2048:
                     results = "{}...".format(results[:2045])
                 embed.description = results
+                preview = catbox.url_upload(attachment.url)
+                embed.set_image(url=preview)
                 embed.set_footer(
                     text="Optical Character Recognition",
                     icon_url="https://cdn.notsobot.com/brands/google-go.png",
