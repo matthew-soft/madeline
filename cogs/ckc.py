@@ -16,6 +16,7 @@ from core.base import CustomClient
 from src.ckc.main import *
 from src.utilities.catbox import catbox
 
+
 class CoolKidsClub(Extension):
     bot: CustomClient
 
