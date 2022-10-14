@@ -288,7 +288,7 @@ class CoolKidsClub(Extension):
                 if len(results) > 2048:
                     results = "{}...".format(results[:2045])
                 embed.description = results
-                preview = catbox.url_upload(attachment.url)
+                preview = catbox.url_upload(image.url)
                 embed.set_image(url=preview)
                 embed.set_footer(
                     text="Optical Character Recognition",
