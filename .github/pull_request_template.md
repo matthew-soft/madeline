@@ -3,8 +3,7 @@
 <!-- Check whichever applies to your PR -->
 - [ ] Non-breaking code change
 - [ ] Breaking code change
-- [ ] Documentation change/addition
-- [ ] Tests change
+- [ ] CI/Tests change
 
 ## Description
 <!-- Clearly and concisely describe what this PR is for, and why you feel it should be merged. -->
