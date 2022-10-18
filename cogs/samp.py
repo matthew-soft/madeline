@@ -2,7 +2,7 @@ import datetime
 import os
 from typing import Optional
 
-import cloudscraper
+
 from dotenv import load_dotenv
 from naff import (
     AutocompleteContext,
@@ -11,7 +11,6 @@ from naff import (
     Extension,
     OptionTypes,
     Permissions,
-    SlashCommandChoice,
     check,
     cooldown,
     slash_command,
@@ -19,16 +18,17 @@ from naff import (
 )
 from naff.ext.paginators import Paginator
 from pymongo import MongoClient
-from samp_client.client import SampClient
+
 
 from src.utilities.checks import *
+from src.samp.main import *
 
 load_dotenv()
 
 cluster = MongoClient(os.getenv("MONGODB_URL"))
 
 server = cluster["madeline"]["servers"]
-scraper = cloudscraper.create_scraper()
+
 
 
 class samp(Extension):
@@ -45,51 +45,21 @@ class samp(Extension):
         opt_type=OptionTypes.STRING,
     )
     @cooldown(bucket=Buckets.USER, rate=1, interval=5)
-    async def wiki(self, ctx, *, query: str):
+    async def wiki(self, ctx, query: str):
         await ctx.defer()
-        data = scraper.get(
-            "https://api.open.mp/docs/search", params=dict(q=query)
-        ).json()
 
-        try:
-            embeds = []
-            openmp_url = "https://open.mp/"
-            for page_data in data["hits"]:
+        embeds = wiki(ctx, query)
 
-                docs_title = page_data["title"]
-                url = page_data["url"]
-                docs_description = page_data["desc"]
+        if embeds is not None:
+            paginators = Paginator(
+                client=self.bot,
+                pages=embeds,
+                timeout_interval=30,
+                show_select_menu=False,
+            )
+            await paginators.send(ctx)
 
-                if len(docs_title) > 256:
-                    docs_title = "{}...".format(docs_title[:253])
-                if len(docs_description) > 2048:
-                    docs_description = "{}...".format(docs_description[:2045])
-
-                embed = Embed()
-                embed.title = f"Documentation Search Results: {query}"
-                embed.add_field(name=docs_title, value=docs_description, inline=False)
-                embed.add_field(
-                    name="Documentation URL:", value=f"{openmp_url}{url}", inline=True
-                )
-                embed.set_footer(
-                    text=f"Requested by {ctx.author} • Powered by open.mp API 😉",
-                    icon_url=ctx.author.avatar.url,
-                )
-                embed.timestamp = datetime.datetime.utcnow()
-
-                embeds.append(embed)
-
-            if embeds is not None and len(embeds) > 0:
-
-                paginators = Paginator(
-                    client=self.bot,
-                    pages=embeds,
-                    timeout_interval=30,
-                    show_select_menu=False,
-                )
-                await paginators.send(ctx)
-
-        except:
+        else:
             embed = Embed(
                 title=f"No results: {query}",
                 description="There were no results for that query.",
@@ -135,121 +105,9 @@ class samp(Extension):
                     color=0xFF0000,
                 )
                 return await ctx.send(embed=embed)
-
-        try:
-            with SampClient(address=ip, port=port) as kung:
-                info = kung.get_server_info()
-                players = kung.get_server_clients_detailed()
-                numpang = kung.get_server_clients()
-                rule = kung.get_server_rules()
-
-                pleyers = []
-                for ppq in numpang:
-                    pleyers.append(f"{ppq.name}                    | {ppq.score}")
-
-            general = Embed(title=info.hostname, color=0x0083F5)  # Create embed
-            general.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
-            general.add_field(
-                name="Players : ",
-                value=f"`{info.players}` / `{info.max_players}` Players",
-                inline=True,
-            )
-            general.add_field(
-                name="Gamemode : ", value=f"`{info.gamemode}`", inline=True
-            )
-            general.add_field(
-                name="Language : ", value=f"`{info.language}`", inline=True
-            )
-            general.add_field(
-                name="Passworded? : ", value=f"`{info.password}`", inline=True
-            )
-            if info.players == 0:
-                general.add_field(
-                    name="[only show 10 player max] Connected Clients :",
-                    value="No players connected",
-                    inline=False,
-                )
-            if info.players > 0:
-                listed = "\n".join(pleyers)
-                if pleyers == []:
-                    general.add_field(
-                        name="Note:",
-                        value="due to __*discord limitations*__, i can't show connected clients summary 😔",
-                        inline=False,
-                    )
-                else:
-                    general.add_field(
-                        name="[only show 10 player max] Connected Clients :",
-                        value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
-                        inline=False,
-                    )
-            general.set_footer(
-                text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
-            )
-            general.timestamp = datetime.datetime.utcnow()
-
-            srv_info = Embed(title=info.hostname, color=0x0083F5)  # Create embed
-            srv_info.add_field(name="IP", value=f"`{ip}:{port}`", inline=False)
-            srv_info.add_field(name="Gamemode", value=info.gamemode, inline=False)
-            srv_info.add_field(name="Language", value=info.language, inline=False)
-            if info.password is True:
-                srv_info.add_field(name="Passworded?", value="Yes", inline=False)
-            for i in rule:
-                srv_info.add_field(name=i.name, value=i.value, inline=True)
-            srv_info.set_footer(
-                text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
-            )
-            srv_info.timestamp = datetime.datetime.utcnow()
-
-            if info.players == 0:
-                p_info = Embed(
-                    description=f"<:cross:839158779815657512> No players connected",
-                    color=0xFF0000,
-                )  # Create embed
-                p_info.set_footer(
-                    text=f"Requested by {ctx.author}",
-                    icon_url=ctx.author.avatar.url,
-                )
-                p_info.timestamp = datetime.datetime.utcnow()
-            else:
-                if info.players > 10:
-                    p_info = Embed(
-                        title=info.hostname,
-                        description="Note: due to __*discord limitations*__, i can't show detailed connected clients 😔",
-                        color=0xF6ADAB,
-                    )  # Create embed
-                    p_info.add_field(
-                        name="Players : ",
-                        value=f"`{info.players}` / `{info.max_players}` Players",
-                        inline=True,
-                    )
-                    p_info.set_footer(
-                        text=f"Requested by {ctx.author}",
-                        icon_url=ctx.author.avatar.url,
-                    )
-                    p_info.timestamp = datetime.datetime.utcnow()
-                else:
-                    p_info = Embed(title=info.hostname, color=0x4C8404)  # Create embed
-                    p_info.add_field(
-                        name="Players : ",
-                        value=f"`{info.players}` / `{info.max_players}` Players",
-                        inline=True,
-                    )
-                    if info.players > 0:
-                        if pleyers != []:
-                            listed = "\n".join(pleyers)
-                            p_info.add_field(
-                                name="[only show 10 player max] Connected Clients :",
-                                value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
-                                inline=False,
-                            )
-                    p_info.set_footer(
-                        text=f"Requested by {ctx.author}",
-                        icon_url=ctx.author.avatar.url,
-                    )
-                    p_info.timestamp = datetime.datetime.utcnow()
-            embeds = [general, srv_info, p_info]
-
+        embeds = query(ctx, ip, port)
+        if embeds is not None:
+            embeds = query(ctx, ip, port)
             paginators = Paginator(
                 client=self.bot,
                 pages=embeds,
@@ -257,7 +115,7 @@ class samp(Extension):
                 show_select_menu=False,
             )
             return await paginators.send(ctx)
-        except:
+        else:
             embed = Embed(
                 description=f"<:cross:839158779815657512> Couldn't connect to the server, or there's an error in our end. Please Try again later!",
                 color=0xFF0000,
