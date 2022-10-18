@@ -2,7 +2,6 @@ import datetime
 import os
 from typing import Optional
 
-
 from dotenv import load_dotenv
 from naff import (
     AutocompleteContext,
@@ -19,16 +18,14 @@ from naff import (
 from naff.ext.paginators import Paginator
 from pymongo import MongoClient
 
-
-from src.utilities.checks import *
 from src.samp.main import *
+from src.utilities.checks import *
 
 load_dotenv()
 
 cluster = MongoClient(os.getenv("MONGODB_URL"))
 
 server = cluster["madeline"]["servers"]
-
 
 
 class samp(Extension):

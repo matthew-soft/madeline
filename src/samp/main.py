@@ -1,11 +1,11 @@
-from samp_client.client import SampClient
-import cloudscraper
 import datetime
-from naff import (
-    Embed,
-)
+
+import cloudscraper
+from naff import Embed
+from samp_client.client import SampClient
 
 scraper = cloudscraper.create_scraper()
+
 
 def query_none():
     """
@@ -16,6 +16,7 @@ def query_none():
         color=0xFF0000,
     )
     return embed
+
 
 def query(ctx, ip: str, port: int):
     """
@@ -40,12 +41,8 @@ def query(ctx, ip: str, port: int):
             value=f"`{info.players}` / `{info.max_players}` Players",
             inline=True,
         )
-        general.add_field(
-            name="Gamemode : ", value=f"`{info.gamemode}`", inline=True
-        )
-        general.add_field(
-            name="Language : ", value=f"`{info.language}`", inline=True
-        )
+        general.add_field(name="Gamemode : ", value=f"`{info.gamemode}`", inline=True)
+        general.add_field(name="Language : ", value=f"`{info.language}`", inline=True)
         general.add_field(
             name="Passworded? : ", value=f"`{info.password}`", inline=True
         )
@@ -139,6 +136,7 @@ def query(ctx, ip: str, port: int):
     except:
         return None
 
+
 def wiki_none(ctx, query):
     """
     Returns an warning embed if there are no results for the query.
@@ -154,13 +152,12 @@ def wiki_none(ctx, query):
     embed.timestamp = datetime.datetime.utcnow()
     return embed
 
+
 def wiki(ctx, query: str):
     """
     Returns a list of embeds containing open.mp documentation query search results.
     """
-    data = scraper.get(
-            "https://api.open.mp/docs/search", params=dict(q=query)
-        ).json()
+    data = scraper.get("https://api.open.mp/docs/search", params=dict(q=query)).json()
 
     try:
         embeds = []
