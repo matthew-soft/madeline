@@ -60,16 +60,7 @@ class samp(Extension):
             await paginators.send(ctx)
 
         else:
-            embed = Embed(
-                title=f"No results: {query}",
-                description="There were no results for that query.",
-            )  # Create embed
-            embed.set_footer(
-                text=f"Requested by {ctx.author} • Powered by open.mp API 😉",
-                icon_url=ctx.author.avatar.url,
-            )
-            embed.timestamp = datetime.datetime.utcnow()
-            return await ctx.send(embed=embed)  # Send the embed
+            return await ctx.send(embed=wiki_none(ctx, query))  # Send the embed
 
     @slash_command(
         name="samp",
@@ -116,11 +107,7 @@ class samp(Extension):
             )
             return await paginators.send(ctx)
         else:
-            embed = Embed(
-                description=f"<:cross:839158779815657512> Couldn't connect to the server, or there's an error in our end. Please Try again later!",
-                color=0xFF0000,
-            )
-            return await ctx.send(embed=embed)
+            return await ctx.send(embed=query_none())  # Send the embed
 
     @samp.autocomplete("ip")
     async def samp_ip_autocomplete(self, ctx: AutocompleteContext, ip: str):

@@ -7,7 +7,21 @@ from naff import (
 
 scraper = cloudscraper.create_scraper()
 
+def query_none():
+    """
+    Returns an warning embed if there are no results for the query.
+    """
+    embed = Embed(
+        description=f"<:cross:839158779815657512> Couldn't connect to the server, or there's an error in our end. Please Try again later!",
+        color=0xFF0000,
+    )
+    return embed
+
 def query(ctx, ip: str, port: int):
+    """
+    Returns a list of embeds containing information about a SA-MP server.
+    """
+
     try:
         with SampClient(address=ip, port=port) as kung:
             info = kung.get_server_info()
@@ -125,7 +139,25 @@ def query(ctx, ip: str, port: int):
     except:
         return None
 
+def wiki_none(ctx, query):
+    """
+    Returns an warning embed if there are no results for the query.
+    """
+    embed = Embed(
+        title=f"No results: {query}",
+        description="There were no results for that query.",
+    )  # Create embed
+    embed.set_footer(
+        text=f"Requested by {ctx.author} • Powered by open.mp API 😉",
+        icon_url=ctx.author.avatar.url,
+    )
+    embed.timestamp = datetime.datetime.utcnow()
+    return embed
+
 def wiki(ctx, query: str):
+    """
+    Returns a list of embeds containing open.mp documentation query search results.
+    """
     data = scraper.get(
             "https://api.open.mp/docs/search", params=dict(q=query)
         ).json()
