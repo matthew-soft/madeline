@@ -5,6 +5,7 @@ google-cloud-vision
 naff
 orjson
 psutil
+py-markdown-table
 pymongo
 python-dateutil
 python-dotenv
@@ -13,4 +14,3 @@ samp-client
 sentry-sdk
 speedtest-cli
 wget
-py-markdown-table
