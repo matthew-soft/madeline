@@ -3,6 +3,7 @@ import datetime
 import cloudscraper
 from naff import Embed
 from samp_client.client import SampClient
+from markdownTable import markdownTable
 
 scraper = cloudscraper.create_scraper()
 
