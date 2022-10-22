@@ -132,6 +132,7 @@ def generate_embed(page_json):
 
 
 def beaufort_scale(speed):
+    """Converts a wind speed in m/s to a Beaufort scale number."""
     if speed < 0:
         return "I don't fucking know"
     elif speed <= 0.3:
@@ -163,6 +164,7 @@ def beaufort_scale(speed):
 
 
 def pretty_weather(weather):
+    """Converts a weather object into a human readable string."""
     weather = weather.lower()
     if weather == "light rain":
         return "Light rain"
@@ -195,8 +197,18 @@ def pretty_weather(weather):
 
 
 def guild_av(member):
+    """
+        Returns a member guild avatar.
+        Args:
+            member: naff.Member() object
+    """
     return member.guild_avatar.url
 
 
 def av(member):
+    """
+        Returns a member avatar.
+        Args:
+            member: naff.Member() object
+    """
     return user.avatar.url
