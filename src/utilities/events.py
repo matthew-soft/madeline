@@ -1,10 +1,10 @@
 async def send_guild_stats(self, e, guild, r_channel):
     """
-        Send guild stats to a specific channel.
-        Args:
-            e: Embed
-            guild: Guild object
-            r_channel: Channel to post the stats
+    Send guild stats to a specific channel.
+    Args:
+        e: Embed
+        guild: Guild object
+        r_channel: Channel to post the stats
     """
     owner = await self.fetch_user(guild._owner_id)
     e.add_field(name="Name", value=guild.name)

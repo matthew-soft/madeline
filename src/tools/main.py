@@ -198,17 +198,17 @@ def pretty_weather(weather):
 
 def guild_av(member):
     """
-        Returns a member guild avatar.
-        Args:
-            member: naff.Member() object
+    Returns a member guild avatar.
+    Args:
+        member: naff.Member() object
     """
     return member.guild_avatar.url
 
 
 def av(member):
     """
-        Returns a member avatar.
-        Args:
-            member: naff.Member() object
+    Returns a member avatar.
+    Args:
+        member: naff.Member() object
     """
     return user.avatar.url
