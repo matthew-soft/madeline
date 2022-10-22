@@ -76,6 +76,7 @@ KAOMOJI_SPARKLES = [" \\*:･ﾟ✧\\*:･ﾟ✧ ", " ☆\\*:・ﾟ ", "〜☆ "
 
 
 def aesthetics(string):
+    """Convert a string to aesthetics."""
     returnthis = ""
     for word in string:
         for letter in word:
@@ -93,6 +94,7 @@ def aesthetics(string):
 
 
 def double_font(string):
+    """Convert a string to double font."""
     returnthis = ""
     for word in string:
         for letter in word:
@@ -108,6 +110,7 @@ def double_font(string):
 
 
 def fraktur(string):
+    """Convert a string to fraktur."""
     returnthis = ""
     for word in string:
         for letter in word:
@@ -123,6 +126,7 @@ def fraktur(string):
 
 
 def bold_fraktur(string):
+    """Convert a string to bold fraktur."""
     returnthis = ""
     for word in string:
         for letter in word:
@@ -138,6 +142,7 @@ def bold_fraktur(string):
 
 
 def fancy(string):
+    """Convert a string to fancy."""
     returnthis = ""
     for word in string:
         for letter in word:
@@ -153,6 +158,7 @@ def fancy(string):
 
 
 def bold_fancy(string):
+    """Convert a string to bold fancy."""
     returnthis = ""
     for word in string:
         for letter in word:
@@ -168,6 +174,7 @@ def bold_fancy(string):
 
 
 def smallcaps(string):
+    """Convert a string to small caps."""
     returnthis = ""
     for word in string:
         for letter in word:
@@ -179,6 +186,7 @@ def smallcaps(string):
 
 
 def ball_response():
+    """8 Ball response randomizer"""
     returnthis = random.choice(eight_ball_responses)
     return returnthis
 
@@ -291,16 +299,19 @@ def uwuize_word(word: str):
 
 
 def lmgtfy(url):
+    """Return a formatted lmgtfy url."""
     returnthis = f"https://lmgtfy.app/?q={urllib.parse.quote_plus(url)}"
     return returnthis
 
 
 def balls(ctx):
+    """Return a random 8 Ball result."""
     returnthis = f":8ball: | {ball_response()}, **{ctx.author.display_name}**"
     return returnthis
 
 
 def flipcoin():
+    """Return a random coin flip result."""
     returnthis = random.choice(("Heads", "Tails"))
     return returnthis
 

@@ -1,8 +1,8 @@
 algoliasearch
 cloudscraper
 dnspython
-git+https://github.com/madeline-bot/NAFF
 google-cloud-vision
+naff
 orjson
 psutil
 pymongo

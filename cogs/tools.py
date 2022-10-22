@@ -29,8 +29,8 @@ from naff import (
 )
 from naff.ext.paginators import Paginator
 
-from src.tools.main import *
-from src.utilities.checks import *
+from src.tools import *
+from src.utilities import *
 
 load_dotenv()
 
@@ -495,13 +495,6 @@ class tools(Extension):
         )
         embed.timestamp = datetime.datetime.utcnow()
         return await ctx.send(embed=embed)
-
-    def get_level_str(self, levels):
-        last = ""
-        for level in levels.values():
-            if level is not None:
-                last = level
-        return last
 
     @slash_command(
         name="tools",

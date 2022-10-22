@@ -13,8 +13,8 @@ from naff import (
 )
 
 from core.base import CustomClient
-from src.ckc.main import *
-from src.utilities.catbox import catbox
+from src.ckc import *
+from src.utilities import catbox
 
 
 class CoolKidsClub(Extension):
