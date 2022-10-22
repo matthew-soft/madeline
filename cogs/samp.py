@@ -18,8 +18,8 @@ from naff import (
 from naff.ext.paginators import Paginator
 from pymongo import MongoClient
 
-from src.samp.main import *
-from src.utilities.checks import *
+from src.samp import *
+from src.utilities import *
 
 load_dotenv()
 
