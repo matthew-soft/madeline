@@ -1,7 +1,6 @@
 import datetime
 
 import cloudscraper
-from markdownTable import markdownTable
 from naff import Embed
 from samp_client.client import SampClient
 

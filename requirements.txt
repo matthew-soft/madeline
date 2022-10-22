@@ -5,7 +5,6 @@ google-cloud-vision
 naff
 orjson
 psutil
-py-markdown-table
 pymongo
 python-dateutil
 python-dotenv
