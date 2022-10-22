@@ -13,3 +13,4 @@ samp-client
 sentry-sdk
 speedtest-cli
 wget
+py-markdown-table
