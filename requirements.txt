@@ -1,8 +1,8 @@
 algoliasearch
 cloudscraper
 dnspython
-naff
 google-cloud-vision
+naff
 orjson
 psutil
 pymongo
