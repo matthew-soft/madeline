@@ -2,6 +2,7 @@ algoliasearch
 cloudscraper
 dnspython
 google-cloud-vision
+tabulate
 naff
 orjson
 psutil
