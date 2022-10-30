@@ -3,6 +3,7 @@ import datetime
 import cloudscraper
 from naff import Embed
 from samp_client.client import SampClient
+from tabulate import tabulate
 
 scraper = cloudscraper.create_scraper()
 
@@ -32,8 +33,8 @@ def query(ctx, ip: str, port: int):
 
             pleyers = []
             for ppq in numpang:
-                pleyers.append(f"{ppq.name}                    | {ppq.score}")
-
+                pleyers.append([ppq.name, ppq.score])
+                tabled = tabulate(pleyers, headers=["Name", "Score"])
         general = Embed(title=info.hostname, color=0x0083F5)  # Create embed
         general.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
         general.add_field(
@@ -53,7 +54,6 @@ def query(ctx, ip: str, port: int):
                 inline=False,
             )
         if info.players > 0:
-            listed = "\n".join(pleyers)
             if pleyers == []:
                 general.add_field(
                     name="Note:",
@@ -63,7 +63,7 @@ def query(ctx, ip: str, port: int):
             else:
                 general.add_field(
                     name="[only show 10 player max] Connected Clients :",
-                    value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
+                    value=f"```{tabled}```",
                     inline=False,
                 )
         general.set_footer(
@@ -120,10 +120,9 @@ def query(ctx, ip: str, port: int):
                 )
                 if info.players > 0:
                     if pleyers != []:
-                        listed = "\n".join(pleyers)
                         p_info.add_field(
                             name="[only show 10 player max] Connected Clients :",
-                            value=f"```==============================================\nName                        | Score\n ==============================================\n {listed}```",
+                            value=f"```{tabled}```",
                             inline=False,
                         )
                 p_info.set_footer(

@@ -12,4 +12,5 @@ requests-toolbelt
 samp-client
 sentry-sdk
 speedtest-cli
+tabulate
 wget
