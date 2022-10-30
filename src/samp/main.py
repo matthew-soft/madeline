@@ -34,7 +34,7 @@ def query(ctx, ip: str, port: int):
             pleyers = []
             for ppq in numpang:
                 pleyers.append([ppq.name, ppq.score])
-                tabled = tabulate(pleyers, headers=["Name","Score"])
+                tabled = tabulate(pleyers, headers=["Name", "Score"])
         general = Embed(title=info.hostname, color=0x0083F5)  # Create embed
         general.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
         general.add_field(
@@ -62,10 +62,10 @@ def query(ctx, ip: str, port: int):
                 )
             else:
                 general.add_field(
-                            name="[only show 10 player max] Connected Clients :",
-                            value=f"```{tabled}```",
-                            inline=False,
-                        )
+                    name="[only show 10 player max] Connected Clients :",
+                    value=f"```{tabled}```",
+                    inline=False,
+                )
         general.set_footer(
             text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url
         )

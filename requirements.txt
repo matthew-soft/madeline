@@ -2,7 +2,6 @@ algoliasearch
 cloudscraper
 dnspython
 google-cloud-vision
-tabulate
 naff
 orjson
 psutil
@@ -13,4 +12,5 @@ requests-toolbelt
 samp-client
 sentry-sdk
 speedtest-cli
+tabulate
 wget
