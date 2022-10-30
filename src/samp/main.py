@@ -35,7 +35,6 @@ def query(ctx, ip: str, port: int):
             for ppq in numpang:
                 pleyers.append([ppq.name, ppq.score])
                 tabled = tabulate(pleyers, headers=["Name","Score"])
-                print(tabled)
         general = Embed(title=info.hostname, color=0x0083F5)  # Create embed
         general.add_field(name="IP", value=f"`{ip}:{port}`", inline=True)
         general.add_field(
