@@ -66,7 +66,7 @@ class samp(Extension):
         sub_cmd_description="Query your favorite SA-MP server",
     )
     @slash_option(
-        "ip",
+        "ip_only",
         "Please enter the Server IP (only support public ip address or domains!)",
         OptionTypes.STRING,
         required=False,
@@ -78,14 +78,14 @@ class samp(Extension):
         required=False,
     )
     @cooldown(bucket=Buckets.USER, rate=1, interval=10)
-    async def samp(self, ctx, ip=None, port: Optional[int] = 7777):
+    async def samp(self, ctx, ip_only=None, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
 
-        if ip is None:
+        if ip_only is None:
             try:
                 find = server.find_one({"guild_id": ctx.guild_id})
-                ip = find["ip"]
+                ip_only = find["ip"]
                 port = find["port"]
             except:
                 embed = Embed(
@@ -93,9 +93,9 @@ class samp(Extension):
                     color=0xFF0000,
                 )
                 return await ctx.send(embed=embed)
-        embeds = query(ctx, ip, port)
+        embeds = query(ctx, ip_only, port)
         if embeds is not None:
-            embeds = query(ctx, ip, port)
+            embeds = query(ctx, ip_only, port)
             paginators = Paginator(
                 client=self.bot,
                 pages=embeds,
@@ -115,7 +115,7 @@ class samp(Extension):
         sub_cmd_description="Add your server to the bookmark",
     )
     @slash_option(
-        "ip",
+        "ip_only",
         "Please enter the Server IP (only support public ip address or domains!)",
         OptionTypes.STRING,
         required=True,
@@ -128,7 +128,7 @@ class samp(Extension):
     )
     @check(member_permissions(Permissions.MANAGE_MESSAGES))
     @cooldown(bucket=Buckets.USER, rate=1, interval=2)
-    async def add(self, ctx, ip: str, port: Optional[int] = 7777):
+    async def add(self, ctx, ip_only: str, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
         find = server.find_one({"guild_id": ctx.guild_id})
@@ -142,12 +142,12 @@ class samp(Extension):
             server.insert_one(
                 {
                     "guild_id": ctx.guild_id,
-                    "ip": ip,
+                    "ip": ip_only,
                     "port": port,
                     "created_by": ctx.author.id,
                     "created_at": int(datetime.datetime.utcnow().timestamp()),
                     "edited_at": None,
-                    "full_ip": f"{ip}:{port}",
+                    "full_ip": f"{ip_only}:{port}",
                 }
             )
             embed = Embed(
@@ -166,7 +166,7 @@ class samp(Extension):
     )
     @cooldown(bucket=Buckets.USER, rate=1, interval=2)
     @slash_option(
-        "ip",
+        "ip_only",
         "Please enter the Server IP (only support public ip address or domains!)",
         OptionTypes.STRING,
         required=True,
@@ -178,7 +178,7 @@ class samp(Extension):
         required=False,
     )
     @check(member_permissions(Permissions.MANAGE_MESSAGES))
-    async def edit(self, ctx, ip: str, port: Optional[int] = 7777):
+    async def edit(self, ctx, ip_only: str, port: Optional[int] = 7777):
         # need to defer it, otherwise, it fails
         await ctx.defer()
         find = server.find_one({"guild_id": ctx.guild_id})
@@ -195,10 +195,10 @@ class samp(Extension):
                 },
                 {
                     "$set": {
-                        "ip": ip,
+                        "ip": ip_only,
                         "port": port,
                         "edited_at": int(datetime.datetime.utcnow().timestamp()),
-                        "full_ip": f"{ip}:{port}",
+                        "full_ip": f"{ip_only}:{port}",
                     }
                 },
             )
