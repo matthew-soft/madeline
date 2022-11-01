@@ -106,15 +106,6 @@ class samp(Extension):
         else:
             return await ctx.send(embed=query_none())  # Send the embed
 
-    @samp.autocomplete("ip")
-    async def samp_ip_autocomplete(self, ctx: AutocompleteContext, ip: str):
-        choices = []
-        findall = server.find({"guild_id": ctx.guild_id})
-        for addr in findall:
-            address = addr["ip"]
-            choices.append({"name": f"{address}", "value": f"{address}"})
-        await ctx.send(choices=choices)
-
     @slash_command(
         name="samp",
         description="All SA-MP Commands",
