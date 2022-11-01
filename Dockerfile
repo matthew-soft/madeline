@@ -1,7 +1,7 @@
 FROM python:3.10.8-bullseye
 
 # Update default packages
-RUN apt-get update
+RUN apt-get update && apt-get upgrade -y
 
 # Get Ubuntu packages
 RUN apt-get install -y \
@@ -9,9 +9,6 @@ RUN apt-get install -y \
     curl \
     gcc \
     python3-dev
-
-# Update new packages
-RUN apt-get update
 
 # Get Rust
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
