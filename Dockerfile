@@ -1,22 +1,7 @@
 FROM python:3.10.8-bullseye
 
 # Update default packages
-RUN apt-get update
-
-# Get Ubuntu packages
-RUN apt-get install -y \
-    build-essential \
-    curl \
-    gcc \
-    python3-dev
-
-# Update new packages
-RUN apt-get update
-
-# Get Rust
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-
-ENV PATH="/root/.cargo/bin:${PATH}"
+RUN apt-get update && apt-get upgrade -y
 
 # we want stdout
 ENV PYTHONDONTWRITEBYTECODE=1
