@@ -67,7 +67,7 @@ class samp(Extension):
     )
     @slash_option(
         "ip_only",
-        "Please enter the Server IP (only support public ip address or domains!)",
+        "Please enter the Server IP WITHOUT Port (only support public ip address or domains!)",
         OptionTypes.STRING,
         required=False,
     )
@@ -116,7 +116,7 @@ class samp(Extension):
     )
     @slash_option(
         "ip_only",
-        "Please enter the Server IP (only support public ip address or domains!)",
+        "Please enter the Server IP WITHOUT Port (only support public ip address or domains!)",
         OptionTypes.STRING,
         required=True,
     )
@@ -167,7 +167,7 @@ class samp(Extension):
     @cooldown(bucket=Buckets.USER, rate=1, interval=2)
     @slash_option(
         "ip_only",
-        "Please enter the Server IP (only support public ip address or domains!)",
+        "Please enter the Server IP WITHOUT Port (only support public ip address or domains!)",
         OptionTypes.STRING,
         required=True,
     )
