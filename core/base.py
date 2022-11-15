@@ -17,7 +17,7 @@ from naff import (
     logger_name,
 )
 from naff.api.events.discord import GuildJoin, GuildLeft
-from naff.client.errors import CommandCheckFailure, CommandOnCooldown
+from naff.client.errors import CommandCheckFailure, CommandOnCooldown, HTTPException
 from pymongo import MongoClient
 from time import time
 
@@ -88,6 +88,18 @@ class CustomClient(Client):
             self.logger.warning(
                 f"Command Ratelimited for {int(error.cooldown.get_cooldown_time())} seconds on: [{symbol}{ctx.invoke_target}]"
             )
+        
+        elif isinstance(error, HTTPException):
+            if isinstance(ctx, InteractionContext):
+                symbol = "/"
+
+                await ctx.send(
+                    embeds=Embed(
+                        description=f"<:cross:839158779815657512> Something happened while trying to process your request, Please try again later!",
+                        color=0xFF0000,
+                    ),
+                    ephemeral=True,
+                )
 
     async def on_command(self, ctx):
         """Gets triggered on a command"""
