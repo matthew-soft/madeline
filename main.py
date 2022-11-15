@@ -5,7 +5,7 @@ from naff import Activity, ActivityType, Intents, Status
 from naff.ext.debug_extension import DebugExtension
 
 from core.base import CustomClient
-from core.extensions_loader import load_extensions
+from core.loader import load_extensions
 from core.logging import init_logging
 
 if __name__ == "__main__":

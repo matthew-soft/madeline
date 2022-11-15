@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+from time import time
 
 import sentry_sdk
 from dotenv import load_dotenv
@@ -17,12 +18,14 @@ from naff import (
     logger_name,
 )
 from naff.api.events.discord import GuildJoin, GuildLeft
-from naff.client.errors import CommandCheckFailure, CommandOnCooldown
+from naff.client.errors import CommandCheckFailure, CommandOnCooldown, HTTPException
 from pymongo import MongoClient
 
 from src.utilities.events import *
 
 load_dotenv()
+
+start_time = time()
 
 cluster = MongoClient(os.getenv("MONGODB_URL"))
 
@@ -62,7 +65,7 @@ class CustomClient(Client):
 
             await ctx.send(
                 embeds=Embed(
-                    description="<:cross:839158779815657512> I'm afraid I can't let you use that",
+                    description="<:cross:839158779815657512> I'm afraid, I can't let you use that!",
                     color=0xFF0000,
                 ),
                 ephemeral=True,
@@ -77,7 +80,7 @@ class CustomClient(Client):
 
             await ctx.send(
                 embeds=Embed(
-                    description=f"<:cross:839158779815657512> Cooldown is active for this command. You'll be able to use it in {int(error.cooldown.get_cooldown_time())} seconds",
+                    description=f"<:cross:839158779815657512> Cooldown is active for this command. You'll be able to use it in {int(error.cooldown.get_cooldown_time())} seconds!",
                     color=0xFF0000,
                 ),
                 ephemeral=True,
@@ -85,6 +88,18 @@ class CustomClient(Client):
             self.logger.warning(
                 f"Command Ratelimited for {int(error.cooldown.get_cooldown_time())} seconds on: [{symbol}{ctx.invoke_target}]"
             )
+
+        elif isinstance(error, HTTPException):
+            if isinstance(ctx, InteractionContext):
+                symbol = "/"
+
+                await ctx.send(
+                    embeds=Embed(
+                        description=f"<:cross:839158779815657512> Something happened while trying to process your request, Please try again later!",
+                        color=0xFF0000,
+                    ),
+                    ephemeral=True,
+                )
 
     async def on_command(self, ctx):
         """Gets triggered on a command"""
@@ -108,8 +123,10 @@ class CustomClient(Client):
     @listen()
     async def on_startup(self):
         """Gets triggered on startup"""
-        self.presence_changes.start()
-
+        self.status_change.start()
+        self.logger.warn(f"Logged in as {self.user}")
+        self.logger.warn(f"Total Shards: {self.total_shards}")
+        self.logger.warn(f"Ready within: {round((time() - start_time), 2)} seconds")
         self.logger.info(f"{os.getenv('PROJECT_NAME')} - Startup Finished!")
         self.logger.info(
             "Note: Discord needs up to an hour to load global commands / context menus. They may not appear immediately\n"
@@ -129,13 +146,9 @@ class CustomClient(Client):
         await send_guild_stats(self, e, guild, 997921473861799976)
 
     @Task.create(IntervalTrigger(seconds=30))
-    async def presence_changes(self):
+    async def status_change(self):
         await self.change_presence(
-            status=Status.ONLINE,
-            activity=Activity(
-                name=f"{len(self.guilds)} servers | /help",
-                type=ActivityType.COMPETING,
-            ),
+            Status.ONLINE, get_random_presence(len(self.guilds), self.total_shards)
         )
 
     @Task.create(IntervalTrigger(minutes=30))
