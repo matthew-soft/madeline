@@ -19,10 +19,13 @@ from naff import (
 from naff.api.events.discord import GuildJoin, GuildLeft
 from naff.client.errors import CommandCheckFailure, CommandOnCooldown
 from pymongo import MongoClient
+from time import time
 
 from src.utilities.events import *
 
 load_dotenv()
+
+start_time = time()
 
 cluster = MongoClient(os.getenv("MONGODB_URL"))
 
@@ -110,6 +113,10 @@ class CustomClient(Client):
         """Gets triggered on startup"""
         self.presence_changes.start()
 
+        self.status_change.start()
+        self.logger.warn(f"Logged in as {self.user}")
+        self.logger.warn(f"Total Shards: {self.total_shards}")
+        self.logger.warn(f"Ready within: {round((time() - start_time), 2)} seconds")
         self.logger.info(f"{os.getenv('PROJECT_NAME')} - Startup Finished!")
         self.logger.info(
             "Note: Discord needs up to an hour to load global commands / context menus. They may not appear immediately\n"
