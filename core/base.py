@@ -65,7 +65,7 @@ class CustomClient(Client):
 
             await ctx.send(
                 embeds=Embed(
-                    description="<:cross:839158779815657512> I'm afraid I can't let you use that",
+                    description="<:cross:839158779815657512> I'm afraid, I can't let you use that!",
                     color=0xFF0000,
                 ),
                 ephemeral=True,
@@ -80,7 +80,7 @@ class CustomClient(Client):
 
             await ctx.send(
                 embeds=Embed(
-                    description=f"<:cross:839158779815657512> Cooldown is active for this command. You'll be able to use it in {int(error.cooldown.get_cooldown_time())} seconds",
+                    description=f"<:cross:839158779815657512> Cooldown is active for this command. You'll be able to use it in {int(error.cooldown.get_cooldown_time())} seconds!",
                     color=0xFF0000,
                 ),
                 ephemeral=True,
