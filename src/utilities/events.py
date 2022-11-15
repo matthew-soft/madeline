@@ -1,3 +1,22 @@
+from random import choice
+from naff import Activity, ActivityType
+
+
+def get_random_presence(guilds, shards) -> Activity:
+    """
+    Get random presence
+    """
+    activity = choice(
+        [
+            Activity(name=f"/help", type=ActivityType.WATCHING),
+            Activity(name=f"https://www.madeline.my.id", type=ActivityType.WATCHING),
+            Activity(name="Grand Theft Auto San Andreas", type=ActivityType.PLAYING),
+            Activity(name="San Andreas Multiplayer", type=ActivityType.PLAYING),
+            Activity(name=f"{guilds} servers | {shards} Shards", type=ActivityType.COMPETING),
+        ]
+    )
+    return activity
+
 async def send_guild_stats(self, e, guild, r_channel):
     """
     Send guild stats to a specific channel.

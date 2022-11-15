@@ -111,8 +111,6 @@ class CustomClient(Client):
     @listen()
     async def on_startup(self):
         """Gets triggered on startup"""
-        self.presence_changes.start()
-
         self.status_change.start()
         self.logger.warn(f"Logged in as {self.user}")
         self.logger.warn(f"Total Shards: {self.total_shards}")
@@ -136,13 +134,9 @@ class CustomClient(Client):
         await send_guild_stats(self, e, guild, 997921473861799976)
 
     @Task.create(IntervalTrigger(seconds=30))
-    async def presence_changes(self):
+    async def status_change(self):
         await self.change_presence(
-            status=Status.ONLINE,
-            activity=Activity(
-                name=f"{len(self.guilds)} servers | /help",
-                type=ActivityType.COMPETING,
-            ),
+            Status.ONLINE, get_random_presence(len(self.guilds), self.total_shards)
         )
 
     @Task.create(IntervalTrigger(minutes=30))
