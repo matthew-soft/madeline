@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+from time import time
 
 import sentry_sdk
 from dotenv import load_dotenv
@@ -19,7 +20,6 @@ from naff import (
 from naff.api.events.discord import GuildJoin, GuildLeft
 from naff.client.errors import CommandCheckFailure, CommandOnCooldown, HTTPException
 from pymongo import MongoClient
-from time import time
 
 from src.utilities.events import *
 
@@ -88,7 +88,7 @@ class CustomClient(Client):
             self.logger.warning(
                 f"Command Ratelimited for {int(error.cooldown.get_cooldown_time())} seconds on: [{symbol}{ctx.invoke_target}]"
             )
-        
+
         elif isinstance(error, HTTPException):
             if isinstance(ctx, InteractionContext):
                 symbol = "/"
