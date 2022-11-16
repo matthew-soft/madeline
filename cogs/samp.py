@@ -48,7 +48,7 @@ class samp(Extension):
         if embed is not None:
             return await ctx.send(embed=embed)
         else:
-            return await ctx.send(embed=wiki_none(ctx, query))  # Send the embed
+            return await ctx.send(embed=wiki_none(ctx, query), ephemeral=True)  # Send the embed
 
     @slash_command(
         name="samp",
@@ -83,7 +83,7 @@ class samp(Extension):
                     description=f"<:cross:839158779815657512> Cannot find server info in database. Please use </samp bookmark add:996967239976747169> to add your server info to bookmark.",
                     color=0xFF0000,
                 )
-                return await ctx.send(embed=embed)
+                return await ctx.send(embed=embed, ephemeral=True)
         embeds = query(ctx, ip_only, port)
         if embeds is not None:
             embeds = query(ctx, ip_only, port)
@@ -95,7 +95,7 @@ class samp(Extension):
             )
             return await paginators.send(ctx)
         else:
-            return await ctx.send(embed=query_none())  # Send the embed
+            return await ctx.send(embed=query_none(), ephemeral=True)  # Send the embed
 
     @slash_command(
         name="samp",
@@ -128,7 +128,7 @@ class samp(Extension):
                 description=f"<:cross:839158779815657512> You already have a server in the list!",
                 color=0xFF0000,
             )
-            return await ctx.send(embed=embed)
+            return await ctx.send(embed=embed, ephemeral=True)
         else:
             server.insert_one(
                 {
@@ -178,7 +178,7 @@ class samp(Extension):
                 description=f"<:cross:839158779815657512> Your server is not in our database yet, Please register it first!",
                 color=0xFF0000,
             )
-            return await ctx.send(embed=embed)
+            return await ctx.send(embed=embed, ephemeral=True)
         else:
             server.update_one(
                 {
@@ -218,7 +218,7 @@ class samp(Extension):
                 description=f"<:cross:839158779815657512> Your server is not in our database yet, Please register it first!",
                 color=0xFF0000,
             )
-            return await ctx.send(embed=embed)
+            return await ctx.send(embed=embed, ephemeral=True)
         else:
             server.delete_one(
                 {
