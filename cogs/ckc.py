@@ -292,7 +292,7 @@ class CoolKidsClub(Extension):
                 embed.set_image(url=preview)
                 embed.set_footer(
                     text="Optical Character Recognition",
-                    icon_url="https://cdn.notsobot.com/brands/google-go.png",
+                    icon_url="https://errors.matthewsoft.my.id/google-go.png",
                 )
                 await ctx.send(embed=embed)
             except:
