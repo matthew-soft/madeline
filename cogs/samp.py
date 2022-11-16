@@ -48,7 +48,9 @@ class samp(Extension):
         if embed is not None:
             return await ctx.send(embed=embed)
         else:
-            return await ctx.send(embed=wiki_none(ctx, query), ephemeral=True)  # Send the embed
+            return await ctx.send(
+                embed=wiki_none(ctx, query), ephemeral=True
+            )  # Send the embed
 
     @slash_command(
         name="samp",

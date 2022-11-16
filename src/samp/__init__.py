@@ -162,7 +162,9 @@ def wiki(ctx, query: str):
         query: the search query to search for.
     """
     try:
-        data = scraper.get("https://api.open.mp/docs/search", params=dict(q=query)).json()
+        data = scraper.get(
+            "https://api.open.mp/docs/search", params=dict(q=query)
+        ).json()
     except:
         return None
 
@@ -172,22 +174,26 @@ def wiki(ctx, query: str):
         embed.title = f"Documentation Search Results: {query}"
         for page_data in data["hits"]:
             docs_title = page_data["title"]
-            url = page_data["url"].removesuffix('.md')
+            url = page_data["url"].removesuffix(".md")
             docs_description = page_data["desc"]
             if len(docs_title) > 256:
                 docs_title = "{}...".format(docs_title[:253])
             if len(docs_description) > 2048:
                 docs_description = "{}...".format(docs_description[:1945])
 
-            embed.add_field(name=docs_title, value=f"[{docs_description}]({openmp_url}{url})\n", inline=False)
-            
+            embed.add_field(
+                name=docs_title,
+                value=f"[{docs_description}]({openmp_url}{url})\n",
+                inline=False,
+            )
+
             if len(page_data) == 10:
                 break
 
         embed.set_footer(
-                text=f"Requested by {ctx.author} • Powered by open.mp API 😉",
-                icon_url=ctx.author.avatar.url,
-            )
+            text=f"Requested by {ctx.author} • Powered by open.mp API 😉",
+            icon_url=ctx.author.avatar.url,
+        )
         embed.timestamp = datetime.datetime.utcnow()
         return embed
     else:
