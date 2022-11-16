@@ -44,18 +44,9 @@ class samp(Extension):
     @cooldown(bucket=Buckets.USER, rate=1, interval=5)
     async def wiki(self, ctx, query: str):
         await ctx.defer()
-
-        embeds = wiki(ctx, query)
-
-        if embeds is not None:
-            paginators = Paginator(
-                client=self.bot,
-                pages=embeds,
-                timeout_interval=30,
-                show_select_menu=False,
-            )
-            await paginators.send(ctx)
-
+        embed = wiki(ctx, query)
+        if embed is not None:
+            return await ctx.send(embed=embed)
         else:
             return await ctx.send(embed=wiki_none(ctx, query))  # Send the embed
 

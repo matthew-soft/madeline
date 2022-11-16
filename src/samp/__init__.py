@@ -155,36 +155,37 @@ def wiki_none(ctx, query):
 def wiki(ctx, query: str):
     """
     Returns a list of embeds containing open.mp documentation query search results.
+    Args:
+        query: the search query to search for.
     """
-    data = scraper.get("https://api.open.mp/docs/search", params=dict(q=query)).json()
-
     try:
-        embeds = []
+        data = scraper.get("https://api.open.mp/docs/search", params=dict(q=query)).json()
+    except:
+        return None
+
+    if data["hits"] != []:
         openmp_url = "https://open.mp/"
+        embed = Embed()
+        embed.title = f"Documentation Search Results: {query}"
         for page_data in data["hits"]:
-
             docs_title = page_data["title"]
-            url = page_data["url"]
+            url = page_data["url"].removesuffix('.md')
             docs_description = page_data["desc"]
-
             if len(docs_title) > 256:
                 docs_title = "{}...".format(docs_title[:253])
             if len(docs_description) > 2048:
-                docs_description = "{}...".format(docs_description[:2045])
+                docs_description = "{}...".format(docs_description[:1945])
 
-            embed = Embed()
-            embed.title = f"Documentation Search Results: {query}"
-            embed.add_field(name=docs_title, value=docs_description, inline=False)
-            embed.add_field(
-                name="Documentation URL:", value=f"{openmp_url}{url}", inline=True
-            )
-            embed.set_footer(
+            embed.add_field(name=docs_title, value=f"[{docs_description}]({openmp_url}{url})\n", inline=False)
+            
+            if len(page_data) == 10:
+                break
+
+        embed.set_footer(
                 text=f"Requested by {ctx.author} • Powered by open.mp API 😉",
                 icon_url=ctx.author.avatar.url,
             )
-            embed.timestamp = datetime.datetime.utcnow()
-
-            embeds.append(embed)
-        return embeds
-    except:
+        embed.timestamp = datetime.datetime.utcnow()
+        return embed
+    else:
         return None
