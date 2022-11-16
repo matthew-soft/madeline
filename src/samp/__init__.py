@@ -13,7 +13,7 @@ def query_none():
     Returns an warning embed if there are no results for the query.
     """
     embed = Embed(
-        description=f"<:cross:839158779815657512> Couldn't connect to the server, or there's an error in our end. Please Try again later!",
+        description=f"<:cross:839158779815657512> Couldn't connect to the server, or there's an error in our end. Please try again later!",
         color=0xFF0000,
     )
     return embed
