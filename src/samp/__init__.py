@@ -22,6 +22,9 @@ def query_none():
 def query(ctx, ip: str, port: int):
     """
     Returns a list of embeds containing information about a SA-MP server.
+    Args:
+        ip: the server ip, in string.
+        port: the server port, in integer.
     """
 
     try:
