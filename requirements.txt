@@ -1,4 +1,3 @@
-algoliasearch
 cloudscraper
 dnspython
 git+https://github.com/NAFTeam/NAFF@dev
