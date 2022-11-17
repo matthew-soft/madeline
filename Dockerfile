@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.11.0
 
 # Update default packages
 RUN apt-get update && apt-get upgrade -y
