@@ -268,9 +268,3 @@ class help(Extension):
             )
         else:
             await ctx.send("Voting has been temporarily disabled", ephemeral=True)
-
-
-def setup(bot: CustomClient):
-    """Let naff load the extension"""
-
-    help(bot)

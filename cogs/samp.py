@@ -232,8 +232,3 @@ class samp(Extension):
                 color=0x00FF00,
             )
             return await ctx.send(embed=embed)
-
-
-def setup(bot):
-    # This is called by dis-snek so it knows how to load the Extension
-    samp(bot)
