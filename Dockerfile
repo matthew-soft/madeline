@@ -1,4 +1,4 @@
-FROM python:3.10.8-bullseye
+FROM python:3.11.0-bullseye
 
 # Update default packages
 RUN apt-get update && apt-get upgrade -y
