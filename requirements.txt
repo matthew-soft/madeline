@@ -2,7 +2,7 @@ algoliasearch
 cloudscraper
 dnspython
 google-cloud-vision
-naff
+git+https://github.com/NAFTeam/NAFF@dev
 orjson
 psutil
 pymongo
