@@ -12,6 +12,7 @@ NEWLINES = re.compile(r"\n+")
 def __init__(self, bot):
     self.bot = bot
 
+
 def generate_payload(query: str):
     """Generate the payload for Wikipedia based on a query string."""
     query_tokens = query.split()

@@ -450,7 +450,6 @@ class tools(Extension):
             # purge the cache
             os.remove(path=pepek)
 
-
     @slash_command(
         name="tools",
         description="Tools commands",
