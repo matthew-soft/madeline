@@ -61,16 +61,3 @@ def find_member(ctx, userid):
         for m in members:
             return m
     return None
-
-
-def get_level_str(levels):
-    """
-    Get level string from level list, Algolia things.
-    Args:
-        levels: string list of levels
-    """
-    last = ""
-    for level in levels.values():
-        if level is not None:
-            last = level
-    return last
