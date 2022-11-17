@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.11.0
 
 # Update default packages
 RUN apt-get update && apt-get upgrade -y
@@ -11,11 +11,11 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH "${PYTHONPATH}:/app"
 
 # install uvloop for faster asyncio
-RUN pip3.10 install uvloop
+RUN pip3.11 install uvloop
 
 # install the requirements
 COPY ./requirements.txt /app/requirements.txt
-RUN pip3.10 install -r /app/requirements.txt
+RUN pip3.11 install -r /app/requirements.txt
 
 # copy over the source files
 COPY ./ /app/
@@ -27,4 +27,4 @@ WORKDIR /app
 ENV GOOGLE_APPLICATION_CREDENTIALS="/app/gcp-key.json"
 
 # start the bot
-CMD ["python3.10", "main.py"]
+CMD ["python3.11", "main.py"]
