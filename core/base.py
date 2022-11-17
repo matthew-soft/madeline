@@ -132,12 +132,11 @@ class CustomClient(Client):
             "Note: Discord needs up to an hour to load global commands / context menus. They may not appear immediately\n"
         )
 
-    # i'll deal with this later    
+    # i'll deal with this later
     # @listen()
     # async def on_guild_join(self, event: GuildJoin):
     #     if self.is_ready:
     #         guild = event.guild
-            
 
     @listen()
     async def on_guild_left(self, event: GuildLeft):
