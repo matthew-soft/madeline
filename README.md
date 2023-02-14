@@ -1,3 +1,23 @@
+# PROJECT DISCONTINUED!
+
+Hey @everyone,
+
+Sadly, due to big load of overtime work for me (@SanityZeroPercent) in my office. I personally don't have time to maintain the bot anymore. 
+
+So, I'm retiring this repository as PUBLIC REPOSITORY and giving @everyone a big oppoturnity to contribute for the bot source codes.
+
+Enjoy it!
+
+### F.A.Q
+
+Q: Will Madeline be deleted?
+A: No, it will most likely be offline.
+
+Q: What happened to the bot then?
+A: It will be offline 'till idk when, sorry.
+
+---
+
 # Madeline : The Discord Bot
 
 | Build Production CI | pre-commit CI |
