@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   madeline:
-    image: ghcr.io/madeline-bot/madeline:master
+    image: ghcr.io/matthew-soft/madeline:master
     env_file: .env
     volumes:
       - ./logs:/app/logs
